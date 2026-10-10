@@ -26,6 +26,9 @@ __all__ = [
     "NewtonRaycastSensorData",
     "RayCaster",
     "RayCasterCamera",
+    "TactileSensor",
+    "TactileSensorCfg",
+    "TactileSensorData",
 ]
 
 from .contact_sensor import ContactSensor, ContactSensorData, ContactSensorCfg
@@ -46,3 +49,4 @@ from .ray_caster import (
     RayCaster,
     RayCasterCamera,
 )
+from .tactile_sensor import TactileSensor, TactileSensorCfg, TactileSensorData
