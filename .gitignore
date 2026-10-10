@@ -96,3 +96,6 @@ benchmark_*.json
 
 # Superpowers (Claude Code plugin artifacts)
 docs/superpowers/
+
+# FrankaOrca robot asset build output (scripts/tools/franka_orca/build_asset.py)
+assets/franka_orca/
