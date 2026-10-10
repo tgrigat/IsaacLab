@@ -317,6 +317,10 @@ class FrankaOrcaMixinCfg:
         if self.curriculum is None:
             self.rewards.finger_action_l2.weight = FINGER_ACTION_L2_WEIGHT
         self.commands.object_pose.body_name = PALM_BODY
+        # the goal ranges are in the robot root frame, which this robot turns 180 deg about z (see FRANKA_ORCA_CFG);
+        # mirrored in x so the goals sit over the table at world -x, as for Kuka-Allegro, instead of behind the robot
+        x_min, x_max = self.commands.object_pose.ranges.pos_x
+        self.commands.object_pose.ranges.pos_x = (-x_max, -x_min)
         # the presets are separate copies, so both Newton entries are set
         for physics in (self.sim.physics.newton_mjwarp, self.sim.physics.default):
             physics.solver_cfg.njmax = NJMAX
