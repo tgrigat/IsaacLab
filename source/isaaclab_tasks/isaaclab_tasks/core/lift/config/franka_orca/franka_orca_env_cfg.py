@@ -54,7 +54,7 @@ and an observation of its taxels' normal and shear forces."""
 
 PAD_COLLISION_GROUP = 2
 """Newton collision group shared by the fingertips' pad proxies, so fingertips meet pad to pad (and, in the default
-group, rest hull to rest hull)."""
+group, unsensed hulls to unsensed hulls)."""
 
 TACTILE_OBSERVATIONS = True
 """Whether the policy observes the taxels. Off for the ablation without tactile sensing: the tactile sensors stay in
@@ -168,7 +168,7 @@ class FrankaOrcaSceneCfg(lift.SceneCfg):
                 ),
             )
         # one tactile sensor per sensed fingertip (Newton backend only); the pad proxies share a collision group,
-        # so fingertips collide pad to pad (and rest hull to rest hull), and the asset filters both against the taxels
+        # so fingertips collide pad to pad (and unsensed to unsensed), and the asset filters both against the taxels
         # (build_asset.py), so the taxels sense only the object, the table and the arm
         for finger, body in TACTILE_FINGERS.items():
             setattr(
