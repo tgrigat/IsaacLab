@@ -52,7 +52,8 @@ def object_ee_distance(
     object_pos = obj.data.root_pos_w.torch
     distance = torch.linalg.norm(asset_pos - object_pos[:, None, :], dim=-1).max(dim=-1).values
     contact_bonus = contacts(env, contact_threshold, thumb_name, finger_names).float().clamp(0.1, 1.0)
-    return (1 - torch.tanh(distance / std)) * contact_bonus
+    # a diverged simulation leaves non-finite poses, and the terminations end that episode in the same step
+    return torch.nan_to_num((1 - torch.tanh(distance / std)) * contact_bonus, nan=0.0)
 
 
 def contacts(env: ManagerBasedRLEnv, threshold: float, thumb_name: str, finger_names: list[str]) -> torch.Tensor:
@@ -143,7 +144,8 @@ class success_reward(ManagerTermBase):
             reward = ((1 - torch.tanh(pos_dist / pos_std)) ** 2) * contact_mask.float()
             self.succeeded |= (pos_dist < pos_std) & contact_mask
 
-        return reward
+        # a diverged simulation leaves non-finite poses, and the terminations end that episode in the same step
+        return torch.nan_to_num(reward, nan=0.0)
 
 
 def position_command_error_tanh(
