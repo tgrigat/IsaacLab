@@ -83,6 +83,28 @@ class GraspTravelDistanceCfg(ManagerTermBaseCfg):
 
 
 @configclass
+class SelfClearanceCfg(ManagerTermBaseCfg):
+    """Validity criterion for :class:`conditional_reset`: groups of robot bodies clear of each other.
+
+    Configuration for :class:`self_clearance`, which checks every body's outermost collider vertices against the
+    other groups' collision meshes with Warp signed-distance queries, e.g. one group per finger so that random
+    hand-joint resets do not start with the fingers inside each other. Bodies within one group are not checked
+    against each other: neighbouring links overlap at their joints by design.
+    """
+
+    func: Callable | str = "{DIR}.events:self_clearance"
+
+    asset_name: str = MISSING
+    """Robot whose collision meshes are queried."""
+
+    body_groups: list[list[str]] = MISSING
+    """Groups of robot body names (or regexes), checked against each other."""
+
+    min_clearance: float = 0.0
+    """Required clearance between groups [m]; states with any signed distance below this are invalid."""
+
+
+@configclass
 class SlabClearanceCfg(ManagerTermBaseCfg):
     """Validity criterion for :class:`conditional_reset`: robot and object clear of slabs.
 

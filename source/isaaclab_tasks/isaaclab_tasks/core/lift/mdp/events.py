@@ -37,7 +37,7 @@ if TYPE_CHECKING:
     from isaaclab.assets import Articulation, CableObject, DeformableObject, RigidObject
     from isaaclab.envs import ManagerBasedEnv, ManagerBasedRLEnv
 
-    from .events_cfg import GraspTravelDistanceCfg, MeshClearanceCfg, SlabClearanceCfg
+    from .events_cfg import GraspTravelDistanceCfg, MeshClearanceCfg, SelfClearanceCfg, SlabClearanceCfg
 
 
 def reset_joints_shared_offset(
@@ -280,6 +280,11 @@ class conditional_reset(ManagerTermBase):
     cover. The bank is then frozen: the wrapped terms and criteria never run again, and every
     reset from that point restores a banked sample to the requested environments.
 
+    Given :paramref:`modes`, the bank is split into reset modes, OmniReset's reset distributions
+    (e.g. object on the table, object in the hand): each mode banks its own states and every restore
+    picks a mode uniformly, so each mode keeps its share of the episodes however often its states are
+    rejected.
+
     Given a :paramref:`diversity_feature` the prefill keeps the most spread-out states rather
     than the first valid ones, and given a :paramref:`success_monitor` the restore is drawn by
     each state's measured success rate rather than uniformly.
@@ -292,6 +297,7 @@ class conditional_reset(ManagerTermBase):
         self._descriptor = torch.empty(0, 0, device=env.device)
         self._reset_assets = list(env.scene.articulations) + list(env.scene.rigid_objects)
         self._group = torch.empty(0, dtype=torch.long, device=env.device)
+        self._mode_names: list[str] = []
         self._fill = torch.empty(0, dtype=torch.long, device=env.device)
         self._monitor: SuccessMonitor | None = None
         self._success_term = None
@@ -306,7 +312,16 @@ class conditional_reset(ManagerTermBase):
         happen to be ending now.
         """
         if self._monitor is not None:
-            self._env.extras.setdefault("log", {})["Metrics/success_rate"] = self._monitor.get_mean_success_rate()
+            log = self._env.extras.setdefault("log", {})
+            log["Metrics/success_rate"] = self._monitor.get_mean_success_rate()
+            if len(self._mode_names) > 1:
+                # slots are laid out (group, mode, state)
+                shape = (-1, len(self._mode_names), self._monitor.partition_size)
+                measured = (self._monitor.success_size > 0).view(shape)
+                rate = self._monitor.success_rate.view_as(measured) * measured
+                rate = rate.sum(dim=(0, 2)) / measured.sum(dim=(0, 2)).clamp(min=1)
+                for mode, mode_rate in zip(self._mode_names, rate):
+                    log[f"Metrics/success_rate/{mode}"] = mode_rate
 
     def __call__(
         self,
@@ -314,6 +329,7 @@ class conditional_reset(ManagerTermBase):
         env_ids: torch.Tensor,
         terms: dict[str, EventTermCfg],
         valid_criteria: dict[str, ManagerTermBaseCfg],
+        modes: dict[str, dict[str, EventTermCfg]] | None = None,
         buffer_size_per_group: int = 20,
         max_prefill_iters: int | None = None,
         diversity_feature: ManagerTermBaseCfg | None = None,
@@ -330,13 +346,17 @@ class conditional_reset(ManagerTermBase):
                 reset therefore restores a banked state to every environment.
             terms: Reset event terms to wrap, applied in insertion order during prefill.
                 Resolved by the event manager before the first call.
+            modes: Optional reset modes, each a dict of reset terms applied after :paramref:`terms`
+                during prefill, e.g. ``{"table": {...}, "in_hand": {...}}``. Every mode banks
+                :paramref:`buffer_size_per_group` states per group, and each restore picks a mode
+                uniformly. Defaults to None, a single mode of just :paramref:`terms`.
             valid_criteria: Criteria as term configs (e.g. :class:`SlabClearanceCfg`,
                 :class:`MeshClearanceCfg`), each evaluated as
                 ``func(env, env_ids, **params) -> BoolTensor`` over the freshly reset
                 environments and combined with logical AND. Resolved by the event manager
                 like any nested term config.
             buffer_size_per_group: Required number of valid states to bank per unique asset
-                combination during the prefill phase.
+                combination (and per mode) during the prefill phase.
             max_prefill_iters: Optional re-roll budget for the prefill phase. If ``None``,
                 prefill continues until every group reaches its harvest target.
             diversity_feature: Optional descriptor as a term config (e.g.
@@ -357,9 +377,16 @@ class conditional_reset(ManagerTermBase):
                 with :paramref:`success_monitor`.
         """
 
-        def roll_once(roll_ids: torch.Tensor) -> torch.Tensor:
+        modes = modes or {"default": {}}
+        num_modes = len(modes)
+
+        def roll_once(roll_ids: torch.Tensor, mode_of: torch.Tensor) -> torch.Tensor:
             for term in terms.values():
                 term.func(env, roll_ids, **term.params)
+            for mode, mode_terms in enumerate(modes.values()):
+                mode_ids = roll_ids[mode_of == mode]
+                for term in mode_terms.values():
+                    term.func(env, mode_ids, **term.params)
             # no explicit refresh needed: state writes invalidate the FK timestamps and the
             # criteria's kinematic reads recompute on demand
             ok = torch.ones(len(roll_ids), dtype=torch.bool, device=roll_ids.device)
@@ -371,7 +398,10 @@ class conditional_reset(ManagerTermBase):
             # The plan already identifies the world prototype selected by each environment.
             _, group = np.unique(env.scene.clone_plan.topology.world_prototype_layout, return_inverse=True)
             self._group = torch.as_tensor(group, device=env.device)
-            num_groups = int(self._group.max().item()) + 1
+            self._mode_names = list(modes)
+            # the bank is partitioned by (asset group, mode); a partition is what the rest of this
+            # term calls a group
+            num_groups = (int(self._group.max().item()) + 1) * num_modes
             # without a descriptor there is nothing to spread over, so harvesting extra is waste
             harvest_size = buffer_size_per_group
             if diversity_feature is not None:
@@ -392,20 +422,27 @@ class conditional_reset(ManagerTermBase):
                 while not bool((self._fill >= harvest_size).all()):
                     if max_prefill_iters is not None and iteration >= max_prefill_iters:
                         short = torch.nonzero(self._fill < harvest_size).view(-1)
-                        counts = {int(group): int(self._fill[group]) for group in short}
+                        counts = {}
+                        for group in short.tolist():
+                            name = f"{group // num_modes}/{self._mode_names[group % num_modes]}"
+                            counts[name] = int(self._fill[group])
                         raise RuntimeError(
                             "conditional_reset: could not fill the reset-state buffer for every asset-combination "
-                            f"group. Required {harvest_size} valid states per group, got {counts} after "
-                            f"{max_prefill_iters} prefill iterations."
+                            f"group and mode. Required {harvest_size} valid states each, got {counts} (group/mode) "
+                            f"after {max_prefill_iters} prefill iterations."
                         )
+                    # rotate the modes over the environments so every asset group rolls every mode
+                    mode_of = (all_ids + iteration) % num_modes
                     iteration += 1
-                    valid_ids = all_ids[roll_once(all_ids)]
-                    for group in torch.unique(self._group[valid_ids]).tolist():
+                    valid = roll_once(all_ids, mode_of)
+                    partition = self._group * num_modes + mode_of
+                    valid_ids = all_ids[valid]
+                    for group in torch.unique(partition[valid_ids]).tolist():
                         filled = int(self._fill[group])
                         remaining = harvest_size - filled
                         if remaining <= 0:
                             continue
-                        take = valid_ids[self._group[valid_ids] == group][:remaining]
+                        take = valid_ids[partition[valid_ids] == group][:remaining]
                         if len(take) == 0:
                             continue
                         state = get_reset_state(env, take, self._reset_assets, is_relative=True)
@@ -437,12 +474,16 @@ class conditional_reset(ManagerTermBase):
             self._prefilled = True
             # drop the prefill-only terms/criteria so their device memory is freed
             terms.clear()
+            modes.clear()
             valid_criteria.clear()
             # the rolls above perturbed every environment, so the first reset restores a
             # banked state to all of them, not just the requested subset
             env_ids = all_ids
 
-        groups = self._group[env_ids]
+        # the prefill cleared the modes, so their number is read from the names it kept
+        num_modes = len(self._mode_names)
+        mode_of = torch.randint(num_modes, env_ids.shape, device=env.device)
+        groups = self._group[env_ids] * num_modes + mode_of
         if self._monitor is None:
             # ``rand * fill`` floors to a uniform draw in ``[0, fill)``.
             donor = (torch.rand(groups.shape[0], device=env.device) * self._fill[groups]).long()
@@ -830,6 +871,127 @@ class mesh_clearance(ManagerTermBase):
                 self._object_mesh_ids,
                 self._object_mesh_center,
                 self._object_mesh_radius,
+                self.cfg.min_clearance,
+                self._max_dist,
+                out_min,
+            ],
+            device=env.device,
+        )
+        return wp.to_torch(out_min) >= self.cfg.min_clearance
+
+
+@wp.kernel
+def _robot_vertices_other_group_min(
+    env_ids: wp.array(dtype=wp.int32),
+    vertices: wp.array(dtype=wp.vec3),
+    vertex_body: wp.array(dtype=wp.int32),
+    vertex_group: wp.array(dtype=wp.int32),
+    body_pose: wp.array2d(dtype=wp.transformf),
+    mesh_ids: wp.array(dtype=wp.uint64),
+    mesh_body: wp.array(dtype=wp.int32),
+    mesh_group: wp.array(dtype=wp.int32),
+    mesh_center: wp.array(dtype=wp.vec3),
+    mesh_radius: wp.array(dtype=wp.float32),
+    min_clearance: float,
+    max_dist: float,
+    out_min: wp.array(dtype=wp.float32),
+):
+    i, k = wp.tid()
+    env = env_ids[i]
+    point_world = wp.transform_point(body_pose[env, vertex_body[k]], vertices[k])
+    dist = out_min[i]
+    for m in range(mesh_ids.shape[0]):
+        if mesh_group[m] == vertex_group[k]:
+            continue
+        point_local = wp.transform_point(wp.transform_inverse(body_pose[env, mesh_body[m]]), point_world)
+        # bounding-sphere prefilter, as in _object_points_mesh_min
+        lower_bound = wp.length(point_local - mesh_center[m]) - mesh_radius[m]
+        if lower_bound > min_clearance and lower_bound > 0.0:
+            continue
+        query = wp.mesh_query_point_sign_winding_number(mesh_ids[m], point_local, max_dist)
+        if query.result:
+            mesh_dist = wp.length(point_local - wp.mesh_eval_position(mesh_ids[m], query.face, query.u, query.v))
+            if query.sign < 0.0:
+                mesh_dist = -mesh_dist
+            dist = wp.min(dist, mesh_dist)
+    wp.atomic_min(out_min, i, dist)
+
+
+class self_clearance(ManagerTermBase):
+    """Valid when groups of robot bodies, e.g. the fingers, clear each other.
+
+    Random joint resets can start a hand with its fingers inside each other; the solver then pushes them apart
+    with hundreds of contacts at episode birth. Checks the outermost collider vertices of each body (those on its
+    convex hull) against the other groups' collision meshes with Warp signed-distance queries, like
+    :class:`mesh_clearance` does for the object. A penetration that reaches no such vertex goes unnoticed.
+
+    Configured with :class:`SelfClearanceCfg`; called as ``(env, env_ids) -> BoolTensor``, ``True`` where the
+    state is valid.
+    """
+
+    cfg: SelfClearanceCfg
+
+    def __init__(self, cfg: SelfClearanceCfg, env: ManagerBasedEnv):
+        super().__init__(cfg, env)
+        device = env.device
+        self._robot: Articulation = env.scene[cfg.asset_name]
+        group_of = {}
+        for group, names in enumerate(cfg.body_groups):
+            for body_id in self._robot.find_bodies(names)[0]:
+                group_of[body_id] = group
+        # one pass over all grouped bodies, so every collider is assigned to its own body, not a grouped ancestor
+        body_meshes, _ = collect_body_collision_meshes(self._robot, [n for names in cfg.body_groups for n in names])
+
+        self._meshes = []
+        vertices, vertex_body, vertex_group = [], [], []
+        mesh_body, mesh_group, mesh_center, mesh_radius = [], [], [], []
+        for body_id, mesh in body_meshes.items():
+            self._meshes.append(
+                wp.Mesh(
+                    points=wp.array(mesh.vertices, dtype=wp.vec3, device=device),
+                    indices=wp.array(mesh.faces.reshape(-1), dtype=wp.int32, device=device),
+                    support_winding_number=True,
+                )
+            )
+            mesh_body.append(body_id)
+            mesh_group.append(group_of[body_id])
+            center = mesh.vertices.mean(axis=0)
+            mesh_center.append(center)
+            mesh_radius.append(float(np.linalg.norm(mesh.vertices - center, axis=1).max()))
+            # query points: the colliders' outermost vertices (those on their convex hull), a few hundred real
+            # surface points instead of every vertex of every taxel patch, which keeps the prefill fast
+            points = mesh.convex_hull.vertices
+            vertices.append(points)
+            vertex_body.extend([body_id] * len(points))
+            vertex_group.extend([group_of[body_id]] * len(points))
+        self._mesh_ids = wp.array([mesh.id for mesh in self._meshes], dtype=wp.uint64, device=device)
+        self._mesh_body = wp.array(mesh_body, dtype=wp.int32, device=device)
+        self._mesh_group = wp.array(mesh_group, dtype=wp.int32, device=device)
+        self._mesh_center = wp.array(np.stack(mesh_center), dtype=wp.vec3, device=device)
+        self._mesh_radius = wp.array(mesh_radius, dtype=wp.float32, device=device)
+        self._vertices = wp.array(np.concatenate(vertices), dtype=wp.vec3, device=device)
+        self._vertex_body = wp.array(vertex_body, dtype=wp.int32, device=device)
+        self._vertex_group = wp.array(vertex_group, dtype=wp.int32, device=device)
+        # query horizon: must exceed the clearance and plausible penetration depths
+        self._max_dist = max(4.0 * cfg.min_clearance, 0.05)
+
+    def __call__(self, env: ManagerBasedEnv, env_ids: torch.Tensor) -> torch.Tensor:
+        env_ids = env.scene._ALL_INDICES[env_ids]
+        out_min = wp.full(len(env_ids), 1.0e6, dtype=wp.float32, device=env.device)
+        wp.launch(
+            _robot_vertices_other_group_min,
+            dim=(len(env_ids), self._vertices.shape[0]),
+            inputs=[
+                wp.from_torch(env_ids.to(torch.int32).contiguous()),
+                self._vertices,
+                self._vertex_body,
+                self._vertex_group,
+                self._robot.data.body_link_pose_w.warp,
+                self._mesh_ids,
+                self._mesh_body,
+                self._mesh_group,
+                self._mesh_center,
+                self._mesh_radius,
                 self.cfg.min_clearance,
                 self._max_dist,
                 out_min,

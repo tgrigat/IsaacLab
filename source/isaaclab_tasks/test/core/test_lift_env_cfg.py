@@ -8,8 +8,10 @@
 from types import SimpleNamespace
 from unittest.mock import Mock
 
+import numpy as np
 import pytest
 import torch
+import trimesh
 import warp as wp
 
 from pxr import Usd, UsdGeom, UsdPhysics
@@ -252,6 +254,72 @@ def test_franka_lift_pregrasp_resolves_object_variants_from_clone_topology() -> 
     cfg.params["grasp_configs"] = cfg.params["grasp_configs"][:1]
     with pytest.raises(ValueError, match="no configured pre-grasp"):
         mdp.reset_to_grasp(cfg, env)
+
+
+def test_conditional_reset_modes_keep_their_share(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Every reset mode fills its own bank and gets half the restores, however often its states are rejected."""
+    num_envs, buffer_size = 8, 6
+    state = torch.zeros((num_envs, 1))  # the object marker each mode writes
+    monkeypatch.setattr(mdp.events, "get_reset_state", lambda env, ids, assets, is_relative: state[ids].clone())
+    monkeypatch.setattr(
+        mdp.events, "set_reset_state", lambda env, rows, ids, assets, is_relative: state.index_copy_(0, ids, rows)
+    )
+
+    def place(value):
+        return SimpleNamespace(func=lambda env, ids: state.index_fill_(0, ids, value), params={})
+
+    def rarely_in_hand(env, ids):
+        return (state[ids, 0] != 2.0) | (torch.rand(len(ids)) < 0.25)
+
+    layout = np.array([0, 1] * (num_envs // 2))
+    scene = SimpleNamespace(
+        articulations={},
+        rigid_objects={},
+        clone_plan=SimpleNamespace(topology=SimpleNamespace(world_prototype_layout=layout)),
+    )
+    env = SimpleNamespace(scene=scene, device="cpu", num_envs=num_envs, extras={})
+    term = mdp.events.conditional_reset(SimpleNamespace(params={}), env)
+    params = {
+        "terms": {"robot": place(0.0)},
+        "valid_criteria": {"clearance": SimpleNamespace(func=rarely_in_hand, params={})},
+        "modes": {"table": {"object": place(1.0)}, "in_hand": {"object": place(2.0)}},
+        "buffer_size_per_group": buffer_size,
+    }
+    torch.manual_seed(0)
+    term(env, torch.arange(num_envs), **params)
+
+    # bank rows are laid out (asset group, mode, state)
+    banked = term._buffer.view(2, 2, buffer_size)
+    torch.testing.assert_close(banked[:, 0], torch.ones(2, buffer_size))
+    torch.testing.assert_close(banked[:, 1], torch.full((2, buffer_size), 2.0))
+    restored = []
+    for _ in range(200):
+        term(env, torch.arange(num_envs), **params)
+        restored.append(state[:, 0].clone())
+    assert (torch.cat(restored) == 2.0).float().mean().item() == pytest.approx(0.5, abs=0.05)
+
+
+def test_self_clearance_rejects_overlap_across_groups_only(monkeypatch: pytest.MonkeyPatch) -> None:
+    """Bodies of different groups must clear each other; bodies of one group may overlap."""
+    box = trimesh.creation.box(extents=(0.02, 0.02, 0.02))
+    monkeypatch.setattr(
+        mdp.events, "collect_body_collision_meshes", lambda robot, names: ({0: box, 1: box, 2: box}, [])
+    )
+    # env 0: body 1 (same group as 0) overlaps body 0, body 2 is far; env 1: a corner of body 2 (other group)
+    # reaches 5 mm into body 0
+    positions = [[(0, 0, 0), (0.005, 0, 0), (0.1, 0, 0)], [(0, 0, 0), (0.1, 0, 0), (0.015, 0.015, 0.015)]]
+    poses = [[(*pos, 0.0, 0.0, 0.0, 1.0) for pos in env] for env in positions]
+    poses = wp.array(poses, dtype=wp.transformf, device="cpu")
+    robot = SimpleNamespace(
+        find_bodies=lambda names: ({"a": [0, 1], "b": [2]}[names[0]], names),
+        data=SimpleNamespace(body_link_pose_w=SimpleNamespace(warp=poses)),
+    )
+    env = SimpleNamespace(scene=_FakeScene(torch.arange(2), robot=robot), device="cpu")
+    cfg = mdp.SelfClearanceCfg(asset_name="robot", body_groups=[["a"], ["b"]])
+
+    term = mdp.self_clearance(cfg, env)
+
+    assert term(env, torch.arange(2)).tolist() == [True, False]
 
 
 def test_reset_clearance_ignores_disabled_collision_geometry() -> None:
