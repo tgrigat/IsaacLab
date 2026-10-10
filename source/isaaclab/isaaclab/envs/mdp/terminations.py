@@ -137,7 +137,8 @@ class joint_vel_out_of_limit(ManagerTermBase):
 
     def __call__(self, env: ManagerBasedRLEnv, asset_cfg: SceneEntityCfg = SceneEntityCfg("robot")) -> torch.Tensor:
         limits = self._asset.data.soft_joint_vel_limits.torch[:, self._joint_ids]
-        return torch.any(torch.abs(self._asset.data.joint_vel.torch[:, self._joint_ids]) > limits, dim=1)
+        # "not within" rather than "above", so that non-finite velocities from a diverged simulation also terminate
+        return torch.any(~(torch.abs(self._asset.data.joint_vel.torch[:, self._joint_ids]) <= limits), dim=1)
 
 
 def joint_vel_out_of_manual_limit(

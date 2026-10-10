@@ -9,7 +9,7 @@ from types import SimpleNamespace
 
 import torch
 
-from isaaclab.envs.mdp.terminations import joint_effort_out_of_limit
+from isaaclab.envs.mdp.terminations import joint_effort_out_of_limit, joint_vel_out_of_limit
 from isaaclab.managers import SceneEntityCfg
 
 
@@ -29,3 +29,21 @@ def test_joint_effort_limit_terminates_only_environments_with_clipped_selected_j
     result = joint_effort_out_of_limit(env, SceneEntityCfg("robot", joint_ids=[0, 1]))
 
     torch.testing.assert_close(result, torch.tensor([True, False, True, False]))
+
+
+def test_joint_velocity_limit_terminates_non_finite_velocities() -> None:
+    """A diverged simulation's NaN or infinite joint velocities terminate like velocities above the limit."""
+    nan, inf = float("nan"), float("inf")
+    velocity = torch.tensor([[0.5, -0.5], [2.0, 0.0], [nan, 0.0], [0.0, -inf]])
+    robot = SimpleNamespace(
+        data=SimpleNamespace(
+            joint_vel=SimpleNamespace(torch=velocity),
+            soft_joint_vel_limits=SimpleNamespace(torch=torch.ones(4, 2)),
+        )
+    )
+    env = SimpleNamespace(scene={"robot": robot}, device="cpu")
+    cfg = SimpleNamespace(params={"asset_cfg": SceneEntityCfg("robot", joint_ids=[0, 1])})
+
+    result = joint_vel_out_of_limit(cfg, env)(env)
+
+    torch.testing.assert_close(result, torch.tensor([False, True, True, True]))
