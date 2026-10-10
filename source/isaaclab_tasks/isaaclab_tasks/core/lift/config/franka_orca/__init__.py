@@ -34,3 +34,13 @@ gym.register(
         "default_agent": "rsl_rl",
     },
 )
+
+# scripted tests of the fingertip IK (scripts/environments/state_machine/lift_cube_franka_orca_sm.py), no agent
+gym.register(
+    id="Isaac-Lift-Cube-FrankaOrca-FingertipIK-Abs",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.franka_orca_ik_env_cfg:FrankaOrcaFingertipIKLiftEnvCfg",
+    },
+)
