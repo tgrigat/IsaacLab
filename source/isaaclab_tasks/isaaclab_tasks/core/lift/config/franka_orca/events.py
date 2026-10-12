@@ -71,3 +71,34 @@ def reset_joints_to_random_pose(
     joint_pos = joint_pos.clamp_(limits[..., 0], limits[..., 1])
     asset.write_joint_position_to_sim_index(position=joint_pos, joint_ids=joint_ids, env_ids=env_ids)
     asset.write_joint_velocity_to_sim_index(velocity=torch.zeros_like(joint_pos), joint_ids=joint_ids, env_ids=env_ids)
+
+
+def object_in_bounds(
+    env: ManagerBasedEnv,
+    env_ids: torch.Tensor,
+    in_bound_range: dict[str, tuple[float, float]],
+    margin: float,
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("object"),
+) -> torch.Tensor:
+    """Validity criterion for :class:`~isaaclab_tasks.core.lift.mdp.events.conditional_reset`: object inside the
+    workspace, at least :paramref:`margin` from every face of it.
+
+    Rejects reset states that the out-of-bounds termination would end at once, or soon after.
+
+    Args:
+        env: The environment.
+        env_ids: Environments to check.
+        in_bound_range: Workspace ranges of the object position in the environment frame [m], keys ``x``/``y``/``z``.
+        margin: Required distance of the object position from the workspace faces [m].
+        asset_cfg: The object.
+
+    Returns:
+        Whether each environment's object is inside, shape [len(env_ids)].
+    """
+    asset = env.scene[asset_cfg.name]
+    pos = asset.data.root_pos_w.torch[env_ids] - env.scene.env_origins[env_ids]
+    ok = torch.ones(len(env_ids), dtype=torch.bool, device=env.device)
+    for axis, key in enumerate(("x", "y", "z")):
+        low, high = in_bound_range[key]
+        ok &= (pos[:, axis] >= low + margin) & (pos[:, axis] <= high - margin)
+    return ok

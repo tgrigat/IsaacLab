@@ -140,3 +140,7 @@ class SlabClearanceCfg(ManagerTermBaseCfg):
 
     min_clearance: float = 0.02
     """Required clearance [m]; states with any point below this above a slab are invalid."""
+
+    object_min_clearance: float | None = None
+    """Required clearance of the object [m], e.g. 0 for an object reset resting on a slab. Defaults to None, which
+    applies :attr:`min_clearance` to the object too."""

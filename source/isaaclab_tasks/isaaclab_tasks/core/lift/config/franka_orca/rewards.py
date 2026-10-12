@@ -96,3 +96,32 @@ def fingertip_min_distance(
     object_pos = obj.data.root_pos_w.torch
     min_distance = torch.norm(fingertip_pos - object_pos[:, None], dim=-1).min(dim=-1).values
     return 1 - torch.tanh(min_distance / std)
+
+
+def hand_object_distance(
+    env: ManagerBasedRLEnv,
+    std: float,
+    asset_cfg: SceneEntityCfg,
+    object_cfg: SceneEntityCfg = SceneEntityCfg("object"),
+) -> torch.Tensor:
+    """Reward reaching the object with the hand, whether or not it touches it.
+
+    A tanh kernel on the mean distance from the hand bodies (e.g. the palm and the fingertips) to the object center.
+    Unlike the lift ``fingers_to_object`` term, which pays a tenth until the thumb and a finger touch the object, it
+    pays in full on the way there, so a far object gives the policy a gradient to follow.
+
+    Args:
+        env: The environment instance.
+        std: Distance scale of the tanh kernel [m].
+        asset_cfg: The robot, with the hand bodies.
+        object_cfg: The object.
+
+    Returns:
+        The reward in [0, 1], shape (num_envs,).
+    """
+    asset: Articulation = env.scene[asset_cfg.name]
+    obj: RigidObject = env.scene[object_cfg.name]
+    hand_pos = asset.data.body_pos_w.torch[:, asset_cfg.body_ids]
+    distance = torch.linalg.norm(hand_pos - obj.data.root_pos_w.torch[:, None], dim=-1).mean(dim=-1)
+    # a diverged simulation leaves non-finite poses, and the terminations end that episode in the same step
+    return torch.nan_to_num(1 - torch.tanh(distance / std), nan=0.0)

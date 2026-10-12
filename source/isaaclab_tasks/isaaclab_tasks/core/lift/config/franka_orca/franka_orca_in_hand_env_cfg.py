@@ -13,15 +13,19 @@ the lift ones, as in Kuka-Allegro. Once gravity ramps in, a cube off a sideways 
 holds it.
 """
 
+import copy
+
 from isaaclab_newton.sim.schemas import MujocoRigidBodyCfg
 
 from isaaclab.managers import CurriculumTermCfg as CurrTerm
 from isaaclab.managers import EventTermCfg as EventTerm
+from isaaclab.managers import ManagerTermBaseCfg, SceneEntityCfg
+from isaaclab.managers import RewardTermCfg as RewTerm
 from isaaclab.utils import configclass, replace
 
 from ... import mdp
-from . import events
-from .franka_orca_env_cfg import FrankaOrcaLiftEnvCfg, FrankaOrcaObjectCfg, remove_taxels
+from . import curriculums, events, rewards
+from .franka_orca_env_cfg import FINGER_JOINTS, HAND_BODIES, FrankaOrcaLiftEnvCfg, FrankaOrcaObjectCfg, remove_taxels
 
 PALM_UP_JOINT_POS = {
     "fr3_joint1": -0.335,
@@ -241,6 +245,183 @@ class FrankaOrcaInHandLiftEnvCfg(FrankaOrcaLiftEnvCfg):
 @configclass
 class FrankaOrcaInHandLiftNoTaxelsEnvCfg(FrankaOrcaInHandLiftEnvCfg):
     """In-hand cube carrying with plain fingertip hulls and no tactile sensing (see :func:`.remove_taxels`)."""
+
+    def __post_init__(self):
+        super().__post_init__()
+        remove_taxels(self)
+
+
+CUBE_NEAR_PALM_RANGE = {"x": [-0.04, 0.04], "y": [0.10, 0.14], "z": [0.0, 0.12]}
+"""Cube position range in the palm frame [m] of the staged task's later stages: 3.5-7.5 cm further out along the palm
+normal than :data:`CUBE_IN_PALM_RANGE`, over the curled fingers rather than in their cage, so the hand has to reach
+for it. Draws that touch the hand are rejected by the reset."""
+
+CUBE_FAR_FROM_PALM_RANGE = {"x": [-0.08, 0.08], "y": [0.14, 0.22], "z": [-0.04, 0.16]}
+"""Cube position range in the palm frame [m] of the hardest floating stage: 7.5-15.5 cm further out along the palm
+normal than :data:`CUBE_IN_PALM_RANGE` and spread wider across and along the hand, so the arm has to move to it."""
+
+CUBE_ON_TABLE_RANGE = {"x": [-0.15, 0.15], "y": [-0.3, 0.1], "yaw": [-3.14, 3.14]}
+"""Cube pose range on the table [m, rad], around the object's initial position (-0.55, 0.1) m in the environment frame,
+so the cube lies on the table below the palm, flat at a random yaw. The palm starts at (-0.55, 0.0, 0.45) m."""
+
+HAND_OPEN_JOINT_POS = {joint: 0.0 for joint in FINGER_JOINTS}
+"""Finger joints of the open hand [rad]: fingers straight and together, thumb at rest."""
+
+HAND_CLOSED_JOINT_POS = {
+    **HAND_OPEN_JOINT_POS,
+    # index, middle, ring and pinky: the proximal and distal joints curled alike
+    "I_PP_bacbd481_to_I_AP_R_d95d02d1": 1.5,
+    "I_FingerTipAssembly_ec49c16c_to_I_PP_bacbd481": 1.5,
+    "M_PP_08efa608_to_M_AP_e04a96f2": 1.5,
+    "M_FingerTipAssembly_34afb748_to_M_PP_08efa608": 1.5,
+    "M_PP_8660a1eb_to_M_AP_6ec59111": 1.5,
+    "M_FingerTipAssembly_424a8e75_to_M_PP_8660a1eb": 1.5,
+    "P_PP_1d411b9b_to_P_AP_f5e42b61": 1.5,
+    "P_FingerTipAssembly_cd219176_to_P_PP_1d411b9b": 1.5,
+    # thumb half flexed: from about 0.8 rad on it runs into the curled index
+    "T_PP_68395e98_to_R_T_AP_a9723101": 0.5,
+    "T_DP_b7429e50_to_T_PP_68395e98": 0.5,
+}
+"""Finger joints of the closed hand [rad]: index, middle, ring and pinky curled into a fist, the thumb half flexed.
+98% of the draws clear the reset's finger self-clearance check; a fully flexed thumb clears none."""
+
+GRAVITY_START_FRAC = 0.5
+"""Mean ADR difficulty fraction from which gravity ramps in, once every floating stage is in the mix."""
+
+TABLE_START_FRAC = 0.75
+"""Mean ADR difficulty fraction at which gravity is full and the cube stops floating and starts on the table."""
+
+STAGE_FRACS = {
+    "in_hand": (0.0, TABLE_START_FRAC),
+    "near_hand": (0.15, TABLE_START_FRAC),
+    "open_closed_hand": (0.3, TABLE_START_FRAC),
+    "far_from_hand": (0.45, TABLE_START_FRAC),
+    "on_table": (TABLE_START_FRAC, 1.0),
+}
+"""Reset modes of the staged task and the window of mean ADR difficulty fraction in which each is drawn:
+
+* ``in_hand``: the cube in the caged hand (:data:`CUBE_IN_PALM_RANGE`),
+* ``near_hand``: the cube a bit away from the caged hand (:data:`CUBE_NEAR_PALM_RANGE`),
+* ``open_closed_hand``: the cube a bit away from a fully open or closed hand,
+* ``far_from_hand``: the cube further away from a fully open or closed hand (:data:`CUBE_FAR_FROM_PALM_RANGE`),
+* ``on_table``: the cube lying on the table at a random pose (:data:`CUBE_ON_TABLE_RANGE`), the hand open or closed.
+
+The modes in the window are drawn uniformly, so the earlier floating stages stay in the mix. Gravity ramps in over the
+floating stages, from :data:`GRAVITY_START_FRAC` to full at :data:`TABLE_START_FRAC`, so the policy learns to catch and
+hold a falling cube before the cube starts on the table; from there it always does."""
+
+REACH_REWARD_WEIGHT = 0.5
+REACH_REWARD_STD = 0.2  # m
+"""Weight and distance scale of the hand-to-cube reward (:func:`.rewards.hand_object_distance`), which pays for
+approaching the cube without touching it. The lift ``fingers_to_object`` term pays a tenth of its 0.05 weight until
+the thumb and a finger touch the cube, too little to lead the hand to a cube 15-30 cm away: the previous run never
+touched one on the table, and solved 2% of the far stage."""
+
+STAGED_IN_BOUND_RANGE = {**IN_BOUND_RANGE, "z": (0.2, IN_BOUND_RANGE["z"][1])}
+"""Workspace the cube must stay in, in the environment frame [m]: :data:`IN_BOUND_RANGE` with the floor below the table
+top (0.255 m), so a cube on the table is in bounds and one that falls off the table ends the episode."""
+
+OBJECT_RESET_BOUND_MARGIN = 0.03
+"""Distance [m] a reset cube keeps from the faces of :data:`STAGED_IN_BOUND_RANGE`, so no episode starts on the verge of
+the out-of-bounds termination."""
+
+TABLE_CLEARANCE = 0.002
+"""Gap [m] between the table and a cube reset onto it, which then settles onto the table."""
+
+
+@configclass
+class FrankaOrcaInHandStagedLiftEnvCfg(FrankaOrcaInHandLiftEnvCfg):
+    """In-hand cube carrying with a staged curriculum: from the cube in the caged hand to a cube ever further from a
+    hand that starts open or closed, with gravity ramping in, then a cube picked up from the table.
+
+    The reset bank holds one reset mode per stage (:data:`STAGE_FRACS`), and a curriculum term draws the modes whose
+    window holds the mean ADR difficulty; gravity ramps in from :data:`GRAVITY_START_FRAC` to full at
+    :data:`TABLE_START_FRAC`, where the cube stops floating and starts on the table. A reach reward
+    (:data:`REACH_REWARD_WEIGHT`) leads the hand to cubes it does not touch yet. The ADR difficulty rises with
+    successes and falls with failures, so a stage that the policy cannot yet solve drops out again until it can. The
+    success rate of each stage is logged as ``Metrics/success_rate/<mode>``.
+    """
+
+    def __post_init__(self):
+        super().__post_init__()
+        reset = self.events.conditional_reset.params
+        in_hand = reset["modes"]["in_hand"]
+        near_hand = copy.deepcopy(in_hand["reset_object_to_target"])
+        near_hand.params["pose_range"] = CUBE_NEAR_PALM_RANGE
+        far_from_hand = copy.deepcopy(in_hand["reset_object_to_target"])
+        far_from_hand.params["pose_range"] = CUBE_FAR_FROM_PALM_RANGE
+
+        # flat on the table: the range offsets the object's initial position, which floats above the table
+        table = self.scene.table
+        table_top = table.init_state.pos[2] + table.spawn.size[2] / 2
+        cube_z = table_top + self.scene.object.spawn.size[2] / 2 + TABLE_CLEARANCE
+        on_table = EventTerm(
+            func=mdp.reset_root_state_uniform,
+            mode="reset",
+            params={
+                "pose_range": {**CUBE_ON_TABLE_RANGE, "z": [cube_z - self.scene.object.init_state.pos[2]] * 2},
+                "velocity_range": {},
+                "asset_cfg": SceneEntityCfg("object"),
+            },
+        )
+
+        def open_or_closed_hand() -> EventTerm:
+            """Finger reset to the open or the closed hand, overriding the shared hand resets."""
+            return EventTerm(
+                func=events.reset_joints_to_random_pose,
+                mode="reset",
+                params={
+                    "poses": [HAND_OPEN_JOINT_POS, HAND_CLOSED_JOINT_POS],
+                    "position_range": [-HAND_RESET_RANGE, HAND_RESET_RANGE],
+                },
+            )
+
+        # the hand terms come before the cube terms, which read the hand pose
+        modes = {
+            "in_hand": in_hand,
+            "near_hand": {"reset_object_to_target": near_hand},
+            "open_closed_hand": {
+                "reset_hand_pose": open_or_closed_hand(),
+                "reset_object_to_target": copy.deepcopy(near_hand),
+            },
+            "far_from_hand": {"reset_hand_pose": open_or_closed_hand(), "reset_object_to_target": far_from_hand},
+            "on_table": {"reset_hand_pose": open_or_closed_hand(), "reset_object": on_table},
+        }
+        assert list(modes) == list(STAGE_FRACS), "every stage needs a reset mode, in the same order"
+        reset["modes"] = modes
+        reset["valid_criteria"]["object_in_bounds"] = ManagerTermBaseCfg(
+            func=events.object_in_bounds,
+            params={"in_bound_range": dict(STAGED_IN_BOUND_RANGE), "margin": OBJECT_RESET_BOUND_MARGIN},
+        )
+        # the robot keeps its clearance from the table, but the cube may rest on it
+        reset["valid_criteria"]["robot_table_clearance"].object_min_clearance = 0.0
+        self.terminations.object_out_of_bound.params["in_bound_range"] = dict(STAGED_IN_BOUND_RANGE)
+        self.rewards.hand_to_object = RewTerm(
+            func=rewards.hand_object_distance,
+            weight=REACH_REWARD_WEIGHT,
+            params={"std": REACH_REWARD_STD, "asset_cfg": SceneEntityCfg("robot", body_names=HAND_BODIES)},
+        )
+
+        if self.curriculum is None:
+            return  # every mode drawn uniformly, without gravity
+        reset["mode_weights"] = [float(start <= 0.0) for start, _ in STAGE_FRACS.values()]
+        self.curriculum.reset_stages = CurrTerm(
+            func=mdp.modify_term_cfg,
+            params={
+                "address": "events.conditional_reset.params.mode_weights",
+                "modify_fn": curriculums.stage_mode_weights,
+                "modify_params": {"stage_fracs": list(STAGE_FRACS.values()), "difficulty_term_str": "adr"},
+            },
+        )
+        gravity = self.curriculum.gravity_adr.params
+        gravity["modify_fn"] = curriculums.delayed_interpolate_fn
+        gravity["modify_params"]["start_frac"] = GRAVITY_START_FRAC
+        gravity["modify_params"]["end_frac"] = TABLE_START_FRAC
+
+
+@configclass
+class FrankaOrcaInHandStagedLiftNoTaxelsEnvCfg(FrankaOrcaInHandStagedLiftEnvCfg):
+    """Staged in-hand cube carrying with plain fingertip hulls and no tactile sensing (see :func:`.remove_taxels`)."""
 
     def __post_init__(self):
         super().__post_init__()

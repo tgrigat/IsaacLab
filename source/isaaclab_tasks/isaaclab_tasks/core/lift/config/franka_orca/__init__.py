@@ -46,6 +46,17 @@ gym.register(
     },
 )
 
+gym.register(
+    id="Isaac-Lift-FrankaOrca-InHand-Staged",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.franka_orca_in_hand_env_cfg:FrankaOrcaInHandStagedLiftEnvCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:FrankaOrcaPPORunnerCfg",
+        "default_agent": "rsl_rl",
+    },
+)
+
 # ablations with plain fingertip hulls and no tactile sensing, which keep MJWarp's contacts from overflowing
 gym.register(
     id="Isaac-Lift-FrankaOrca-NoTaxels",
@@ -64,6 +75,17 @@ gym.register(
     disable_env_checker=True,
     kwargs={
         "env_cfg_entry_point": f"{__name__}.franka_orca_in_hand_env_cfg:FrankaOrcaInHandLiftNoTaxelsEnvCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:FrankaOrcaPPORunnerCfg",
+        "default_agent": "rsl_rl",
+    },
+)
+
+gym.register(
+    id="Isaac-Lift-FrankaOrca-InHand-Staged-NoTaxels",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.franka_orca_in_hand_env_cfg:FrankaOrcaInHandStagedLiftNoTaxelsEnvCfg",
         "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:FrankaOrcaPPORunnerCfg",
         "default_agent": "rsl_rl",
     },

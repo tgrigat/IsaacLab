@@ -282,8 +282,8 @@ class conditional_reset(ManagerTermBase):
 
     Given :paramref:`modes`, the bank is split into reset modes, OmniReset's reset distributions
     (e.g. object on the table, object in the hand): each mode banks its own states and every restore
-    picks a mode uniformly, so each mode keeps its share of the episodes however often its states are
-    rejected.
+    picks a mode uniformly, or by :paramref:`mode_weights`, so each mode keeps its share of the episodes
+    however often its states are rejected.
 
     Given a :paramref:`diversity_feature` the prefill keeps the most spread-out states rather
     than the first valid ones, and given a :paramref:`success_monitor` the restore is drawn by
@@ -336,6 +336,7 @@ class conditional_reset(ManagerTermBase):
         oversample_factor: float = 2.0,
         success_monitor: SuccessMonitorCfg | None = None,
         success_reward_term: str = "success",
+        mode_weights: Sequence[float] | None = None,
     ):
         """Restore banked criterion-valid states, prefilling the bank on the first reset.
 
@@ -375,6 +376,10 @@ class conditional_reset(ManagerTermBase):
             success_reward_term: Reward term supplying the episode outcome, which must keep a sticky
                 per-environment ``succeeded`` buffer like :class:`success_reward` does. Only read
                 with :paramref:`success_monitor`.
+            mode_weights: Optional relative weight of each mode in a restore, in the order of
+                :paramref:`modes`; a mode of weight zero is banked but never restored. Read at every
+                reset, so a curriculum can change it to stage the modes in. Defaults to None, the
+                modes drawn uniformly.
         """
 
         modes = modes or {"default": {}}
@@ -482,7 +487,18 @@ class conditional_reset(ManagerTermBase):
 
         # the prefill cleared the modes, so their number is read from the names it kept
         num_modes = len(self._mode_names)
-        mode_of = torch.randint(num_modes, env_ids.shape, device=env.device)
+        # a full reset passes a slice
+        env_ids = env.scene._ALL_INDICES[env_ids]
+        if mode_weights is None:
+            mode_of = torch.randint(num_modes, env_ids.shape, device=env.device)
+        else:
+            if len(mode_weights) != num_modes:
+                raise ValueError(
+                    f"conditional_reset: got {len(mode_weights)} mode weights for the {num_modes} modes"
+                    f" {self._mode_names}."
+                )
+            weights = torch.tensor(mode_weights, dtype=torch.float, device=env.device)
+            mode_of = torch.multinomial(weights, len(env_ids), replacement=True)
         groups = self._group[env_ids] * num_modes + mode_of
         if self._monitor is None:
             # ``rand * fill`` floors to a uniform draw in ``[0, fill)``.
@@ -1046,7 +1062,8 @@ class slab_clearance(ManagerTermBase):
     def __call__(self, env: ManagerBasedEnv, env_ids: torch.Tensor) -> torch.Tensor:
         env_ids = env.scene._ALL_INDICES[env_ids]
         num = len(env_ids)
-        out_min = wp.full(num, 1.0e6, dtype=wp.float32, device=env.device)
+        obj_min = wp.full(num, 1.0e6, dtype=wp.float32, device=env.device)
+        robot_min = wp.full(num, 1.0e6, dtype=wp.float32, device=env.device)
         ids = wp.from_torch(env_ids.to(torch.int32).contiguous())
         wp.launch(
             _object_points_slab_min,
@@ -1058,7 +1075,7 @@ class slab_clearance(ManagerTermBase):
                 self._env_origins,
                 *self._slab_args,
                 self.cfg.min_clearance,
-                out_min,
+                obj_min,
             ],
             device=env.device,
         )
@@ -1073,11 +1090,15 @@ class slab_clearance(ManagerTermBase):
                 self._env_origins,
                 *self._slab_args,
                 self.cfg.min_clearance,
-                out_min,
+                robot_min,
             ],
             device=env.device,
         )
-        return wp.to_torch(out_min) >= self.cfg.min_clearance
+        object_min_clearance = self.cfg.min_clearance
+        if self.cfg.object_min_clearance is not None:
+            object_min_clearance = self.cfg.object_min_clearance
+        robot_ok = wp.to_torch(robot_min) >= self.cfg.min_clearance
+        return robot_ok & (wp.to_torch(obj_min) >= object_min_clearance)
 
 
 def reset_deformable_over_support(
