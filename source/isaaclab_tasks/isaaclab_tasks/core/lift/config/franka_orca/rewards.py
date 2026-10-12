@@ -17,7 +17,9 @@ from typing import TYPE_CHECKING
 
 import torch
 
-from isaaclab.managers import SceneEntityCfg
+from isaaclab.managers import RewardTermCfg, SceneEntityCfg
+
+from ...mdp.rewards import _ProgressReward
 
 if TYPE_CHECKING:
     from isaaclab.assets import Articulation, RigidObject
@@ -98,30 +100,45 @@ def fingertip_min_distance(
     return 1 - torch.tanh(min_distance / std)
 
 
-def hand_object_distance(
-    env: ManagerBasedRLEnv,
-    std: float,
-    asset_cfg: SceneEntityCfg,
-    object_cfg: SceneEntityCfg = SceneEntityCfg("object"),
-) -> torch.Tensor:
-    """Reward reaching the object with the hand, whether or not it touches it.
+class hand_object_progress(_ProgressReward):
+    """Reward every step that brings the hand closer to the object than ever before in the episode.
 
-    A tanh kernel on the mean distance from the hand bodies (e.g. the palm and the fingertips) to the object center.
-    Unlike the lift ``fingers_to_object`` term, which pays a tenth until the thumb and a finger touch the object, it
-    pays in full on the way there, so a far object gives the policy a gradient to follow.
-
-    Args:
-        env: The environment instance.
-        std: Distance scale of the tanh kernel [m].
-        asset_cfg: The robot, with the hand bodies.
-        object_cfg: The object.
-
-    Returns:
-        The reward in [0, 1], shape (num_envs,).
+    The hand's distance is the mean distance from the hand bodies (e.g. the palm and the fingertips) to the object
+    center. See :class:`~isaaclab_tasks.core.lift.mdp.rewards._ProgressReward` for the bookkeeping: 1.0 is paid each
+    time the distance beats the episode's best by :paramref:`min_improvement`, so the hand is led to a far object,
+    but staying near it earns nothing. Unlike the lift ``fingers_to_object`` term, which pays a tenth until the
+    thumb and a finger touch the object, it pays without contact; and unlike a reward for being near the object, it
+    does not pay the policy to hover next to a floating object rather than risk pushing it away.
     """
-    asset: Articulation = env.scene[asset_cfg.name]
-    obj: RigidObject = env.scene[object_cfg.name]
-    hand_pos = asset.data.body_pos_w.torch[:, asset_cfg.body_ids]
-    distance = torch.linalg.norm(hand_pos - obj.data.root_pos_w.torch[:, None], dim=-1).mean(dim=-1)
-    # a diverged simulation leaves non-finite poses, and the terminations end that episode in the same step
-    return torch.nan_to_num(1 - torch.tanh(distance / std), nan=0.0)
+
+    def __init__(self, cfg: RewardTermCfg, env: ManagerBasedRLEnv):
+        super().__init__(cfg, env)
+        # no command: the bar is seeded once per episode
+        self._no_command = torch.zeros(env.num_envs, 1, device=env.device)
+
+    def __call__(
+        self,
+        env: ManagerBasedRLEnv,
+        asset_cfg: SceneEntityCfg,
+        min_improvement: float,
+        object_cfg: SceneEntityCfg = SceneEntityCfg("object"),
+    ) -> torch.Tensor:
+        """Compute the progress reward.
+
+        Args:
+            env: The environment instance.
+            asset_cfg: The robot, with the hand bodies.
+            min_improvement: Distance [m] the hand must gain on the episode best to be paid again.
+            object_cfg: The object.
+
+        Returns:
+            1.0 where the hand reached a new closest distance, else 0, shape (num_envs,).
+        """
+        asset: Articulation = env.scene[asset_cfg.name]
+        obj: RigidObject = env.scene[object_cfg.name]
+        hand_pos = asset.data.body_pos_w.torch[:, asset_cfg.body_ids]
+        distance = torch.linalg.norm(hand_pos - obj.data.root_pos_w.torch[:, None], dim=-1).mean(dim=-1)
+        # a diverged simulation leaves non-finite poses, which must not become the bar
+        distance = torch.nan_to_num(distance, nan=float("inf"))
+        gate = torch.isfinite(distance)
+        return self._progress(distance, gate, min_improvement, self._no_command)

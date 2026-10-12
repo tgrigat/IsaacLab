@@ -310,12 +310,15 @@ The modes in the window are drawn uniformly, so the earlier floating stages stay
 floating stages, from :data:`GRAVITY_START_FRAC` to full at :data:`TABLE_START_FRAC`, so the policy learns to catch and
 hold a falling cube before the cube starts on the table; from there it always does."""
 
-REACH_REWARD_WEIGHT = 0.5
-REACH_REWARD_STD = 0.2  # m
-"""Weight and distance scale of the hand-to-cube reward (:func:`.rewards.hand_object_distance`), which pays for
-approaching the cube without touching it. The lift ``fingers_to_object`` term pays a tenth of its 0.05 weight until
-the thumb and a finger touch the cube, too little to lead the hand to a cube 15-30 cm away: the previous run never
-touched one on the table, and solved 2% of the far stage."""
+REACH_REWARD_WEIGHT = 2.5
+REACH_REWARD_STEP = 0.005  # m
+"""Weight and step of the hand reach reward (:class:`.rewards.hand_object_progress`), which pays for every 5 mm the
+hand gets closer to the cube than before in the episode, contact or not: about 0.17 per centimetre (the reward
+manager scales by the 1/30 s step), 3.3 for the 20 cm to a far cube. The lift ``fingers_to_object`` term pays a
+tenth of its 0.05 weight until the thumb and a finger touch the cube, too little to lead the hand to a cube 15-30 cm
+away. A reward for being near the cube (a tanh kernel on the distance, weight 0.5) did lead the hand there, but the
+policy then hovered next to the cube and never touched it, in every stage: a touch pushes the floating cube away and
+costs that reward."""
 
 STAGED_IN_BOUND_RANGE = {**IN_BOUND_RANGE, "z": (0.2, IN_BOUND_RANGE["z"][1])}
 """Workspace the cube must stay in, in the environment frame [m]: :data:`IN_BOUND_RANGE` with the floor below the table
@@ -397,9 +400,12 @@ class FrankaOrcaInHandStagedLiftEnvCfg(FrankaOrcaInHandLiftEnvCfg):
         reset["valid_criteria"]["robot_table_clearance"].object_min_clearance = 0.0
         self.terminations.object_out_of_bound.params["in_bound_range"] = dict(STAGED_IN_BOUND_RANGE)
         self.rewards.hand_to_object = RewTerm(
-            func=rewards.hand_object_distance,
+            func=rewards.hand_object_progress,
             weight=REACH_REWARD_WEIGHT,
-            params={"std": REACH_REWARD_STD, "asset_cfg": SceneEntityCfg("robot", body_names=HAND_BODIES)},
+            params={
+                "min_improvement": REACH_REWARD_STEP,
+                "asset_cfg": SceneEntityCfg("robot", body_names=HAND_BODIES),
+            },
         )
 
         if self.curriculum is None:
