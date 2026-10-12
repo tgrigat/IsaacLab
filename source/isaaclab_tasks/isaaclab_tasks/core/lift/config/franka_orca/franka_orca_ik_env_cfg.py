@@ -17,23 +17,17 @@ from isaaclab.managers import EventTermCfg as EventTerm
 from isaaclab.managers import SceneEntityCfg
 from isaaclab.utils import configclass, replace
 
-from isaaclab_assets.robots.franka_orca import FRANKA_ORCA_ASSET_DIR, ORCA_FINGER_CHAINS
+from isaaclab_assets.robots.franka_orca import ORCA_FINGER_CHAINS
 
 from ... import mdp
 from .actions import VisualizedDifferentialInverseKinematicsActionCfg
-from .franka_orca_env_cfg import PALM_BODY, TACTILE_FINGERS, FrankaOrcaLiftEnvCfg, FrankaOrcaObjectCfg
+from .franka_orca_env_cfg import PALM_BODY, FrankaOrcaLiftEnvCfg, FrankaOrcaObjectCfg, remove_taxels
 
 HAND_WRIST_JOINT = "R_Carpals_8d1f1041_to_TopTower_Model_4a80d30e"
 """Wrist joint of the ORCA hand, between the arm flange and the palm."""
 
 PALM_IK_JOINTS = ["fr3_joint.*", HAND_WRIST_JOINT]
 """Joints placing the palm: the seven arm joints and the hand wrist."""
-
-NO_TAXELS_USD = FRANKA_ORCA_ASSET_DIR / "no_taxels" / "franka_orca.usda"
-"""Robot USD without the baked taxels, with plain convex hulls on the fingertips. Built by
-``build_asset.py --fingers --out-dir assets/franka_orca/no_taxels``. Every taxel touching something is its own
-contact, which overflows MJWarp's contact buffer in a grasp, and the dropped contacts let the fingers and the cube
-sink into the cube and the table."""
 
 FINGER_IK_NAMES = ["index", "middle", "ring", "pinky", "thumb"]
 """Action term names of the fingers, in the order of :data:`ORCA_FINGER_CHAINS`."""
@@ -137,12 +131,9 @@ class FrankaOrcaFingertipIKLiftEnvCfg(FrankaOrcaLiftEnvCfg):
 
         # Newton reads only MuJoCo's gravcomp, not the asset's (PhysX) disable_gravity; at full gravity the arm sags
         # ~16 cm below its joint targets (joint 6 saturates), which differential IK has no integral term to take out
+        # plain fingertip hulls, without taxels to sense
+        remove_taxels(self)
         robot_spawn = self.scene.robot.spawn
-        # plain fingertip hulls, without taxels to sense (see NO_TAXELS_USD)
-        robot_spawn.usd_path = str(NO_TAXELS_USD)
-        for finger in TACTILE_FINGERS:
-            setattr(self.scene, f"{finger}_tactile", None)
-            setattr(self.observations.proprio, f"tactile_{finger}", None)
         robot_spawn.rigid_props = [robot_spawn.rigid_props, MujocoRigidBodyCfg(gravcomp=1.0)]
         # a pad on a cube face is one flat convex pair; with a single contact point per pair that point jumps across
         # the face from step to step, the contact chatters and the pads slide up the cube when the hand lifts

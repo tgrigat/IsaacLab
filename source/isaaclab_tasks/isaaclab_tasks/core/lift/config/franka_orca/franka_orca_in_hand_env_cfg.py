@@ -21,7 +21,7 @@ from isaaclab.utils import configclass, replace
 
 from ... import mdp
 from . import events
-from .franka_orca_env_cfg import FrankaOrcaLiftEnvCfg, FrankaOrcaObjectCfg
+from .franka_orca_env_cfg import FrankaOrcaLiftEnvCfg, FrankaOrcaObjectCfg, remove_taxels
 
 PALM_UP_JOINT_POS = {
     "fr3_joint1": -0.335,
@@ -225,3 +225,12 @@ class FrankaOrcaInHandLiftEnvCfg(FrankaOrcaLiftEnvCfg):
                         },
                     ),
                 )
+
+
+@configclass
+class FrankaOrcaInHandLiftNoTaxelsEnvCfg(FrankaOrcaInHandLiftEnvCfg):
+    """In-hand cube carrying with plain fingertip hulls and no tactile sensing (see :func:`.remove_taxels`)."""
+
+    def __post_init__(self):
+        super().__post_init__()
+        remove_taxels(self)

@@ -46,6 +46,29 @@ gym.register(
     },
 )
 
+# ablations with plain fingertip hulls and no tactile sensing, which keep MJWarp's contacts from overflowing
+gym.register(
+    id="Isaac-Lift-FrankaOrca-NoTaxels",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.franka_orca_env_cfg:FrankaOrcaLiftNoTaxelsEnvCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:FrankaOrcaPPORunnerCfg",
+        "default_agent": "rsl_rl",
+    },
+)
+
+gym.register(
+    id="Isaac-Lift-FrankaOrca-InHand-NoTaxels",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.franka_orca_in_hand_env_cfg:FrankaOrcaInHandLiftNoTaxelsEnvCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:FrankaOrcaPPORunnerCfg",
+        "default_agent": "rsl_rl",
+    },
+)
+
 # scripted tests of the fingertip IK (scripts/environments/state_machine/lift_cube_franka_orca_sm.py), no agent
 gym.register(
     id="Isaac-Lift-Cube-FrankaOrca-FingertipIK-Abs",

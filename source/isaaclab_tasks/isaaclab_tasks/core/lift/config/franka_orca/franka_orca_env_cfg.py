@@ -21,6 +21,7 @@ from isaaclab.sensors import ContactSensorCfg
 from isaaclab.utils import configclass, replace
 
 from isaaclab_assets.robots.franka_orca import (
+    FRANKA_ORCA_ASSET_DIR,
     FRANKA_ORCA_CFG,
     FRANKA_ORCA_TACTILE_DIR,
     ORCA_FINGER_CHAINS,
@@ -60,6 +61,12 @@ TACTILE_OBSERVATIONS = True
 """Whether the policy observes the taxels. Off for the ablation without tactile sensing: the tactile sensors stay in
 the scene, as they set the taxel and pad-proxy collision groups, but nothing reads them. The fingertip contact
 forces (``proprio.contact``) stay observed, as in Kuka-Allegro."""
+
+NO_TAXELS_USD = FRANKA_ORCA_ASSET_DIR / "no_taxels" / "franka_orca.usda"
+"""Robot USD without the baked taxels, with plain convex hulls on the fingertips. Built by
+``build_asset.py --fingers --out-dir assets/franka_orca/no_taxels``. Every taxel touching something is its own
+contact, which overflows MJWarp's contact buffer in a grasp, and the dropped contacts let the fingers and the cube
+sink into the cube and the table."""
 
 THUMB_SENSOR = f"{THUMB_TIP}_object_s"
 """Contact sensor of the thumb."""
@@ -367,6 +374,19 @@ class FrankaOrcaMixinCfg:
             diversity_feature.body_names = HAND_BODIES
 
 
+def remove_taxels(env_cfg: FrankaOrcaMixinCfg):
+    """Swap the robot for :data:`NO_TAXELS_USD` and drop the tactile sensors and their observations.
+
+    The fingertip contact sensors (``proprio.contact`` and the contact rewards) stay, as they sense whole bodies.
+    """
+    env_cfg.scene.robot = replace(
+        env_cfg.scene.robot, spawn=replace(env_cfg.scene.robot.spawn, usd_path=str(NO_TAXELS_USD))
+    )
+    for finger in TACTILE_FINGERS:
+        setattr(env_cfg.scene, f"{finger}_tactile", None)
+        setattr(env_cfg.observations.proprio, f"tactile_{finger}", None)
+
+
 @configclass
 class FrankaOrcaReorientEnvCfg(FrankaOrcaMixinCfg, lift.ReorientEnvCfg):
     """Franka + ORCA-hand object reorientation environment."""
@@ -375,3 +395,12 @@ class FrankaOrcaReorientEnvCfg(FrankaOrcaMixinCfg, lift.ReorientEnvCfg):
 @configclass
 class FrankaOrcaLiftEnvCfg(FrankaOrcaMixinCfg, lift.LiftEnvCfg):
     """Franka + ORCA-hand object lifting environment."""
+
+
+@configclass
+class FrankaOrcaLiftNoTaxelsEnvCfg(FrankaOrcaLiftEnvCfg):
+    """Franka + ORCA-hand object lifting with plain fingertip hulls, without tactile sensing (:func:`remove_taxels`)."""
+
+    def __post_init__(self):
+        super().__post_init__()
+        remove_taxels(self)
