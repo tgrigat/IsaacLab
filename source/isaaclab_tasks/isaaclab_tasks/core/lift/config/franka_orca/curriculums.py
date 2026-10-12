@@ -10,7 +10,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import TYPE_CHECKING, Any
 
-from ... import mdp
+import torch
 
 if TYPE_CHECKING:
     from isaaclab.envs import ManagerBasedRLEnv
@@ -24,33 +24,39 @@ def _difficulty_frac(env: ManagerBasedRLEnv, difficulty_term_str: str) -> float:
 def stage_mode_weights(
     env: ManagerBasedRLEnv,
     env_ids: Sequence[int],
-    data: Sequence[float] | None,
+    data: torch.Tensor | Sequence[float] | None,
     stage_fracs: Sequence[tuple[float, float]],
     difficulty_term_str: str,
-) -> list[float] | Any:
-    """Weights of the reset modes, uniform over the modes whose difficulty window holds the current difficulty.
+) -> torch.Tensor:
+    """Per-environment weights of the reset modes, uniform over the modes whose difficulty window holds the
+    environment's own difficulty.
 
     Intended for the ``mode_weights`` of :class:`~isaaclab_tasks.core.lift.mdp.events.conditional_reset`. A mode is
-    drawn while the mean difficulty fraction is in its window ``[start, end)`` (an end of 1 includes the maximum), so
-    a mode can stay in the mix after the next one unlocks, or drop out once a later one replaces it. The difficulty
-    falls with failures, so a mode can also come back.
+    drawn while the environment's difficulty fraction (its level over the maximum) is in the mode's window
+    ``[start, end)`` (an end of 1 includes the maximum), so a mode can stay in the mix after the next one unlocks, or
+    drop out once a later one replaces it. The level falls with failures, so a mode can also come back.
+
+    Each environment draws by its own level rather than by the mean, so the share of each mode across the
+    environments changes gradually. Gated by the mean, a mode that the policy cannot solve yet unlocks for every
+    environment at once, its failures pull the mean back under the threshold, it locks again, and the mix flips
+    every few iterations.
 
     Args:
         env: The environment.
-        env_ids: Unused; the weights are shared by all environments.
+        env_ids: Unused; the weights of every environment are updated, as the levels are cheap to read.
         data: Current mode weights.
         stage_fracs: Difficulty window ``(start, end)`` of each mode, in the order of the modes. The windows must
             cover [0, 1] between them, so some mode is always drawn.
         difficulty_term_str: Name of the difficulty scheduler curriculum term.
 
     Returns:
-        The new weights, or :attr:`~isaaclab.envs.mdp.modify_env_param.NO_CHANGE` if they are unchanged.
+        The new weights, shape (num_envs, num_modes).
     """
-    frac = _difficulty_frac(env, difficulty_term_str)
-    weights = [float(start <= frac and (frac < end or end >= 1.0)) for start, end in stage_fracs]
-    if data is not None and list(data) == weights:
-        return mdp.modify_env_param.NO_CHANGE
-    return weights
+    term_cfg = getattr(env.curriculum_manager.cfg, difficulty_term_str)
+    frac = term_cfg.func.current_difficulties / max(term_cfg.params["max_difficulty"], 1)
+    start, end = torch.tensor(stage_fracs, dtype=torch.float, device=env.device).unbind(-1)
+    frac = frac.unsqueeze(-1)
+    return ((start <= frac) & ((frac < end) | (end >= 1.0))).float()
 
 
 def _interpolate(initial: Any, final: Any, alpha: float) -> Any:

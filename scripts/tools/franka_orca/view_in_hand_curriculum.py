@@ -102,8 +102,10 @@ def main():
                 state["pending"] = True
             if imgui.button("Reset"):
                 state["pending"] = True
-            weights = reset_params.get("mode_weights") or []
-            unlocked = [name for name, w in zip(reset_term.func._mode_names, weights) if w > 0]
+            # one row per environment, all at the slider's level
+            weights = torch.as_tensor(reset_params["mode_weights"]).reshape(-1, len(reset_term.func._mode_names))
+            drawn = (weights > 0).any(dim=0).tolist()
+            unlocked = [name for name, d in zip(reset_term.func._mode_names, drawn) if d]
             imgui.text(f"Stages drawn: {', '.join(unlocked) or '-'}")
             gravity = gravity_params["gravity_distribution_params"][0][2]
             imgui.text(f"Gravity: {gravity:.2f} m/s^2")

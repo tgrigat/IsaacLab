@@ -332,6 +332,11 @@ CUBE_UNDER_PALM_RADIUS = (0.0, 0.02)
 """Horizontal distance [m] of the cube from the point below :data:`CUBE_UNDER_PALM_OFFSET` when it starts under the
 hand."""
 
+CUBE_BESIDE_TABLE_PALM_RADIUS = (0.02, 0.05)
+"""Horizontal distance [m] of the cube from the point below :data:`CUBE_UNDER_PALM_OFFSET` when it starts just beside
+the hand, a step between :data:`CUBE_UNDER_PALM_RADIUS` and :data:`CUBE_NEAR_TABLE_PALM_RADIUS`: straight from under
+the hand to 5-12 cm beside it, the success rate fell from over 99% to under 1%."""
+
 CUBE_NEAR_TABLE_PALM_RADIUS = (0.05, 0.12)
 """Horizontal distance [m] of the cube from the point below :data:`CUBE_UNDER_PALM_OFFSET` when it starts beside the
 hand."""
@@ -361,11 +366,16 @@ HAND_CLOSED_JOINT_POS = {
 """Finger joints of the closed hand [rad]: index, middle, ring and pinky curled into a fist, the thumb half flexed.
 98% of the draws clear the reset's finger self-clearance check; a fully flexed thumb clears none."""
 
+STAGED_MAX_DIFFICULTY = 20
+"""ADR levels of the staged task, twice the lift task's, so that every stage starts at its own level."""
+
 GRAVITY_START_FRAC = 0.5
-"""Mean ADR difficulty fraction from which gravity ramps in, once every floating stage is in the mix."""
+"""Mean ADR difficulty fraction from which gravity ramps in, once every floating stage is in the mix. Gravity is shared
+by every environment, so it follows the mean, not each environment's level."""
 
 TABLE_START_FRAC = 0.75
-"""Mean ADR difficulty fraction at which gravity is full and the cube stops floating and starts on the table."""
+"""ADR difficulty fraction at which the cube stops floating and starts on the table, and the mean one at which gravity
+is full."""
 
 STAGE_FRACS = {
     "in_hand": (0.0, TABLE_START_FRAC),
@@ -373,10 +383,11 @@ STAGE_FRACS = {
     "open_closed_hand": (0.3, TABLE_START_FRAC),
     "far_from_hand": (0.45, TABLE_START_FRAC),
     "table_under_hand": (TABLE_START_FRAC, 1.0),
-    "table_near_hand": (0.83, 1.0),
-    "on_table": (0.91, 1.0),
+    "table_beside_hand": (0.8, 1.0),
+    "table_near_hand": (0.875, 1.0),
+    "on_table": (0.95, 1.0),
 }
-"""Reset modes of the staged task and the window of mean ADR difficulty fraction in which each is drawn:
+"""Reset modes of the staged task and the window of ADR difficulty fraction in which each is drawn:
 
 * ``in_hand``: the cube in the caged hand (:data:`CUBE_IN_PALM_RANGE`),
 * ``near_hand``: the cube a bit away from the caged hand (:data:`CUBE_NEAR_PALM_RANGE`),
@@ -384,15 +395,19 @@ STAGE_FRACS = {
 * ``far_from_hand``: the cube further away from a fully open or closed hand (:data:`CUBE_FAR_FROM_PALM_RANGE`),
 * ``table_under_hand``: the cube on the table right under the open, downturned hand held low over the table
   (:data:`TABLE_PALM_DOWN_JOINT_POS`, :data:`CUBE_UNDER_PALM_RADIUS`),
+* ``table_beside_hand``: the cube on the table just beside the low, downturned, open hand
+  (:data:`CUBE_BESIDE_TABLE_PALM_RADIUS`),
 * ``table_near_hand``: the cube on the table beside the low, downturned hand, open or closed
   (:data:`CUBE_NEAR_TABLE_PALM_RADIUS`),
 * ``on_table``: the cube lying on the table at a random pose (:data:`CUBE_ON_TABLE_RANGE`), the arm at one of the palm
   roll poses and the hand open or closed.
 
-The cube on the table lies flat at a random yaw. The modes in the window are drawn uniformly, so the earlier stages of
-each phase stay in the mix. Gravity ramps in over the floating stages, from :data:`GRAVITY_START_FRAC` to full at
-:data:`TABLE_START_FRAC`, so the policy learns to catch and hold a falling cube before the cube starts on the table;
-from there it always does, first right under the hand, then beside it, then anywhere."""
+The cube on the table lies flat at a random yaw. Each environment draws uniformly from the modes whose window holds its
+own ADR level, so the earlier stages of each phase stay in the mix; with :data:`STAGED_MAX_DIFFICULTY` levels, the
+table stages start at levels 15, 16, 18 and 19. Gravity ramps in over the floating stages, from
+:data:`GRAVITY_START_FRAC` to full at :data:`TABLE_START_FRAC`, so the policy learns to catch and hold a falling cube
+before the cube starts on the table; from there it always does, first right under the hand, then just beside it, then
+further beside it, then anywhere."""
 
 REACH_REWARD_WEIGHT = 2.5
 REACH_REWARD_STEP = 0.005  # m
@@ -403,6 +418,12 @@ tenth of its 0.05 weight until the thumb and a finger touch the cube, too little
 away. A reward for being near the cube (a tanh kernel on the distance, weight 0.5) did lead the hand there, but the
 policy then hovered next to the cube and never touched it, in every stage: a touch pushes the floating cube away and
 costs that reward."""
+
+ARM_ACTION_SCALE = 0.05
+"""Relative joint target step of the arm joints per unit action [rad], half the step of the fingers. At 0.1 rad per
+30 Hz step, an action of 1 asks for 3 rad/s, over the 2.62 rad/s limit of the FR3's first four joints; the policy's
+fast arm moves ended over a third of the episodes in the ``abnormal_robot`` (joint velocity) termination, most of them
+on joints 3 and 4, 1-13% over the limit."""
 
 STAGED_IN_BOUND_RANGE = {**IN_BOUND_RANGE, "z": (0.2, IN_BOUND_RANGE["z"][1])}
 """Workspace the cube must stay in, in the environment frame [m]: :data:`IN_BOUND_RANGE` with the floor below the table
@@ -422,9 +443,9 @@ class FrankaOrcaInHandStagedLiftEnvCfg(FrankaOrcaInHandLiftEnvCfg):
     hand that starts open or closed, with gravity ramping in, then a cube picked up from the table, first from right
     under the hand.
 
-    The reset bank holds one reset mode per stage (:data:`STAGE_FRACS`), and a curriculum term draws the modes whose
-    window holds the mean ADR difficulty; gravity ramps in from :data:`GRAVITY_START_FRAC` to full at
-    :data:`TABLE_START_FRAC`, where the cube stops floating and starts on the table, first under the low hand. A
+    The reset bank holds one reset mode per stage (:data:`STAGE_FRACS`), and a curriculum term has each environment
+    draw the modes whose window holds its own ADR difficulty; gravity ramps in from :data:`GRAVITY_START_FRAC` to full
+    at :data:`TABLE_START_FRAC`, where the cube stops floating and starts on the table, first under the low hand. A
     reach reward (:data:`REACH_REWARD_WEIGHT`) leads the hand to cubes it does not touch yet. The ADR difficulty rises
     with successes and falls with failures, so a stage that the policy cannot yet solve drops out again until it can.
     The success rate of each stage is logged as ``Metrics/success_rate/<mode>``.
@@ -504,6 +525,11 @@ class FrankaOrcaInHandStagedLiftEnvCfg(FrankaOrcaInHandLiftEnvCfg):
                 "reset_hand_pose": hand(HAND_OPEN_JOINT_POS),
                 "reset_object": on_table_near_palm(CUBE_UNDER_PALM_RADIUS),
             },
+            "table_beside_hand": {
+                "reset_arm_pose": low_palm_down_arm(),
+                "reset_hand_pose": hand(HAND_OPEN_JOINT_POS),
+                "reset_object": on_table_near_palm(CUBE_BESIDE_TABLE_PALM_RADIUS),
+            },
             "table_near_hand": {
                 "reset_arm_pose": low_palm_down_arm(),
                 "reset_hand_pose": open_or_closed_hand(),
@@ -520,6 +546,8 @@ class FrankaOrcaInHandStagedLiftEnvCfg(FrankaOrcaInHandLiftEnvCfg):
         # the robot keeps its clearance from the table, but the cube may rest on it
         reset["valid_criteria"]["robot_table_clearance"].object_min_clearance = 0.0
         self.terminations.object_out_of_bound.params["in_bound_range"] = dict(STAGED_IN_BOUND_RANGE)
+        finger_scale = self.actions.action.scale
+        self.actions.action.scale = {"fr3_joint.*": ARM_ACTION_SCALE, "(?!fr3_joint).*": finger_scale}
         self.rewards.hand_to_object = RewTerm(
             func=rewards.hand_object_progress,
             weight=REACH_REWARD_WEIGHT,
@@ -531,6 +559,7 @@ class FrankaOrcaInHandStagedLiftEnvCfg(FrankaOrcaInHandLiftEnvCfg):
 
         if self.curriculum is None:
             return  # every mode drawn uniformly, without gravity
+        self.curriculum.adr.params["max_difficulty"] = STAGED_MAX_DIFFICULTY
         reset["mode_weights"] = [float(start <= 0.0) for start, _ in STAGE_FRACS.values()]
         self.curriculum.reset_stages = CurrTerm(
             func=mdp.modify_term_cfg,

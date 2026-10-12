@@ -336,7 +336,7 @@ class conditional_reset(ManagerTermBase):
         oversample_factor: float = 2.0,
         success_monitor: SuccessMonitorCfg | None = None,
         success_reward_term: str = "success",
-        mode_weights: Sequence[float] | None = None,
+        mode_weights: Sequence[float] | torch.Tensor | None = None,
     ):
         """Restore banked criterion-valid states, prefilling the bank on the first reset.
 
@@ -377,9 +377,11 @@ class conditional_reset(ManagerTermBase):
                 per-environment ``succeeded`` buffer like :class:`success_reward` does. Only read
                 with :paramref:`success_monitor`.
             mode_weights: Optional relative weight of each mode in a restore, in the order of
-                :paramref:`modes`; a mode of weight zero is banked but never restored. Read at every
-                reset, so a curriculum can change it to stage the modes in. Defaults to None, the
-                modes drawn uniformly.
+                :paramref:`modes`; a mode of weight zero is banked but never restored. Either one
+                weight per mode, shared by every environment, or a tensor of shape
+                (num_envs, num_modes) with each environment's own weights. Read at every reset, so a
+                curriculum can change it to stage the modes in. Defaults to None, the modes drawn
+                uniformly.
         """
 
         modes = modes or {"default": {}}
@@ -492,13 +494,16 @@ class conditional_reset(ManagerTermBase):
         if mode_weights is None:
             mode_of = torch.randint(num_modes, env_ids.shape, device=env.device)
         else:
-            if len(mode_weights) != num_modes:
+            weights = torch.as_tensor(mode_weights, dtype=torch.float, device=env.device)
+            if weights.shape[-1] != num_modes:
                 raise ValueError(
-                    f"conditional_reset: got {len(mode_weights)} mode weights for the {num_modes} modes"
+                    f"conditional_reset: got {weights.shape[-1]} mode weights for the {num_modes} modes"
                     f" {self._mode_names}."
                 )
-            weights = torch.tensor(mode_weights, dtype=torch.float, device=env.device)
-            mode_of = torch.multinomial(weights, len(env_ids), replacement=True)
+            if weights.dim() == 1:
+                mode_of = torch.multinomial(weights, len(env_ids), replacement=True)
+            else:
+                mode_of = torch.multinomial(weights[env_ids], 1).squeeze(-1)
         groups = self._group[env_ids] * num_modes + mode_of
         if self._monitor is None:
             # ``rand * fill`` floors to a uniform draw in ``[0, fill)``.
