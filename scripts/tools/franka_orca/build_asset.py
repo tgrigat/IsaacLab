@@ -11,7 +11,7 @@ The URDFs are the source of truth; everything written here is a gitignored build
 1. :func:`compose_urdf`: FR3 URDF + ORCA right-hand URDF -> ``franka_orca.urdf``. The hand links collide
    through their visual meshes, which the simulator imports as convex hulls, and each sensed fingertip
    is cut by halltaxel into one triangle-mesh collision per taxel (``<finger>_taxel_NNN``), a pad proxy and the
-   rest of halltaxel's fingertip surface (``<finger>_unsensed``), all kept as triangle meshes. A sidecar
+   rest of the fingertip's visual mesh (``<finger>_unsensed``), all kept as triangle meshes. A sidecar
    ``tactile/<finger>.npz`` records the taxel order and the sensor frame.
 2. :func:`urdf_to_usd`: ``franka_orca.urdf`` -> USD with Isaac Lab's URDF converter, plus a top layer
    ``franka_orca.usda`` holding the collision filter pairs (bodies, and the fingertip colliders, which meet only
@@ -19,8 +19,8 @@ The URDFs are the source of truth; everything written here is a gitignored build
    robot config loads.
 
 The fingertips collide as halltaxel simulates them, exactly as the sensing surface is, but a pair of the large pad or
-unsensed meshes is slow to collide: a step of ``Isaac-Lift-FrankaOrca`` with 16 environments takes over 200 ms,
-against 9 ms with convex hulls.
+unsensed meshes is slow to collide: a step of ``Isaac-Lift-FrankaOrca`` with 16 environments takes about 760 ms,
+against 10 ms with the unsensed part as convex hulls.
 
 The inputs come from installed packages: the ORCA hand URDF and the taxel data from the halltaxel checkout (see
 :data:`HALLTAXEL_DIR`), the FR3 arm from newton-assets. halltaxel is only needed here, at build time; nothing in the
@@ -55,7 +55,7 @@ import warp as wp
 
 try:
     import halltaxel
-    from halltaxel import TactileSurfaceSpec, segment_surface
+    from halltaxel import TactileSurfaceSpec, segment_surface, select_region
 except ModuleNotFoundError as error:
     raise SystemExit("halltaxel is not installed; run `uv pip install -e <halltaxel checkout>` first") from error
 
@@ -189,16 +189,17 @@ def bake_finger(finger: str, visual: trimesh.Trimesh) -> tuple[dict[str, trimesh
     """Cut one fingertip into per-taxel mesh colliders, a pad proxy and an unsensed mesh.
 
     As in halltaxel's ``ContactPatchBackend``, each taxel collider is its patch of the sensing surface, an open
-    triangle mesh, so the taxels are the fingertip's pad as it is. The rest of halltaxel's fingertip surface is the
-    unsensed mesh ``<finger>_unsensed``; together they cover halltaxel's ``mesh.stl`` once, which stops about 5 mm
-    short of the bottom of the fingertip link. The pad proxy ``<finger>_pad`` is the whole sensing surface, in the
-    same place as the taxels. It only exists for other fingers' taxels to press against (see
-    ``TactileSensorCfg.pad_collision_group``), so two pads touching give one contact pair per taxel rather than one
-    per pair of taxels.
+    triangle mesh, so the taxels are the fingertip's pad as it is. The unsensed mesh ``<finger>_unsensed`` is the
+    fingertip's visual mesh without the sensed pad. It is taken from the visual mesh rather than halltaxel's
+    ``mesh.stl``, which is only the skin shell: it leaves out the nail and the base of the fingertip down to the
+    joint. The visual mesh is a CAD assembly, so the unsensed mesh also holds the inner parts. The pad proxy
+    ``<finger>_pad`` is the whole sensing surface, in the same place as the taxels. It only exists for other
+    fingers' taxels to press against (see ``TactileSensorCfg.pad_collision_group``), so two pads touching give one
+    contact pair per taxel rather than one per pair of taxels.
 
     Args:
         finger: Finger name, a key of :data:`FINGERTIP_LINKS`.
-        visual: The fingertip's visual mesh in its link frame [m], to check the halltaxel data's frame.
+        visual: The fingertip's visual mesh in its link frame [m].
 
     Returns:
         The colliders by name (``<finger>_taxel_NNN`` in taxel order, ``<finger>_pad``, ``<finger>_unsensed``),
@@ -225,9 +226,10 @@ def bake_finger(finger: str, visual: trimesh.Trimesh) -> tuple[dict[str, trimesh
         "sensor_xform": np.array(spec.sensor_xform, dtype=np.float64),
     }
     colliders[f"{finger}_pad"] = sensing
-    if spec.unsensed_mesh is None:
-        raise ValueError(f"{finger}: the sensing region covers the whole fingertip, nothing is left unsensed")
-    colliders[f"{finger}_unsensed"] = spec.unsensed_mesh
+    mesh = visual.copy()
+    mesh.merge_vertices()  # keeps the faces in order, so the pad's face mask still applies
+    pad = select_region(mesh, spec.sensor_region if spec.sensor_region is not None else spec.mesh)
+    colliders[f"{finger}_unsensed"] = mesh.submesh([np.flatnonzero(~pad)], append=True)
     print(f"{finger}: {segmentation.num_regions} taxel patches")
     return colliders, sidecar
 
