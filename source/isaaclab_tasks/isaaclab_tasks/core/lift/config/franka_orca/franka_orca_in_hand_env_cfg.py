@@ -146,6 +146,9 @@ GOAL_RANGE = {"pos_x": (0.4, 0.7), "pos_y": (-0.25, 0.25), "pos_z": (0.45, 0.75)
 """Goal positions in the robot root frame [m]. The root is turned 180 deg about z, so +x is in front of the robot,
 over the table (world -x); the palm starts at x = 0.55 m, z = 0.45 m."""
 
+GOAL_MARKER_RADIUS = 0.02
+"""Radius of the goal marker [m], about the cube's half size."""
+
 PENALTY_INITIAL_SCALE = 0.01
 """Share of the ``action_l2`` and ``early_termination`` weights at zero ADR difficulty; the curriculum ramps them to the
 full weights at the maximum.
@@ -179,6 +182,14 @@ class FrankaOrcaInHandLiftEnvCfg(FrankaOrcaLiftEnvCfg):
 
         for key, value in GOAL_RANGE.items():
             setattr(self.commands.object_pose.ranges, key, value)
+        # show the goal in training too, so the recorded videos show where the cube is meant to go: a sphere the
+        # size of the cube, red until the cube is within 5 cm of it and green after; the cube gets a small one
+        command = self.commands.object_pose
+        command.debug_vis = True
+        goal_markers = dict(command.goal_pose_visualizer_cfg.markers)  # a copy, the cube's markers may share it
+        for name in ("position_far", "position_near"):
+            goal_markers[name] = replace(goal_markers[name], radius=GOAL_MARKER_RADIUS)
+        command.goal_pose_visualizer_cfg = replace(command.goal_pose_visualizer_cfg, markers=goal_markers)
 
         # one of the palm roll poses with a small offset, and every episode in the hand
         reset = self.events.conditional_reset.params
