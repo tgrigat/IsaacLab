@@ -171,6 +171,9 @@ class VideoRecorder:
         viz = candidates[0]
         if not sim.is_rendering:
             sim.forward()
+            # the marker callbacks (e.g. command debug visualization) run in the per-step render loop,
+            # which headless capture skips, so the markers would never be drawn in the frame
+            sim.vis_marker_registry.dispatch_callbacks()
         if sub == "streaming_view":
             if not hasattr(viz, "render_tiled_rgb_array"):
                 raise RuntimeError(
