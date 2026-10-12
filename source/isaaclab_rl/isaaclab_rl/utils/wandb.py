@@ -11,6 +11,8 @@ import contextlib
 import logging
 import os
 import re
+import secrets
+import string
 from urllib.parse import parse_qs, urlparse
 
 logger = logging.getLogger(__name__)
@@ -107,7 +109,9 @@ def announce_new_run(project: str, entity: str | None = None) -> None:
     if "wandb" not in globals():
         return
     if "WANDB_RUN_ID" not in os.environ:
-        os.environ["WANDB_RUN_ID"] = wandb.util.generate_id()
+        # wandb's own format, 8 lowercase alphanumerics; wandb 0.30 removed wandb.util.generate_id
+        alphabet = string.ascii_lowercase + string.digits
+        os.environ["WANDB_RUN_ID"] = "".join(secrets.choice(alphabet) for _ in range(8))
     run_id = os.environ["WANDB_RUN_ID"]
 
     if entity is None:
