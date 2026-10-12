@@ -137,6 +137,9 @@ FRANKA_ORCA_CFG = ArticulationCfg(
             stiffness=3.0,
             damping=0.1,
             friction=0.01,
+            # rotor inertia, as in the hand's MJCF (orcahand_right.mjcf); without it the few-gram fingertips sink
+            # ~5 mm into what they press on with MJWarp, whose contacts push back in acceleration
+            armature=0.001,
         ),
     },
     soft_joint_pos_limit_factor=1.0,

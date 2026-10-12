@@ -45,9 +45,6 @@ the skin there. The fingertip body origins sit on the last finger joint, which w
 effect on the IK point."""
 
 
-ORCA_FINGER_ARMATURE = 0.001
-"""Armature of the ORCA finger joints [kg m^2], as in the hand's MJCF (``orcahand_right.mjcf``)."""
-
 CUBE_CONTACT = MujocoCollisionCfg(priority=1, solref=(0.01, 1.0), solimp=(0.95, 0.99, 0.001, 0.5, 2.0))
 """MuJoCo contact parameters of the cube, which govern all of its contacts: a time constant of 0.01 s (the default
 0.02 s; MuJoCo's floor is about twice the 1/240 s solver step) and a harder impedance beyond 1 mm of overlap."""
@@ -141,11 +138,6 @@ class FrankaOrcaFingertipIKLiftEnvCfg(FrankaOrcaLiftEnvCfg):
             physics.solver_cfg.enable_multiccd = True
             physics.solver_cfg.cone = "elliptic"
             physics.solver_cfg.impratio = 10.0
-        # MuJoCo contacts push back in acceleration, so a few-gram fingertip pushed at ~1 N sinks millimetres into what
-        # it touches; the ORCA hand's MJCF gives every finger joint this armature (rotor inertia), ~500 times the
-        # fingertip's own inertia about its joint
-        fingers = self.scene.robot.actuators["orca_hand_fingers"]
-        self.scene.robot.actuators["orca_hand_fingers"] = replace(fingers, armature=ORCA_FINGER_ARMATURE)
         # keep the robot dynamics nominal, so tracking errors come from the IK
         self.events.joint_stiffness_and_damping = None
         self.events.joint_friction = None
