@@ -7,6 +7,7 @@
 
 from __future__ import annotations
 
+import math
 from typing import TYPE_CHECKING
 
 import torch
@@ -102,3 +103,49 @@ def object_in_bounds(
         low, high = in_bound_range[key]
         ok &= (pos[:, axis] >= low + margin) & (pos[:, axis] <= high - margin)
     return ok
+
+
+def reset_object_on_table_near_body(
+    env: ManagerBasedEnv,
+    env_ids: torch.Tensor,
+    target_cfg: SceneEntityCfg,
+    offset: tuple[float, float, float],
+    radius_range: tuple[float, float],
+    height: float,
+    yaw_range: tuple[float, float] = (-math.pi, math.pi),
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("object"),
+):
+    """Reset an object onto a table, at a random spot around the point below a body, at a random yaw.
+
+    The spot is the body's position plus :paramref:`offset` in the body frame, projected onto the table, plus a
+    horizontal offset of random direction and a length drawn from :paramref:`radius_range`. The object is placed upright
+    at :paramref:`height` in the environment frame (e.g. resting on the table top), at rest. The body pose is read from
+    the live simulation state, so the term must run after the reset terms that pose the body.
+
+    Args:
+        env: The environment.
+        env_ids: Environments to reset.
+        target_cfg: Body around which the object is placed (e.g. the palm).
+        offset: Offset in the body frame of the point to place the object around [m].
+        radius_range: Range of the horizontal distance from that point [m].
+        height: Height of the object position in the environment frame [m].
+        yaw_range: Range of the yaw about the vertical [rad].
+        asset_cfg: The object.
+    """
+    env_ids = env.scene._ALL_INDICES[env_ids]
+    asset = env.scene[asset_cfg.name]
+    target = env.scene[target_cfg.name]
+    body_pos = target.data.body_pos_w.torch[env_ids, target_cfg.body_ids[0]]
+    body_quat = target.data.body_quat_w.torch[env_ids, target_cfg.body_ids[0]]
+    num = len(env_ids)
+    offset_w = math_utils.quat_apply(body_quat, torch.tensor(offset, device=env.device).expand(num, 3))
+    radius = math_utils.sample_uniform(*radius_range, (num,), env.device)
+    direction = math_utils.sample_uniform(-math.pi, math.pi, (num,), env.device)
+    pos = body_pos + offset_w
+    pos[:, 0] += radius * torch.cos(direction)
+    pos[:, 1] += radius * torch.sin(direction)
+    pos[:, 2] = env.scene.env_origins[env_ids, 2] + height
+    yaw = math_utils.sample_uniform(*yaw_range, (num,), env.device)
+    quat = math_utils.quat_from_euler_xyz(torch.zeros_like(yaw), torch.zeros_like(yaw), yaw)
+    asset.write_root_pose_to_sim_index(root_pose=torch.cat([pos, quat], dim=-1), env_ids=env_ids)
+    asset.write_root_velocity_to_sim_index(root_velocity=torch.zeros(num, 6, device=env.device), env_ids=env_ids)

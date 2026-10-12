@@ -260,6 +260,82 @@ CUBE_FAR_FROM_PALM_RANGE = {"x": [-0.08, 0.08], "y": [0.14, 0.22], "z": [-0.04, 
 """Cube position range in the palm frame [m] of the hardest floating stage: 7.5-15.5 cm further out along the palm
 normal than :data:`CUBE_IN_PALM_RANGE` and spread wider across and along the hand, so the arm has to move to it."""
 
+TABLE_PALM_DOWN_JOINT_POS = [
+    {
+        "fr3_joint1": -0.707,
+        "fr3_joint2": -0.505,
+        "fr3_joint3": 0.826,
+        "fr3_joint4": -2.503,
+        "fr3_joint5": -1.003,
+        "fr3_joint6": 2.615,
+        "fr3_joint7": 0.173,
+        "R_Carpals_8d1f1041_to_TopTower_Model_4a80d30e": -1.134,
+    },
+    {
+        "fr3_joint1": -0.783,
+        "fr3_joint2": -0.858,
+        "fr3_joint3": 0.706,
+        "fr3_joint4": -2.835,
+        "fr3_joint5": -0.652,
+        "fr3_joint6": 2.937,
+        "fr3_joint7": -0.231,
+        "R_Carpals_8d1f1041_to_TopTower_Model_4a80d30e": -1.134,
+    },
+    {
+        "fr3_joint1": -0.526,
+        "fr3_joint2": -0.828,
+        "fr3_joint3": 0.928,
+        "fr3_joint4": -2.656,
+        "fr3_joint5": -0.53,
+        "fr3_joint6": 2.527,
+        "fr3_joint7": -0.033,
+        "R_Carpals_8d1f1041_to_TopTower_Model_4a80d30e": -1.134,
+    },
+    {
+        "fr3_joint1": -0.512,
+        "fr3_joint2": -0.123,
+        "fr3_joint3": 0.494,
+        "fr3_joint4": -2.258,
+        "fr3_joint5": -1.389,
+        "fr3_joint6": 2.524,
+        "fr3_joint7": 0.281,
+        "R_Carpals_8d1f1041_to_TopTower_Model_4a80d30e": -1.134,
+    },
+    {
+        "fr3_joint1": -0.378,
+        "fr3_joint2": -0.022,
+        "fr3_joint3": 0.74,
+        "fr3_joint4": -2.139,
+        "fr3_joint5": -1.263,
+        "fr3_joint6": 2.179,
+        "fr3_joint7": 0.343,
+        "R_Carpals_8d1f1041_to_TopTower_Model_4a80d30e": -1.134,
+    },
+]
+"""Arm and hand-wrist joints of the low palm-down start poses of the first table stages [rad]: the palm faces down,
+fingers level and pointing 45 deg from straight ahead (world -x) towards +y, with the palm at 0.365 m, 9 cm above the
+cube center on the table, at (x, y) = (-0.55, 0.0), (-0.47, 0.08), (-0.47, -0.08), (-0.63, 0.08), (-0.63, -0.08) m in
+the environment frame. Solved with the palm pose IK of the fingertip IK task from the robot's home pose. The palm can
+go no lower with the fingers level: the hand wrist sits at its lower limit there, and the thumb, which hangs below the
+palm, is 3.5 cm above the table."""
+
+TABLE_ARM_RESET_RANGE = 0.02  # rad
+"""Reset offset around :data:`TABLE_PALM_DOWN_JOINT_POS`. The thumb hangs 3.5 cm above the table there, so the reset's
+2 cm table clearance rejects the draws that lower the hand, and the wider :data:`ARM_RESET_RANGE` (+-0.05 rad) leaves
+only palms 1-6 cm above the pose."""
+
+CUBE_UNDER_PALM_OFFSET = (0.0, 0.0, 0.05)
+"""Point in the palm frame [m], along the fingers from the palm origin, below which the cube of the table stages that
+start under the hand is placed: under the middle of the palm."""
+
+CUBE_UNDER_PALM_RADIUS = (0.0, 0.02)
+"""Horizontal distance [m] of the cube from the point below :data:`CUBE_UNDER_PALM_OFFSET` when it starts under the
+hand."""
+
+CUBE_NEAR_TABLE_PALM_RADIUS = (0.05, 0.12)
+"""Horizontal distance [m] of the cube from the point below :data:`CUBE_UNDER_PALM_OFFSET` when it starts beside the
+hand."""
+
 CUBE_ON_TABLE_RANGE = {"x": [-0.15, 0.15], "y": [-0.3, 0.1], "yaw": [-3.14, 3.14]}
 """Cube pose range on the table [m, rad], around the object's initial position (-0.55, 0.1) m in the environment frame,
 so the cube lies on the table below the palm, flat at a random yaw. The palm starts at (-0.55, 0.0, 0.45) m."""
@@ -296,7 +372,9 @@ STAGE_FRACS = {
     "near_hand": (0.15, TABLE_START_FRAC),
     "open_closed_hand": (0.3, TABLE_START_FRAC),
     "far_from_hand": (0.45, TABLE_START_FRAC),
-    "on_table": (TABLE_START_FRAC, 1.0),
+    "table_under_hand": (TABLE_START_FRAC, 1.0),
+    "table_near_hand": (0.83, 1.0),
+    "on_table": (0.91, 1.0),
 }
 """Reset modes of the staged task and the window of mean ADR difficulty fraction in which each is drawn:
 
@@ -304,11 +382,17 @@ STAGE_FRACS = {
 * ``near_hand``: the cube a bit away from the caged hand (:data:`CUBE_NEAR_PALM_RANGE`),
 * ``open_closed_hand``: the cube a bit away from a fully open or closed hand,
 * ``far_from_hand``: the cube further away from a fully open or closed hand (:data:`CUBE_FAR_FROM_PALM_RANGE`),
-* ``on_table``: the cube lying on the table at a random pose (:data:`CUBE_ON_TABLE_RANGE`), the hand open or closed.
+* ``table_under_hand``: the cube on the table right under the open, downturned hand held low over the table
+  (:data:`TABLE_PALM_DOWN_JOINT_POS`, :data:`CUBE_UNDER_PALM_RADIUS`),
+* ``table_near_hand``: the cube on the table beside the low, downturned hand, open or closed
+  (:data:`CUBE_NEAR_TABLE_PALM_RADIUS`),
+* ``on_table``: the cube lying on the table at a random pose (:data:`CUBE_ON_TABLE_RANGE`), the arm at one of the palm
+  roll poses and the hand open or closed.
 
-The modes in the window are drawn uniformly, so the earlier floating stages stay in the mix. Gravity ramps in over the
-floating stages, from :data:`GRAVITY_START_FRAC` to full at :data:`TABLE_START_FRAC`, so the policy learns to catch and
-hold a falling cube before the cube starts on the table; from there it always does."""
+The cube on the table lies flat at a random yaw. The modes in the window are drawn uniformly, so the earlier stages of
+each phase stay in the mix. Gravity ramps in over the floating stages, from :data:`GRAVITY_START_FRAC` to full at
+:data:`TABLE_START_FRAC`, so the policy learns to catch and hold a falling cube before the cube starts on the table;
+from there it always does, first right under the hand, then beside it, then anywhere."""
 
 REACH_REWARD_WEIGHT = 2.5
 REACH_REWARD_STEP = 0.005  # m
@@ -335,14 +419,15 @@ TABLE_CLEARANCE = 0.002
 @configclass
 class FrankaOrcaInHandStagedLiftEnvCfg(FrankaOrcaInHandLiftEnvCfg):
     """In-hand cube carrying with a staged curriculum: from the cube in the caged hand to a cube ever further from a
-    hand that starts open or closed, with gravity ramping in, then a cube picked up from the table.
+    hand that starts open or closed, with gravity ramping in, then a cube picked up from the table, first from right
+    under the hand.
 
     The reset bank holds one reset mode per stage (:data:`STAGE_FRACS`), and a curriculum term draws the modes whose
     window holds the mean ADR difficulty; gravity ramps in from :data:`GRAVITY_START_FRAC` to full at
-    :data:`TABLE_START_FRAC`, where the cube stops floating and starts on the table. A reach reward
-    (:data:`REACH_REWARD_WEIGHT`) leads the hand to cubes it does not touch yet. The ADR difficulty rises with
-    successes and falls with failures, so a stage that the policy cannot yet solve drops out again until it can. The
-    success rate of each stage is logged as ``Metrics/success_rate/<mode>``.
+    :data:`TABLE_START_FRAC`, where the cube stops floating and starts on the table, first under the low hand. A
+    reach reward (:data:`REACH_REWARD_WEIGHT`) leads the hand to cubes it does not touch yet. The ADR difficulty rises
+    with successes and falls with failures, so a stage that the policy cannot yet solve drops out again until it can.
+    The success rate of each stage is logged as ``Metrics/success_rate/<mode>``.
     """
 
     def __post_init__(self):
@@ -358,6 +443,32 @@ class FrankaOrcaInHandStagedLiftEnvCfg(FrankaOrcaInHandLiftEnvCfg):
         table = self.scene.table
         table_top = table.init_state.pos[2] + table.spawn.size[2] / 2
         cube_z = table_top + self.scene.object.spawn.size[2] / 2 + TABLE_CLEARANCE
+        palm_cfg = in_hand["reset_object_to_target"].params["target_cfg"]
+
+        def on_table_near_palm(radius_range: tuple[float, float]) -> EventTerm:
+            """Cube on the table around the point below the middle of the palm."""
+            return EventTerm(
+                func=events.reset_object_on_table_near_body,
+                mode="reset",
+                params={
+                    "target_cfg": copy.deepcopy(palm_cfg),
+                    "offset": CUBE_UNDER_PALM_OFFSET,
+                    "radius_range": radius_range,
+                    "height": cube_z,
+                },
+            )
+
+        def low_palm_down_arm() -> EventTerm:
+            """Arm reset to the low palm-down poses, overriding the shared palm roll poses."""
+            return EventTerm(
+                func=events.reset_joints_to_random_pose,
+                mode="reset",
+                params={
+                    "poses": TABLE_PALM_DOWN_JOINT_POS,
+                    "position_range": [-TABLE_ARM_RESET_RANGE, TABLE_ARM_RESET_RANGE],
+                },
+            )
+
         on_table = EventTerm(
             func=mdp.reset_root_state_uniform,
             mode="reset",
@@ -368,16 +479,16 @@ class FrankaOrcaInHandStagedLiftEnvCfg(FrankaOrcaInHandLiftEnvCfg):
             },
         )
 
-        def open_or_closed_hand() -> EventTerm:
-            """Finger reset to the open or the closed hand, overriding the shared hand resets."""
+        def hand(*poses: dict[str, float]) -> EventTerm:
+            """Finger reset to one of the given hand poses, overriding the shared hand resets."""
             return EventTerm(
                 func=events.reset_joints_to_random_pose,
                 mode="reset",
-                params={
-                    "poses": [HAND_OPEN_JOINT_POS, HAND_CLOSED_JOINT_POS],
-                    "position_range": [-HAND_RESET_RANGE, HAND_RESET_RANGE],
-                },
+                params={"poses": list(poses), "position_range": [-HAND_RESET_RANGE, HAND_RESET_RANGE]},
             )
+
+        def open_or_closed_hand() -> EventTerm:
+            return hand(HAND_OPEN_JOINT_POS, HAND_CLOSED_JOINT_POS)
 
         # the hand terms come before the cube terms, which read the hand pose
         modes = {
@@ -388,6 +499,16 @@ class FrankaOrcaInHandStagedLiftEnvCfg(FrankaOrcaInHandLiftEnvCfg):
                 "reset_object_to_target": copy.deepcopy(near_hand),
             },
             "far_from_hand": {"reset_hand_pose": open_or_closed_hand(), "reset_object_to_target": far_from_hand},
+            "table_under_hand": {
+                "reset_arm_pose": low_palm_down_arm(),
+                "reset_hand_pose": hand(HAND_OPEN_JOINT_POS),
+                "reset_object": on_table_near_palm(CUBE_UNDER_PALM_RADIUS),
+            },
+            "table_near_hand": {
+                "reset_arm_pose": low_palm_down_arm(),
+                "reset_hand_pose": open_or_closed_hand(),
+                "reset_object": on_table_near_palm(CUBE_NEAR_TABLE_PALM_RADIUS),
+            },
             "on_table": {"reset_hand_pose": open_or_closed_hand(), "reset_object": on_table},
         }
         assert list(modes) == list(STAGE_FRACS), "every stage needs a reset mode, in the same order"
