@@ -64,9 +64,9 @@ forces (``proprio.contact``) stay observed, as in Kuka-Allegro."""
 
 NO_TAXELS_USD = FRANKA_ORCA_ASSET_DIR / "no_taxels" / "franka_orca.usda"
 """Robot USD without the baked taxels, with plain convex hulls on the fingertips. Built by
-``build_asset.py --fingers --out-dir assets/franka_orca/no_taxels``. Every taxel touching something is its own
-contact, which overflows MJWarp's contact buffer in a grasp, and the dropped contacts let the fingers and the cube
-sink into the cube and the table."""
+``build_asset.py --fingers --out-dir assets/franka_orca_mesh_fingertips/no_taxels``. Every taxel touching something is
+its own contact, which overflows MJWarp's contact buffer in a grasp, and the dropped contacts let the fingers and the
+cube sink into the cube and the table."""
 
 THUMB_SENSOR = f"{THUMB_TIP}_object_s"
 """Contact sensor of the thumb."""

@@ -26,9 +26,12 @@ from isaaclab.actuators import ImplicitActuatorCfg
 from isaaclab.assets.articulation import ArticulationCfg
 
 FRANKA_ORCA_ASSET_DIR = Path(
-    os.environ.get("FRANKA_ORCA_ASSET_DIR", Path(__file__).resolve().parents[4] / "assets" / "franka_orca")
+    os.environ.get(
+        "FRANKA_ORCA_ASSET_DIR", Path(__file__).resolve().parents[4] / "assets" / "franka_orca_mesh_fingertips"
+    )
 )
-"""Build output directory, ``<repo>/assets/franka_orca`` unless ``$FRANKA_ORCA_ASSET_DIR`` is set."""
+"""Build output directory, ``<repo>/assets/franka_orca_mesh_fingertips`` unless ``$FRANKA_ORCA_ASSET_DIR`` is set.
+Named after the fingertip collision method, so builds of the other methods can sit next to it."""
 
 FRANKA_ORCA_USD = FRANKA_ORCA_ASSET_DIR / "franka_orca.usda"
 """Robot USD, including the baked taxel colliders and the collision filter pairs."""

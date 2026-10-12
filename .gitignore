@@ -98,4 +98,4 @@ benchmark_*.json
 docs/superpowers/
 
 # FrankaOrca robot asset build output (scripts/tools/franka_orca/build_asset.py)
-assets/franka_orca/
+assets/franka_orca*/

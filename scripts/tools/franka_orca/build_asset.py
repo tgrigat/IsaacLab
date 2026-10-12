@@ -6,17 +6,21 @@
 """Build the Franka (FR3) + ORCA-hand robot asset with halltaxel tactile fingertips.
 
 The URDFs are the source of truth; everything written here is a gitignored build output under
-``assets/franka_orca/`` (or ``$FRANKA_ORCA_ASSET_DIR``). Two steps:
+``assets/franka_orca_mesh_fingertips/`` (or ``$FRANKA_ORCA_ASSET_DIR``). Two steps:
 
 1. :func:`compose_urdf`: FR3 URDF + ORCA right-hand URDF -> ``franka_orca.urdf``. The hand links collide
    through their visual meshes, which the simulator imports as convex hulls, and each sensed fingertip
-   is cut by halltaxel into one triangle-mesh collision per taxel (``<finger>_taxel_NNN``), a pad proxy and a
-   convex decomposition of the rest (``<finger>_unsensed_NN``). A sidecar ``tactile/<finger>.npz`` records the taxel
-   order and the sensor frame.
+   is cut by halltaxel into one triangle-mesh collision per taxel (``<finger>_taxel_NNN``), a pad proxy and the
+   rest of halltaxel's fingertip surface (``<finger>_unsensed``), all kept as triangle meshes. A sidecar
+   ``tactile/<finger>.npz`` records the taxel order and the sensor frame.
 2. :func:`urdf_to_usd`: ``franka_orca.urdf`` -> USD with Isaac Lab's URDF converter, plus a top layer
    ``franka_orca.usda`` holding the collision filter pairs (bodies, and the fingertip colliders, which meet only
-   pad to pad and unsensed to unsensed) and keeping the taxel colliders as triangle meshes. This is the file the
+   pad to pad and unsensed to unsensed) and keeping the fingertip colliders as triangle meshes. This is the file the
    robot config loads.
+
+The fingertips collide as halltaxel simulates them, exactly as the sensing surface is, but a pair of the large pad or
+unsensed meshes is slow to collide: a step of ``Isaac-Lift-FrankaOrca`` with 16 environments takes over 200 ms,
+against 9 ms with convex hulls.
 
 The inputs come from installed packages: the ORCA hand URDF and the taxel data from the halltaxel checkout (see
 :data:`HALLTAXEL_DIR`), the FR3 arm from newton-assets. halltaxel is only needed here, at build time; nothing in the
@@ -31,7 +35,8 @@ Usage:
     uv run python scripts/tools/franka_orca/build_asset.py            # all five fingers
     uv run python scripts/tools/franka_orca/build_asset.py --fingers thumb
     # without taxels, for comparison
-    uv run python scripts/tools/franka_orca/build_asset.py --fingers --out-dir assets/franka_orca/no_taxels
+    uv run python scripts/tools/franka_orca/build_asset.py --fingers \
+        --out-dir assets/franka_orca_mesh_fingertips/no_taxels
 """
 
 from __future__ import annotations
@@ -39,7 +44,6 @@ from __future__ import annotations
 import argparse
 import copy
 import itertools
-import multiprocessing
 import os
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -51,7 +55,7 @@ import warp as wp
 
 try:
     import halltaxel
-    from halltaxel import TactileSurfaceSpec, segment_surface, select_region
+    from halltaxel import TactileSurfaceSpec, segment_surface
 except ModuleNotFoundError as error:
     raise SystemExit("halltaxel is not installed; run `uv pip install -e <halltaxel checkout>` first") from error
 
@@ -117,7 +121,7 @@ def collision_excludes(fingers: list[str]) -> list[tuple[str, str]]:
     """Body pairs that never collide.
 
     Every pair of hand bodies is excluded except two sensed fingertips, which meet only through their pad proxies
-    and unsensed hulls (see :func:`fingertip_collider_excludes`). So the rest of the fingers pass through each other,
+    and unsensed meshes (see :func:`fingertip_collider_excludes`). So the rest of the fingers pass through each other,
     which is not physical, but fingertips pressed side by side would otherwise need over 1000 MJWarp constraint rows per
     environment, as every taxel touching the neighbouring finger is its own contact.
 
@@ -133,13 +137,13 @@ def collision_excludes(fingers: list[str]) -> list[tuple[str, str]]:
 
 
 def fingertip_collider_excludes(colliders: dict[str, dict[str, list]]) -> list[tuple]:
-    """Collider pairs of two sensed fingertips that never collide, so that only their pad proxies and unsensed hulls
+    """Collider pairs of two sensed fingertips that never collide, so that only their pad proxies and unsensed meshes
     meet.
 
     The taxels skip each other through their shared collision group, and the pad proxies, in their own group, skip
-    the unsensed hulls (see ``TactileSensorCfg``). What is left is filtered here: each pad proxy and each unsensed
-    hull against the other fingertip's taxels. A fingertip's taxels thus touch only the object, the table and the arm,
-    and two fingertips touch through convex pairs, pad to pad and unsensed to unsensed.
+    the unsensed meshes (see ``TactileSensorCfg``). What is left is filtered here: each pad proxy and each unsensed
+    mesh against the other fingertip's taxels. A fingertip's taxels thus touch only the object, the table and the arm,
+    and two fingertips touch pad to pad and unsensed to unsensed.
 
     Args:
         colliders: Per finger, its collider paths by kind: ``"taxels"``, ``"pad"`` and ``"unsensed"``.
@@ -163,12 +167,6 @@ RELAX_ITERS = 0
 SMOOTH_ITERS = 1
 MAX_FRAME_ERROR = 0.05e-3  # m
 """halltaxel data further than this from the URDF visual mesh means the frames disagree."""
-UNSENSED_INSET = 1.5e-3  # m
-"""Depth the sensed pad is pushed inward by before the fingertip is decomposed, so the hulls stay below it."""
-COACD_THRESHOLD = 0.05
-"""CoACD concavity threshold; lower gives more, tighter hulls."""
-COACD_MAX_HULLS = 16
-"""Most hulls per fingertip."""
 TAXEL_CONTACT_GAP = 2e-3  # m
 """Newton contact gap of the taxel and pad-proxy colliders, instead of Isaac Lab's 10 mm default. With hundreds of
 taxels per hand, a 10 mm gap reports thousands of speculative contacts between neighbouring fingertips."""
@@ -187,97 +185,23 @@ def load_spec(finger: str) -> TactileSurfaceSpec:
     )
 
 
-def decompose_fingers(visuals: dict[str, trimesh.Trimesh]) -> dict[str, list[trimesh.Trimesh]]:
-    """Run :func:`decompose_unsensed` for each finger, in parallel.
-
-    CoACD gives a different decomposition on every run when it runs multithreaded, even with a fixed seed. Each
-    finger is therefore decomposed in its own single-threaded process, so the build is reproducible and still takes
-    about as long as the slowest finger.
-
-    Args:
-        visuals: Per finger to decompose (a key of :data:`FINGERTIP_LINKS`), its fingertip's visual mesh in its
-            link frame [m].
-
-    Returns:
-        The hulls of each finger.
-    """
-    from concurrent.futures import ProcessPoolExecutor
-
-    # the workers inherit the environment when they start, before anything in them loads OpenMP, which CoACD runs on
-    threads = os.environ.get("OMP_NUM_THREADS")
-    os.environ["OMP_NUM_THREADS"] = "1"
-    try:
-        with ProcessPoolExecutor(max_workers=len(visuals), mp_context=multiprocessing.get_context("spawn")) as pool:
-            return dict(zip(visuals, pool.map(decompose_unsensed, visuals, visuals.values())))
-    finally:
-        if threads is None:
-            del os.environ["OMP_NUM_THREADS"]
-        else:
-            os.environ["OMP_NUM_THREADS"] = threads
-
-
-def decompose_unsensed(finger: str, visual: trimesh.Trimesh) -> list[trimesh.Trimesh]:
-    """Decompose a fingertip into convex hulls that follow its unsensed surface.
-
-    CoACD runs on the fingertip's whole visual mesh, which reaches further than halltaxel's ``mesh.stl``, down to the
-    joint, with the sensed pad pushed :data:`UNSENSED_INSET` inward, so the hulls stay below the taxels. They are not
-    exactly below: CoACD remeshes its input and hulls are wider than the parts they wrap, so near the pad's rim some
-    reach up to about 1 mm above the pad, where they take contacts the taxels would otherwise sense. The simulator
-    reduces each hull to at most 64 vertices when it imports it.
-
-    Args:
-        finger: Finger name, a key of :data:`FINGERTIP_LINKS`.
-        visual: The fingertip's visual mesh in its link frame [m].
-
-    Returns:
-        The hulls, in the link frame [m].
-    """
-    try:
-        import coacd
-    except ModuleNotFoundError as error:
-        raise SystemExit("coacd is not installed; it comes with Isaac Lab's dependencies, run `uv sync`") from error
-
-    spec = load_spec(finger)
-    mesh = visual.copy()
-    mesh.merge_vertices()  # keeps the faces in order, so the pad's face mask still applies
-    pad = select_region(mesh, spec.sensor_region if spec.sensor_region is not None else spec.mesh)
-    # orient the vertex normals outward, away from the fingertip's middle
-    pad_outward = mesh.face_normals[pad].mean(axis=0) @ (mesh.triangles_center[pad].mean(axis=0) - mesh.centroid)
-    outward = 1.0 if pad_outward > 0 else -1.0
-    pad_vertices = np.unique(mesh.faces[pad])
-    vertices = mesh.vertices.copy()
-    vertices[pad_vertices] -= outward * mesh.vertex_normals[pad_vertices] * UNSENSED_INSET
-    parts = coacd.run_coacd(
-        coacd.Mesh(vertices, mesh.faces),
-        threshold=COACD_THRESHOLD,
-        max_convex_hull=COACD_MAX_HULLS,
-        preprocess_mode="on",  # the visual mesh is a CAD assembly, neither watertight nor a single shell
-        seed=0,
-    )
-    hulls = [trimesh.Trimesh(part_vertices, part_faces).convex_hull for part_vertices, part_faces in parts]
-    print(f"{finger}: {len(hulls)} unsensed hulls")
-    return hulls
-
-
-def bake_finger(
-    finger: str, visual: trimesh.Trimesh, unsensed: list[trimesh.Trimesh]
-) -> tuple[dict[str, trimesh.Trimesh], dict]:
-    """Cut one fingertip into per-taxel mesh colliders, a pad proxy and unsensed hulls.
+def bake_finger(finger: str, visual: trimesh.Trimesh) -> tuple[dict[str, trimesh.Trimesh], dict]:
+    """Cut one fingertip into per-taxel mesh colliders, a pad proxy and an unsensed mesh.
 
     As in halltaxel's ``ContactPatchBackend``, each taxel collider is its patch of the sensing surface, an open
-    triangle mesh, so the taxels are the fingertip's pad as it is. The rest of the fingertip collides through a
-    convex decomposition, the unsensed hulls ``<finger>_unsensed_NN``. The pad proxy ``<finger>_pad`` is the whole
-    sensing surface, imported as its convex hull, in the same place as the taxels. It only exists for other fingers'
-    taxels to press against (see ``TactileSensorCfg.pad_collision_group``), so two pads touching give one contact pair
-    per taxel rather than one per pair of taxels.
+    triangle mesh, so the taxels are the fingertip's pad as it is. The rest of halltaxel's fingertip surface is the
+    unsensed mesh ``<finger>_unsensed``; together they cover halltaxel's ``mesh.stl`` once, which stops about 5 mm
+    short of the bottom of the fingertip link. The pad proxy ``<finger>_pad`` is the whole sensing surface, in the
+    same place as the taxels. It only exists for other fingers' taxels to press against (see
+    ``TactileSensorCfg.pad_collision_group``), so two pads touching give one contact pair per taxel rather than one
+    per pair of taxels.
 
     Args:
         finger: Finger name, a key of :data:`FINGERTIP_LINKS`.
-        visual: The fingertip's visual mesh in its link frame [m].
-        unsensed: The fingertip's unsensed hulls, from :func:`decompose_unsensed`.
+        visual: The fingertip's visual mesh in its link frame [m], to check the halltaxel data's frame.
 
     Returns:
-        The colliders by name (``<finger>_taxel_NNN`` in taxel order, ``<finger>_pad``, ``<finger>_unsensed_NN``),
+        The colliders by name (``<finger>_taxel_NNN`` in taxel order, ``<finger>_pad``, ``<finger>_unsensed``),
         and the sidecar data: ``patch_names``, ``taxel_positions`` (N, 3) and ``sensor_xform`` (7,) in the link frame.
     """
     spec = load_spec(finger)
@@ -303,8 +227,7 @@ def bake_finger(
     colliders[f"{finger}_pad"] = sensing
     if spec.unsensed_mesh is None:
         raise ValueError(f"{finger}: the sensing region covers the whole fingertip, nothing is left unsensed")
-    for i, hull in enumerate(unsensed):
-        colliders[f"{finger}_unsensed_{i:02d}"] = hull
+    colliders[f"{finger}_unsensed"] = spec.unsensed_mesh
     print(f"{finger}: {segmentation.num_regions} taxel patches")
     return colliders, sidecar
 
@@ -352,11 +275,10 @@ def compose_urdf(fingers: list[str], out_dir: Path) -> Path:
 
     sensed = {FINGERTIP_LINKS[finger]: finger for finger in fingers}
     visuals = {sensed[link.get("name")]: visual_mesh(link) for link in hand.iter("link") if link.get("name") in sensed}
-    unsensed = decompose_fingers(visuals) if visuals else {}
     for link in hand.iter("link"):
         name = link.get("name")
         if name in sensed:
-            colliders, sidecar = bake_finger(sensed[name], visuals[sensed[name]], unsensed[sensed[name]])
+            colliders, sidecar = bake_finger(sensed[name], visuals[sensed[name]])
             np.savez(sidecar_dir / f"{sensed[name]}.npz", body=name, **sidecar)
             for collider_name, mesh in colliders.items():
                 mesh.export(mesh_dir / f"{collider_name}.stl")
@@ -379,7 +301,7 @@ def compose_urdf(fingers: list[str], out_dir: Path) -> Path:
 
 def urdf_to_usd(urdf: Path, fingers: list[str], out_dir: Path) -> Path:
     """Convert the combined URDF to USD and add a top layer with the collision filter pairs, the taxel gap and the
-    taxel mesh colliders.
+    fingertip mesh colliders.
 
     Args:
         urdf: The combined URDF from :func:`compose_urdf`.
@@ -421,7 +343,7 @@ def urdf_to_usd(urdf: Path, fingers: list[str], out_dir: Path) -> Path:
         finger: fingertip_colliders(stage.GetPrimAtPath(bodies[FINGERTIP_LINKS[finger]])) for finger in fingers
     }
     collider_pairs = fingertip_collider_excludes(colliders)
-    keep_triangle_meshes(stage, [path for kinds in colliders.values() for path in kinds["taxels"]])
+    keep_triangle_meshes(stage, [path for kinds in colliders.values() for paths in kinds.values() for path in paths])
     for a, b in body_pairs:
         filter_collision(stage.GetPrimAtPath(bodies[a]), bodies[b])
     for a, b in collider_pairs:
@@ -445,9 +367,7 @@ def fingertip_colliders(body) -> dict[str, list]:
     colliders = {"taxels": [], "pad": [], "unsensed": []}
     for prim in body.GetChildren():
         name = prim.GetName()
-        kind = next((k for k, tag in (("taxels", "_taxel_"), ("unsensed", "_unsensed_")) if tag in name), None)
-        if kind is None and name.endswith("_pad"):
-            kind = "pad"
+        kind = "taxels" if "_taxel_" in name else next((k for k in ("pad", "unsensed") if name.endswith(f"_{k}")), None)
         if kind is not None:
             prim.SetInstanceable(False)
             colliders[kind] += [mesh.GetPath() for mesh in prim.GetChildren()]
@@ -465,8 +385,8 @@ def keep_triangle_meshes(stage, paths: list) -> None:
     """Author ``physics:approximation = "none"`` on the given mesh colliders.
 
     The converter marks every mesh collision ``convexHull``, which the simulator would replace by a hull of at most
-    64 vertices. Newton's collision pipeline collides these as the triangle meshes they are instead. Only for small
-    meshes such as the taxels: a pair of large meshes is far slower to collide than a pair of hulls.
+    64 vertices. Newton's collision pipeline collides these as the triangle meshes they are instead, at a cost: a pair
+    of large meshes, such as two pads, is far slower to collide than a pair of hulls.
     """
     from pxr import UsdPhysics
 
