@@ -251,6 +251,12 @@ class FrankaOrcaInHandLiftNoTaxelsEnvCfg(FrankaOrcaInHandLiftEnvCfg):
         remove_taxels(self)
 
 
+CUBE_CLOSE_TO_PALM_RANGE = {"x": [-0.02, 0.02], "y": [0.08, 0.105], "z": [0.03, 0.09]}
+"""Cube position range in the palm frame [m] of the staged task's second stage: 1.5-4 cm further out along the palm
+normal than :data:`CUBE_IN_PALM_RANGE`, a step towards :data:`CUBE_NEAR_PALM_RANGE`. Straight from the cage to
+:data:`CUBE_NEAR_PALM_RANGE`, the policy stalled for 1800 iterations without a success: a touch sends the floating cube
+out of reach. Draws that touch the hand are rejected by the reset."""
+
 CUBE_NEAR_PALM_RANGE = {"x": [-0.04, 0.04], "y": [0.10, 0.14], "z": [0.0, 0.12]}
 """Cube position range in the palm frame [m] of the staged task's later stages: 3.5-7.5 cm further out along the palm
 normal than :data:`CUBE_IN_PALM_RANGE`, over the curled fingers rather than in their cage, so the hand has to reach
@@ -379,7 +385,8 @@ is full."""
 
 STAGE_FRACS = {
     "in_hand": (0.0, TABLE_START_FRAC),
-    "near_hand": (0.15, TABLE_START_FRAC),
+    "close_to_hand": (0.1, TABLE_START_FRAC),
+    "near_hand": (0.2, TABLE_START_FRAC),
     "open_closed_hand": (0.3, TABLE_START_FRAC),
     "far_from_hand": (0.45, TABLE_START_FRAC),
     "table_under_hand": (TABLE_START_FRAC, 1.0),
@@ -390,6 +397,7 @@ STAGE_FRACS = {
 """Reset modes of the staged task and the window of ADR difficulty fraction in which each is drawn:
 
 * ``in_hand``: the cube in the caged hand (:data:`CUBE_IN_PALM_RANGE`),
+* ``close_to_hand``: the cube just out of the caged hand (:data:`CUBE_CLOSE_TO_PALM_RANGE`),
 * ``near_hand``: the cube a bit away from the caged hand (:data:`CUBE_NEAR_PALM_RANGE`),
 * ``open_closed_hand``: the cube a bit away from a fully open or closed hand,
 * ``far_from_hand``: the cube further away from a fully open or closed hand (:data:`CUBE_FAR_FROM_PALM_RANGE`),
@@ -419,11 +427,12 @@ away. A reward for being near the cube (a tanh kernel on the distance, weight 0.
 policy then hovered next to the cube and never touched it, in every stage: a touch pushes the floating cube away and
 costs that reward."""
 
-ARM_ACTION_SCALE = 0.05
-"""Relative joint target step of the arm joints per unit action [rad], half the step of the fingers. At 0.1 rad per
-30 Hz step, an action of 1 asks for 3 rad/s, over the 2.62 rad/s limit of the FR3's first four joints; the policy's
-fast arm moves ended over a third of the episodes in the ``abnormal_robot`` (joint velocity) termination, most of them
-on joints 3 and 4, 1-13% over the limit."""
+ARM_ACTION_SCALE = 0.075
+"""Relative joint target step of the arm joints per unit action [rad], three quarters of the step of the fingers: an
+action of 1 asks for 2.25 rad/s, under the 2.62 rad/s limit of the FR3's first four joints. At 0.1 rad per 30 Hz step
+(3 rad/s), the policy's fast arm moves ended over a third of the episodes in the ``abnormal_robot`` (joint velocity)
+termination, most of them on joints 3 and 4, 1-13% over the limit; at 0.05 the arm was too slow to follow a floating
+cube that a touch sent drifting."""
 
 STAGED_IN_BOUND_RANGE = {**IN_BOUND_RANGE, "z": (0.2, IN_BOUND_RANGE["z"][1])}
 """Workspace the cube must stay in, in the environment frame [m]: :data:`IN_BOUND_RANGE` with the floor below the table
@@ -455,6 +464,8 @@ class FrankaOrcaInHandStagedLiftEnvCfg(FrankaOrcaInHandLiftEnvCfg):
         super().__post_init__()
         reset = self.events.conditional_reset.params
         in_hand = reset["modes"]["in_hand"]
+        close_to_hand = copy.deepcopy(in_hand["reset_object_to_target"])
+        close_to_hand.params["pose_range"] = CUBE_CLOSE_TO_PALM_RANGE
         near_hand = copy.deepcopy(in_hand["reset_object_to_target"])
         near_hand.params["pose_range"] = CUBE_NEAR_PALM_RANGE
         far_from_hand = copy.deepcopy(in_hand["reset_object_to_target"])
@@ -514,6 +525,7 @@ class FrankaOrcaInHandStagedLiftEnvCfg(FrankaOrcaInHandLiftEnvCfg):
         # the hand terms come before the cube terms, which read the hand pose
         modes = {
             "in_hand": in_hand,
+            "close_to_hand": {"reset_object_to_target": close_to_hand},
             "near_hand": {"reset_object_to_target": near_hand},
             "open_closed_hand": {
                 "reset_hand_pose": open_or_closed_hand(),
