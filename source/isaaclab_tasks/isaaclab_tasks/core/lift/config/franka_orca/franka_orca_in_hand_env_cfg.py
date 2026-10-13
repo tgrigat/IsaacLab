@@ -441,18 +441,20 @@ action of 1 asks for 2.25 rad/s, under the 2.62 rad/s limit of the FR3's first f
 termination, most of them on joints 3 and 4, 1-13% over the limit; at 0.05 the arm was too slow to follow a floating
 cube that a touch sent drifting."""
 
-SMOOTHNESS_WEIGHTS = {"arm_joint_vel_l2": -0.5, "arm_action_l2": -0.05, "action_rate_l2": -0.01}
+SMOOTHNESS_WEIGHTS = {"arm_joint_vel_l2": -1.25, "arm_action_l2": -0.125, "action_rate_l2": -0.025}
 """Final weights of the penalties that slow the arm down and smooth the motion, ramped in by
 :class:`.curriculums.reward_weight_ramp` once the policy has learned the task:
 
 * ``arm_joint_vel_l2``: the squared arm joint velocities, which the trained policy drives to the joint limits in
-  short bursts (a 2.5 rad/s joint alone costs 3 per second at the full weight),
+  short bursts (a 2.5 rad/s joint alone costs 8 per second at the full weight),
 * ``arm_action_l2``: the squared arm actions, on top of ``action_l2``. Without it the policy commands relative targets
   of about 1.2 actions (0.09 rad) on every arm joint and step, holding the arm with the full action range,
 * ``action_rate_l2``: the squared change of every action from the step before, against jitter.
 
-Measured on a policy trained without them, the full weights would cost it about 0.5, 0.75 and 0.35 per second (the
-action rate mostly from the exploration noise), against about 7 for holding the cube at the goal."""
+Measured on a policy trained without them, the full weights would cost it about 1.4, 1.9 and 0.9 per second (the
+action rate mostly from the exploration noise), against about 7 for holding the cube at the goal. At 40% of these
+weights, a fine-tune of that policy kept its success rate and cut the squared arm joint velocities by 28% and the
+action rate by about 40%, but the palm by only 9%, so the weights were raised to these."""
 
 SMOOTHNESS_START_FRAC = 0.95
 """Mean ADR difficulty fraction from which :data:`SMOOTHNESS_WEIGHTS` ramp in: the last table stage is in the mix and
