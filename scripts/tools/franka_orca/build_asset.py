@@ -37,6 +37,9 @@ Usage:
     # without taxels, for comparison
     uv run python scripts/tools/franka_orca/build_asset.py --fingers \
         --out-dir assets/franka_orca_mesh_fingertips/no_taxels
+    # without taxels, every link one capsule or box, for coarse training
+    uv run python scripts/tools/franka_orca/build_asset.py --fingers --primitives \
+        --out-dir assets/franka_orca_mesh_fingertips/primitives
 """
 
 from __future__ import annotations
@@ -115,6 +118,12 @@ ARM_EXCLUDES = [
     ("fr3_link5", "fr3_link7"),
 ]
 """Arm links whose hulls overlap at rest (Panda topology; re-check for the FR3 links)."""
+
+BOX_LINKS = ["fr3_link0", "fr3_link4", "fr3_link6", *WRIST_LINKS]
+"""Links that :func:`replace_with_primitives` collides as a box: the arm base, the L-shaped elbow and wrist links, whose
+capsules would be up to 10 cm thick, and the blocks at the flange and the palm. So are the fingers' abduction links
+(``_AP_``), short knuckle blocks whose capsules would reach into the neighbouring fingers'. Every other link, an arm
+segment or a finger phalanx, is long and round enough for a capsule."""
 
 
 def collision_excludes(fingers: list[str]) -> list[tuple[str, str]]:
@@ -301,7 +310,7 @@ def compose_urdf(fingers: list[str], out_dir: Path) -> Path:
     return urdf
 
 
-def urdf_to_usd(urdf: Path, fingers: list[str], out_dir: Path) -> Path:
+def urdf_to_usd(urdf: Path, fingers: list[str], out_dir: Path, primitives: bool = False) -> Path:
     """Convert the combined URDF to USD and add a top layer with the collision filter pairs, the taxel gap and the
     fingertip mesh colliders.
 
@@ -309,6 +318,7 @@ def urdf_to_usd(urdf: Path, fingers: list[str], out_dir: Path) -> Path:
         urdf: The combined URDF from :func:`compose_urdf`.
         fingers: Sensed fingers, as baked by :func:`compose_urdf`.
         out_dir: Output directory.
+        primitives: Whether to collide every link as one capsule or box instead (:func:`replace_with_primitives`).
 
     Returns:
         Path of ``franka_orca.usda``, the layer the robot config spawns.
@@ -351,12 +361,80 @@ def urdf_to_usd(urdf: Path, fingers: list[str], out_dir: Path) -> Path:
     for a, b in collider_pairs:
         filter_collision(stage.GetPrimAtPath(a), b)
     num_taxels = set_sensor_contact_gap(stage)
+    if primitives:
+        replace_with_primitives(stage, bodies)
     layer.Save()
     print(
         f"wrote {top} ({len(bodies)} bodies, {len(body_pairs)} filtered body pairs, {len(collider_pairs)} filtered"
         f" fingertip collider pairs, {num_taxels} taxels)"
     )
     return top
+
+
+def replace_with_primitives(stage, bodies: dict[str, Path]) -> None:
+    """Collide every link as one primitive fitted to its collision meshes, instead of the meshes.
+
+    The links in :data:`BOX_LINKS` and the fingers' abduction links get the oriented bounding box of their meshes'
+    vertices, every other link a capsule along the longest axis of that box, with its ends at the box's ends. A finger
+    capsule is as wide as the box's narrower side: the phalanges are about 18 by 21 mm across, so a capsule as wide as
+    the wider side would be wider than the finger, and curled fingers lying side by side would overlap. An arm capsule
+    is as wide as the wider side, so the arm keeps its clearance from the table. The mesh colliders are deactivated in
+    this layer. MJWarp collides primitive pairs in closed form, with fewer contacts than pairs of convex hulls.
+
+    Args:
+        stage: Stage of the top layer, with the converter's mesh colliders.
+        bodies: Rigid body prim paths by link name.
+    """
+    from pxr import Gf, Usd, UsdGeom, UsdPhysics
+
+    xform_cache = UsdGeom.XformCache()
+    for name, body_path in bodies.items():
+        body = stage.GetPrimAtPath(body_path)
+        to_body = xform_cache.GetLocalToWorldTransform(body).GetInverse()
+        points = []
+        # the converter puts each collision in a child prim of the body, holding the (instanced) collision mesh;
+        # other children hold the child bodies, some through a massless link such as fr3_link8
+        for child in body.GetChildren():
+            subtree = list(Usd.PrimRange(child, Usd.TraverseInstanceProxies()))
+            if any(prim.HasAPI(UsdPhysics.RigidBodyAPI) for prim in subtree):
+                continue
+            meshes = [prim for prim in subtree if prim.HasAPI(UsdPhysics.CollisionAPI) and prim.IsA(UsdGeom.Mesh)]
+            if not meshes:
+                continue
+            for mesh in meshes:
+                to_body_mesh = xform_cache.GetLocalToWorldTransform(mesh) * to_body
+                points += [to_body_mesh.Transform(Gf.Vec3d(p)) for p in UsdGeom.Mesh(mesh).GetPointsAttr().Get()]
+            child.SetActive(False)
+        if not points:
+            continue
+        points = np.asarray(points)
+        # oriented_bounds maps the points into a frame centred on the box, along its axes
+        to_box, extents = trimesh.bounds.oriented_bounds(points)
+        box_to_body = np.linalg.inv(to_box)
+        if name in BOX_LINKS or "_AP_" in name:
+            shape = UsdGeom.Cube.Define(stage, body_path.AppendChild(f"{name}_box"))
+            shape.CreateSizeAttr(1.0)
+            scale = Gf.Vec3f(*extents)
+        else:
+            # rotate the box frame so its longest axis is the capsule's z axis
+            axis = int(np.argmax(extents))
+            order = [(axis + 1) % 3, (axis + 2) % 3, axis]
+            permute = np.eye(4)
+            permute[:3, :3] = np.eye(3)[:, order]
+            box_to_body = box_to_body @ permute
+            width = max if name.startswith("fr3_") else min
+            radius = float(width(extents[order[0]], extents[order[1]])) / 2.0
+            shape = UsdGeom.Capsule.Define(stage, body_path.AppendChild(f"{name}_capsule"))
+            shape.CreateAxisAttr(UsdGeom.Tokens.z)
+            shape.CreateRadiusAttr(radius)
+            shape.CreateHeightAttr(max(float(extents[axis]) - 2.0 * radius, 0.0))
+            scale = Gf.Vec3f(1.0)
+        rotation = Gf.Matrix3d(*box_to_body[:3, :3].T.flatten().tolist()).ExtractRotation().GetQuat()
+        shape.AddTranslateOp().Set(Gf.Vec3d(*box_to_body[:3, 3]))
+        shape.AddOrientOp().Set(Gf.Quatf(rotation))
+        shape.AddScaleOp().Set(scale)
+        shape.CreatePurposeAttr(UsdGeom.Tokens.guide)
+        UsdPhysics.CollisionAPI.Apply(shape.GetPrim())
 
 
 def fingertip_colliders(body) -> dict[str, list]:
@@ -478,13 +556,18 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--fingers", nargs="*", default=["all"], help="Fingers to bake, 'all' (default), or none.")
     parser.add_argument("--out-dir", type=Path, default=FRANKA_ORCA_ASSET_DIR)
+    parser.add_argument(
+        "--primitives", action="store_true", help="Collide every link as one capsule or box; needs --fingers none."
+    )
     args = parser.parse_args()
     fingers = list(FINGERTIP_LINKS) if args.fingers == ["all"] else args.fingers
+    if args.primitives and fingers:
+        parser.error("--primitives replaces the taxel colliders too, so it takes no sensed fingers (pass --fingers)")
 
     # the URDF names the generated meshes by path, which must not depend on the working directory
     out_dir = args.out_dir.resolve()
     urdf = compose_urdf(fingers, out_dir)
-    urdf_to_usd(urdf, fingers, out_dir)
+    urdf_to_usd(urdf, fingers, out_dir, primitives=args.primitives)
 
 
 if __name__ == "__main__":

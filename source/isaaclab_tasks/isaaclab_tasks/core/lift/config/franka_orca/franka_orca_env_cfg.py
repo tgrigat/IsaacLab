@@ -68,6 +68,12 @@ NO_TAXELS_USD = FRANKA_ORCA_ASSET_DIR / "no_taxels" / "franka_orca.usda"
 its own contact, which overflows MJWarp's contact buffer in a grasp, and the dropped contacts let the fingers and the
 cube sink into the cube and the table."""
 
+PRIMITIVES_USD = FRANKA_ORCA_ASSET_DIR / "primitives" / "franka_orca.usda"
+"""Robot USD without the baked taxels, with every link colliding as one capsule or box fitted to its meshes: the
+finger capsules within 4 mm of the hulls, the arm's within 22 mm. Built by ``build_asset.py --fingers --primitives
+--out-dir assets/franka_orca_mesh_fingertips/primitives``. For learning the coarse motion cheaply, to fine-tune on the
+hulls of :data:`NO_TAXELS_USD` after: the observations and actions are the same."""
+
 THUMB_SENSOR = f"{THUMB_TIP}_object_s"
 """Contact sensor of the thumb."""
 
@@ -385,6 +391,14 @@ def remove_taxels(env_cfg: FrankaOrcaMixinCfg):
     for finger in TACTILE_FINGERS:
         setattr(env_cfg.scene, f"{finger}_tactile", None)
         setattr(env_cfg.observations.proprio, f"tactile_{finger}", None)
+
+
+def use_primitive_colliders(env_cfg: FrankaOrcaMixinCfg):
+    """Remove the taxels (:func:`remove_taxels`) and swap the robot for :data:`PRIMITIVES_USD`."""
+    remove_taxels(env_cfg)
+    env_cfg.scene.robot = replace(
+        env_cfg.scene.robot, spawn=replace(env_cfg.scene.robot.spawn, usd_path=str(PRIMITIVES_USD))
+    )
 
 
 @configclass

@@ -91,6 +91,18 @@ gym.register(
     },
 )
 
+# every link a capsule or box, to learn the coarse motion before fine-tuning on the NoTaxels hulls
+gym.register(
+    id="Isaac-Lift-FrankaOrca-InHand-Staged-Primitives",
+    entry_point="isaaclab.envs:ManagerBasedRLEnv",
+    disable_env_checker=True,
+    kwargs={
+        "env_cfg_entry_point": f"{__name__}.franka_orca_in_hand_env_cfg:FrankaOrcaInHandStagedLiftPrimitivesEnvCfg",
+        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:FrankaOrcaPPORunnerCfg",
+        "default_agent": "rsl_rl",
+    },
+)
+
 # scripted tests of the fingertip IK (scripts/environments/state_machine/lift_cube_franka_orca_sm.py), no agent
 gym.register(
     id="Isaac-Lift-Cube-FrankaOrca-FingertipIK-Abs",
