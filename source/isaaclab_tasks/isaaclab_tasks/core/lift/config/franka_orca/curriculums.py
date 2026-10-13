@@ -12,6 +12,8 @@ from typing import TYPE_CHECKING, Any
 
 import torch
 
+from isaaclab.managers import CurriculumTermCfg, ManagerTermBase
+
 if TYPE_CHECKING:
     from isaaclab.envs import ManagerBasedRLEnv
 
@@ -97,3 +99,51 @@ def delayed_interpolate_fn(
     frac = _difficulty_frac(env, difficulty_term_str)
     alpha = min(max((frac - start_frac) / max(end_frac - start_frac, 1e-6), 0.0), 1.0)
     return _interpolate(initial_value, final_value, alpha)
+
+
+class reward_weight_ramp(ManagerTermBase):
+    """Ramp reward weights linearly from zero to their final values over a number of steps spent at a high difficulty.
+
+    The ramp advances only on the steps at which the mean difficulty fraction of a
+    :class:`~isaaclab.envs.mdp.DifficultyScheduler` term is at least :paramref:`start_frac`: it waits for the curriculum
+    to get there, and pauses while the failures the growing penalties may cause pull the difficulty back under it.
+    """
+
+    def __init__(self, cfg: CurriculumTermCfg, env: ManagerBasedRLEnv):
+        super().__init__(cfg, env)
+        self._steps = 0
+        """Steps ramped so far."""
+        self._last_step = env.common_step_counter
+
+    def __call__(
+        self,
+        env: ManagerBasedRLEnv,
+        env_ids: Sequence[int],
+        final_weights: dict[str, float],
+        num_steps: int,
+        start_frac: float,
+        difficulty_term_str: str,
+    ) -> float:
+        """Set the weights for the current step.
+
+        Args:
+            env: The environment.
+            env_ids: Unused; the weights are shared by all environments.
+            final_weights: Final weight of each reward term, by term name.
+            num_steps: Environment steps at or above :paramref:`start_frac` the ramp takes.
+            start_frac: Mean difficulty fraction from which the ramp advances.
+            difficulty_term_str: Name of the difficulty scheduler curriculum term.
+
+        Returns:
+            The share of the final weights reached, in [0, 1].
+        """
+        # the manager computes the curriculum on every step with a reset, so steps are counted since the last call
+        if _difficulty_frac(env, difficulty_term_str) >= start_frac:
+            self._steps += env.common_step_counter - self._last_step
+        self._last_step = env.common_step_counter
+        alpha = min(self._steps / max(num_steps, 1), 1.0)
+        for name, weight in final_weights.items():
+            term_cfg = env.reward_manager.get_term_cfg(name)
+            term_cfg.weight = alpha * weight
+            env.reward_manager.set_term_cfg(name, term_cfg)
+        return alpha

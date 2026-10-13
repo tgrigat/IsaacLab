@@ -434,6 +434,28 @@ action of 1 asks for 2.25 rad/s, under the 2.62 rad/s limit of the FR3's first f
 termination, most of them on joints 3 and 4, 1-13% over the limit; at 0.05 the arm was too slow to follow a floating
 cube that a touch sent drifting."""
 
+SMOOTHNESS_WEIGHTS = {"arm_joint_vel_l2": -0.5, "arm_action_l2": -0.05, "action_rate_l2": -0.01}
+"""Final weights of the penalties that slow the arm down and smooth the motion, ramped in by
+:class:`.curriculums.reward_weight_ramp` once the policy has learned the task:
+
+* ``arm_joint_vel_l2``: the squared arm joint velocities, which the trained policy drives to the joint limits in
+  short bursts (a 2.5 rad/s joint alone costs 3 per second at the full weight),
+* ``arm_action_l2``: the squared arm actions, on top of ``action_l2``. Without it the policy commands relative targets
+  of about 1.2 actions (0.09 rad) on every arm joint and step, holding the arm with the full action range,
+* ``action_rate_l2``: the squared change of every action from the step before, against jitter.
+
+Measured on a policy trained without them, the full weights would cost it about 0.5, 0.75 and 0.35 per second (the
+action rate mostly from the exploration noise), against about 7 for holding the cube at the goal."""
+
+SMOOTHNESS_START_FRAC = 0.95
+"""Mean ADR difficulty fraction from which :data:`SMOOTHNESS_WEIGHTS` ramp in: the last table stage is in the mix and
+most environments succeed on their stage. Under it, which takes the success rate dropping under about 70%, the ramp
+pauses."""
+
+SMOOTHNESS_RAMP_STEPS = 1500 * 32
+"""Environment steps at or above :data:`SMOOTHNESS_START_FRAC` over which :data:`SMOOTHNESS_WEIGHTS` ramp in: 1500
+iterations of 32 steps."""
+
 STAGED_IN_BOUND_RANGE = {**IN_BOUND_RANGE, "z": (0.2, IN_BOUND_RANGE["z"][1])}
 """Workspace the cube must stay in, in the environment frame [m]: :data:`IN_BOUND_RANGE` with the floor below the table
 top (0.255 m), so a cube on the table is in bounds and one that falls off the table ends the episode."""
@@ -569,8 +591,21 @@ class FrankaOrcaInHandStagedLiftEnvCfg(FrankaOrcaInHandLiftEnvCfg):
             },
         )
 
+        self.rewards.arm_joint_vel_l2 = RewTerm(
+            func=mdp.joint_vel_l2, weight=0.0, params={"asset_cfg": SceneEntityCfg("robot", joint_names="fr3_joint.*")}
+        )
+        self.rewards.arm_action_l2 = RewTerm(
+            func=rewards.joint_action_l2,
+            weight=0.0,
+            params={"asset_cfg": SceneEntityCfg("robot", joint_names="fr3_joint.*")},
+        )
+        self.rewards.action_rate_l2 = RewTerm(func=mdp.action_rate_l2, weight=0.0)
+
         if self.curriculum is None:
-            return  # every mode drawn uniformly, without gravity
+            # every mode drawn uniformly, without gravity, and the smoothness penalties at their full weights
+            for name, weight in SMOOTHNESS_WEIGHTS.items():
+                getattr(self.rewards, name).weight = weight
+            return
         self.curriculum.adr.params["max_difficulty"] = STAGED_MAX_DIFFICULTY
         reset["mode_weights"] = [float(start <= 0.0) for start, _ in STAGE_FRACS.values()]
         self.curriculum.reset_stages = CurrTerm(
@@ -579,6 +614,15 @@ class FrankaOrcaInHandStagedLiftEnvCfg(FrankaOrcaInHandLiftEnvCfg):
                 "address": "events.conditional_reset.params.mode_weights",
                 "modify_fn": curriculums.stage_mode_weights,
                 "modify_params": {"stage_fracs": list(STAGE_FRACS.values()), "difficulty_term_str": "adr"},
+            },
+        )
+        self.curriculum.smoothness = CurrTerm(
+            func=curriculums.reward_weight_ramp,
+            params={
+                "final_weights": dict(SMOOTHNESS_WEIGHTS),
+                "num_steps": SMOOTHNESS_RAMP_STEPS,
+                "start_frac": SMOOTHNESS_START_FRAC,
+                "difficulty_term_str": "adr",
             },
         )
         gravity = self.curriculum.gravity_adr.params
