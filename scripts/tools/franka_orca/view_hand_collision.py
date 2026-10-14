@@ -16,7 +16,7 @@ Colors:
 * taxel colliders (``<finger>_taxel_NNN``): orange, alternating shades so neighboring taxels stand apart
 * fingertip unsensed hulls (``<finger>_unsensed_NN``): blue, alternating shades
 * pad proxies (``<finger>_pad``): magenta, only with ``--pads`` because they overlap the taxels
-* hulls of the other hand links (``<link>_hull``): gray
+* hulls of the other hand links (``<link>_hull``), or their capsules and boxes in the ``primitives`` build: gray
 
 Toggle "Show Visual" under "Visualization Markers" in the side panel (H toggles the panel) to compare with the meshes.
 
@@ -108,7 +108,9 @@ def main():
             continue
         # the converter puts each collision in a prim named after it, holding a mesh that may be shared and renamed
         kind = collider_kind(label.split("/")[-2])
-        hull_vertices[kind].append(len(builder.shape_source[shape].vertices))
+        # the primitives build collides through capsules and boxes, which have no mesh
+        source = builder.shape_source[shape]
+        hull_vertices[kind].append(len(source.vertices) if source is not None else 0)
         colors = KIND_COLORS[kind]
         builder.shape_color[shape] = colors[len(hull_vertices[kind]) % len(colors)]
         if kind == "pad" and not args.pads:
@@ -120,7 +122,7 @@ def main():
 
     print(f"{usd}: hand colliders as imported")
     for kind, counts in hull_vertices.items():
-        print(f"  {kind:>9}: {len(counts):4d} hulls, {min(counts)}-{max(counts)} vertices, {sum(counts)} in total")
+        print(f"  {kind:>9}: {len(counts):4d} shapes, {min(counts)}-{max(counts)} vertices, {sum(counts)} in total")
 
     # look at the hand from the side, slightly above
     hand_bodies = [b for b, label in enumerate(model.body_label) if not label.rsplit("/", 1)[-1].startswith("fr3_")]
