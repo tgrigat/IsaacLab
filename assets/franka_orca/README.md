@@ -28,7 +28,9 @@ in `source/halltaxel`.
 
 ## Rebuilding
 
-Rebuild after changing the build script or the sources, and commit the result:
+Rebuild after changing the build script or the sources, and commit the result. The build converts the URDF with
+Isaac Sim's URDF importer, so it needs the `importers` extra (`uv sync --extra importers`); the environments do
+not.
 
 ```bash
 uv run python scripts/tools/franka_orca/build_asset.py                          # every method

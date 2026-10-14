@@ -33,6 +33,9 @@ The fingertip methods (:data:`FINGERTIP_METHODS`), from cheapest to most exact; 
   triangle mesh, and so is the pad proxy. The fingertips collide exactly as they look, but a pair of these large
   meshes is slow to collide: about 760 ms per step.
 
+The URDF conversion runs Isaac Sim's URDF importer, so the build needs the ``importers`` extra (``uv sync --extra
+importers``).
+
 Usage:
 
 .. code-block:: bash
