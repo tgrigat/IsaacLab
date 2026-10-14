@@ -1,0 +1,910 @@
+#usda 1.0
+(
+    defaultPrim = "franka_orca"
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    subLayers = [
+        @usd/franka_orca/franka_orca.usda@
+    ]
+    upAxis = "Z"
+)
+
+over "franka_orca"
+{
+    over "Geometry"
+    {
+        over "base"
+        {
+            over "fr3_link0" (
+                prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+            )
+            {
+                prepend rel physics:filteredPairs = </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2>
+
+                over "fr3_link1" (
+                    prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                )
+                {
+                    prepend rel physics:filteredPairs = </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3>
+
+                    over "fr3_link2" (
+                        prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                    )
+                    {
+                        prepend rel physics:filteredPairs = </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4>
+
+                        over "fr3_link3" (
+                            prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                        )
+                        {
+                            prepend rel physics:filteredPairs = </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5>
+
+                            over "fr3_link4"
+                            {
+                                over "fr3_link5" (
+                                    prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                )
+                                {
+                                    prepend rel physics:filteredPairs = </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7>
+
+                                    over "fr3_link6"
+                                    {
+                                        over "fr3_link7"
+                                        {
+                                            over "fr3_link8"
+                                            {
+                                                over "ForeArmStructure_Model_e18f2368" (
+                                                    prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                )
+                                                {
+                                                    prepend rel physics:filteredPairs = [
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481/I_FingerTipAssembly_ec49c16c>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                    ]
+
+                                                    over "TopTower_Model_4a80d30e" (
+                                                        prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                    )
+                                                    {
+                                                        prepend rel physics:filteredPairs = [
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481/I_FingerTipAssembly_ec49c16c>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                        ]
+
+                                                        over "R_Carpals_8d1f1041" (
+                                                            prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                        )
+                                                        {
+                                                            prepend rel physics:filteredPairs = [
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481/I_FingerTipAssembly_ec49c16c>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                            ]
+
+                                                            over "I_AP_R_d95d02d1" (
+                                                                prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                            )
+                                                            {
+                                                                prepend rel physics:filteredPairs = [
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481/I_FingerTipAssembly_ec49c16c>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                ]
+
+                                                                over "I_PP_bacbd481" (
+                                                                    prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                                )
+                                                                {
+                                                                    prepend rel physics:filteredPairs = [
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481/I_FingerTipAssembly_ec49c16c>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                    ]
+
+                                                                    over "I_FingerTipAssembly_ec49c16c" (
+                                                                        prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                                    )
+                                                                    {
+                                                                        prepend rel physics:filteredPairs = [
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                        ]
+
+                                                                        over "I_FingerTipAssembly_ec49c16c_hull" (
+                                                                            active = false
+                                                                        )
+                                                                        {
+                                                                        }
+
+                                                                        def Capsule "I_FingerTipAssembly_ec49c16c_capsule" (
+                                                                            prepend apiSchemas = ["PhysicsCollisionAPI"]
+                                                                        )
+                                                                        {
+                                                                            uniform token axis = "Z"
+                                                                            double height = 0.03590312863084599
+                                                                            uniform token purpose = "guide"
+                                                                            double radius = 0.008831792288296897
+                                                                            quatf xformOp:orient = (0.051834866, 0.7065174, 0.705201, 0.02894479)
+                                                                            float3 xformOp:scale = (1, 1, 1)
+                                                                            double3 xformOp:translate = (-0.0004896909011463149, 0.0003680296507312956, 0.018830400008722343)
+                                                                            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                                                                        }
+                                                                    }
+
+                                                                    over "I_PP_bacbd481_hull" (
+                                                                        active = false
+                                                                    )
+                                                                    {
+                                                                    }
+
+                                                                    def Capsule "I_PP_bacbd481_capsule" (
+                                                                        prepend apiSchemas = ["PhysicsCollisionAPI"]
+                                                                    )
+                                                                    {
+                                                                        uniform token axis = "Z"
+                                                                        double height = 0.036375659313744715
+                                                                        uniform token purpose = "guide"
+                                                                        double radius = 0.009091895695567911
+                                                                        quatf xformOp:orient = (0.70302397, 0.021233374, 0.02624221, 0.7103646)
+                                                                        float3 xformOp:scale = (1, 1, 1)
+                                                                        double3 xformOp:translate = (0.0017182675573082515, -0.00011667253938063769, 0.017689890446991322)
+                                                                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                                                                    }
+                                                                }
+
+                                                                over "I_AP_R_d95d02d1_hull" (
+                                                                    active = false
+                                                                )
+                                                                {
+                                                                }
+
+                                                                def Cube "I_AP_R_d95d02d1_box" (
+                                                                    prepend apiSchemas = ["PhysicsCollisionAPI"]
+                                                                )
+                                                                {
+                                                                    uniform token purpose = "guide"
+                                                                    double size = 1
+                                                                    quatf xformOp:orient = (-0.5, -0.5, 0.5, 0.5)
+                                                                    float3 xformOp:scale = (0.018000001, 0.018997539, 0.033746596)
+                                                                    double3 xformOp:translate = (-0.011342177042884628, -0, -0.0009987692832367785)
+                                                                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                                                                }
+                                                            }
+
+                                                            over "M_AP_e04a96f2" (
+                                                                prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                            )
+                                                            {
+                                                                prepend rel physics:filteredPairs = [
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                ]
+
+                                                                over "M_PP_08efa608" (
+                                                                    prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                                )
+                                                                {
+                                                                    prepend rel physics:filteredPairs = [
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                    ]
+
+                                                                    over "M_FingerTipAssembly_34afb748" (
+                                                                        prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                                    )
+                                                                    {
+                                                                        prepend rel physics:filteredPairs = [
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                        ]
+
+                                                                        over "M_FingerTipAssembly_34afb748_hull" (
+                                                                            active = false
+                                                                        )
+                                                                        {
+                                                                        }
+
+                                                                        def Capsule "M_FingerTipAssembly_34afb748_capsule" (
+                                                                            prepend apiSchemas = ["PhysicsCollisionAPI"]
+                                                                        )
+                                                                        {
+                                                                            uniform token axis = "Z"
+                                                                            double height = 0.03590312863084601
+                                                                            uniform token purpose = "guide"
+                                                                            double radius = 0.008831792288296897
+                                                                            quatf xformOp:orient = (0.051834866, 0.7065174, 0.705201, 0.02894479)
+                                                                            float3 xformOp:scale = (1, 1, 1)
+                                                                            double3 xformOp:translate = (-0.0004896909011462637, 0.00036802965073126886, 0.0188304000087224)
+                                                                            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                                                                        }
+                                                                    }
+
+                                                                    over "M_PP_08efa608_hull" (
+                                                                        active = false
+                                                                    )
+                                                                    {
+                                                                    }
+
+                                                                    def Capsule "M_PP_08efa608_capsule" (
+                                                                        prepend apiSchemas = ["PhysicsCollisionAPI"]
+                                                                    )
+                                                                    {
+                                                                        uniform token axis = "Z"
+                                                                        double height = 0.03982841949286675
+                                                                        uniform token purpose = "guide"
+                                                                        double radius = 0.00913422123588108
+                                                                        quatf xformOp:orient = (0.7066257, 0.024653232, 0.031558465, 0.70645344)
+                                                                        float3 xformOp:scale = (1, 1, 1)
+                                                                        double3 xformOp:translate = (0.001974100833378077, -0.00013461121240840735, 0.01893216248066284)
+                                                                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                                                                    }
+                                                                }
+
+                                                                over "M_AP_e04a96f2_hull" (
+                                                                    active = false
+                                                                )
+                                                                {
+                                                                }
+
+                                                                def Cube "M_AP_e04a96f2_box" (
+                                                                    prepend apiSchemas = ["PhysicsCollisionAPI"]
+                                                                )
+                                                                {
+                                                                    uniform token purpose = "guide"
+                                                                    double size = 1
+                                                                    quatf xformOp:orient = (-0.5, -0.5, 0.5, 0.5)
+                                                                    float3 xformOp:scale = (0.018000001, 0.020000001, 0.034522656)
+                                                                    double3 xformOp:translate = (-0.011958366051336065, 2.7755575615628914e-17, -0.0009999999999999998)
+                                                                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                                                                }
+                                                            }
+
+                                                            over "M_AP_6ec59111" (
+                                                                prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                            )
+                                                            {
+                                                                prepend rel physics:filteredPairs = [
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                ]
+
+                                                                over "M_PP_8660a1eb" (
+                                                                    prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                                )
+                                                                {
+                                                                    prepend rel physics:filteredPairs = [
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                    ]
+
+                                                                    over "M_FingerTipAssembly_424a8e75" (
+                                                                        prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                                    )
+                                                                    {
+                                                                        prepend rel physics:filteredPairs = [
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                        ]
+
+                                                                        over "M_FingerTipAssembly_424a8e75_hull" (
+                                                                            active = false
+                                                                        )
+                                                                        {
+                                                                        }
+
+                                                                        def Capsule "M_FingerTipAssembly_424a8e75_capsule" (
+                                                                            prepend apiSchemas = ["PhysicsCollisionAPI"]
+                                                                        )
+                                                                        {
+                                                                            uniform token axis = "Z"
+                                                                            double height = 0.03590312863084599
+                                                                            uniform token purpose = "guide"
+                                                                            double radius = 0.008831792288296897
+                                                                            quatf xformOp:orient = (0.051834866, 0.7065174, 0.705201, 0.02894479)
+                                                                            float3 xformOp:scale = (1, 1, 1)
+                                                                            double3 xformOp:translate = (-0.0004896909011462596, 0.0003680296507312399, 0.018830400008722454)
+                                                                            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                                                                        }
+                                                                    }
+
+                                                                    over "M_PP_8660a1eb_hull" (
+                                                                        active = false
+                                                                    )
+                                                                    {
+                                                                    }
+
+                                                                    def Capsule "M_PP_8660a1eb_capsule" (
+                                                                        prepend apiSchemas = ["PhysicsCollisionAPI"]
+                                                                    )
+                                                                    {
+                                                                        uniform token axis = "Z"
+                                                                        double height = 0.039747892378940546
+                                                                        uniform token purpose = "guide"
+                                                                        double radius = 0.009126782806470096
+                                                                        quatf xformOp:orient = (0.70658094, 0.028105846, 0.02810847, 0.70651495)
+                                                                        float3 xformOp:scale = (1, 1, 1)
+                                                                        double3 xformOp:translate = (0.0019715865863268087, 3.5870691936050496e-7, 0.0189040060145116)
+                                                                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                                                                    }
+                                                                }
+
+                                                                over "M_AP_6ec59111_hull" (
+                                                                    active = false
+                                                                )
+                                                                {
+                                                                }
+
+                                                                def Cube "M_AP_6ec59111_box" (
+                                                                    prepend apiSchemas = ["PhysicsCollisionAPI"]
+                                                                )
+                                                                {
+                                                                    uniform token purpose = "guide"
+                                                                    double size = 1
+                                                                    quatf xformOp:orient = (-0.5, -0.5, 0.5, 0.5)
+                                                                    float3 xformOp:scale = (0.018000001, 0.020000001, 0.034522656)
+                                                                    double3 xformOp:translate = (-0.011958366051336176, -1.3877787807814457e-17, -0.0009999999999999443)
+                                                                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                                                                }
+                                                            }
+
+                                                            over "P_AP_f5e42b61" (
+                                                                prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                            )
+                                                            {
+                                                                prepend rel physics:filteredPairs = [
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                ]
+
+                                                                over "P_PP_1d411b9b" (
+                                                                    prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                                )
+                                                                {
+                                                                    prepend rel physics:filteredPairs = [
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                    ]
+
+                                                                    over "P_FingerTipAssembly_cd219176" (
+                                                                        prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                                    )
+                                                                    {
+                                                                        prepend rel physics:filteredPairs = [
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                        ]
+
+                                                                        over "P_FingerTipAssembly_cd219176_hull" (
+                                                                            active = false
+                                                                        )
+                                                                        {
+                                                                        }
+
+                                                                        def Capsule "P_FingerTipAssembly_cd219176_capsule" (
+                                                                            prepend apiSchemas = ["PhysicsCollisionAPI"]
+                                                                        )
+                                                                        {
+                                                                            uniform token axis = "Z"
+                                                                            double height = 0.03015871487677756
+                                                                            uniform token purpose = "guide"
+                                                                            double radius = 0.008015063972554604
+                                                                            quatf xformOp:orient = (-0.70311046, -0.088251084, 0.05147701, 0.70370275)
+                                                                            float3 xformOp:scale = (1, 1, 1)
+                                                                            double3 xformOp:translate = (-0.0007668411139446152, -0.0004665687862086972, 0.015664462344415354)
+                                                                            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                                                                        }
+                                                                    }
+
+                                                                    over "P_PP_1d411b9b_hull" (
+                                                                        active = false
+                                                                    )
+                                                                    {
+                                                                    }
+
+                                                                    def Capsule "P_PP_1d411b9b_capsule" (
+                                                                        prepend apiSchemas = ["PhysicsCollisionAPI"]
+                                                                    )
+                                                                    {
+                                                                        uniform token axis = "Z"
+                                                                        double height = 0.029972848392918337
+                                                                        uniform token purpose = "guide"
+                                                                        double radius = 0.00850889768943114
+                                                                        quatf xformOp:orient = (-0.009952807, -0.7070244, 0.70703673, 0.010792302)
+                                                                        float3 xformOp:scale = (1, 1, 1)
+                                                                        double3 xformOp:translate = (0.0010950837528453925, 0.000017237783812172025, 0.014972741509475104)
+                                                                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                                                                    }
+                                                                }
+
+                                                                over "P_AP_f5e42b61_hull" (
+                                                                    active = false
+                                                                )
+                                                                {
+                                                                }
+
+                                                                def Cube "P_AP_f5e42b61_box" (
+                                                                    prepend apiSchemas = ["PhysicsCollisionAPI"]
+                                                                )
+                                                                {
+                                                                    uniform token purpose = "guide"
+                                                                    double size = 1
+                                                                    quatf xformOp:orient = (-0.00018303902, 0.71800244, 0.00018881439, -0.6960405)
+                                                                    float3 xformOp:scale = (0.017003704, 0.017007884, 0.031322833)
+                                                                    double3 xformOp:translate = (-0.010591966463839518, 7.744411970774408e-10, -0.0007796082231659373)
+                                                                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                                                                }
+                                                            }
+
+                                                            over "T_TP_R_1c2b802d" (
+                                                                prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                            )
+                                                            {
+                                                                prepend rel physics:filteredPairs = [
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                ]
+
+                                                                over "R_T_AP_a9723101" (
+                                                                    prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                                )
+                                                                {
+                                                                    prepend rel physics:filteredPairs = [
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                    ]
+
+                                                                    over "T_PP_68395e98" (
+                                                                        prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                                    )
+                                                                    {
+                                                                        prepend rel physics:filteredPairs = </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>
+
+                                                                        over "T_PP_68395e98_hull" (
+                                                                            active = false
+                                                                        )
+                                                                        {
+                                                                        }
+
+                                                                        def Capsule "T_PP_68395e98_capsule" (
+                                                                            prepend apiSchemas = ["PhysicsCollisionAPI"]
+                                                                        )
+                                                                        {
+                                                                            uniform token axis = "Z"
+                                                                            double height = 0.029982433110219336
+                                                                            uniform token purpose = "guide"
+                                                                            double radius = 0.009570490893486262
+                                                                            quatf xformOp:orient = (-0.0011580758, 0.027692523, 0.006603355, 0.99959403)
+                                                                            float3 xformOp:scale = (1, 1, 1)
+                                                                            double3 xformOp:translate = (0.0014228173985044539, 0.00007606830624092406, 0.01546525841955918)
+                                                                            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                                                                        }
+
+                                                                        over "T_DP_b7429e50"
+                                                                        {
+                                                                            over "T_DP_b7429e50_hull" (
+                                                                                active = false
+                                                                            )
+                                                                            {
+                                                                            }
+
+                                                                            def Capsule "T_DP_b7429e50_capsule" (
+                                                                                prepend apiSchemas = ["PhysicsCollisionAPI"]
+                                                                            )
+                                                                            {
+                                                                                uniform token axis = "Z"
+                                                                                double height = 0.021076947529986144
+                                                                                uniform token purpose = "guide"
+                                                                                double radius = 0.008735592405409581
+                                                                                quatf xformOp:orient = (0.009219915, 0.9999142, 0.00018715086, -0.00930118)
+                                                                                float3 xformOp:scale = (1, 1, 1)
+                                                                                double3 xformOp:translate = (0.0009458797093529239, 0.00006275755646371014, 0.011269035809988465)
+                                                                                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                                                                            }
+                                                                        }
+                                                                    }
+
+                                                                    over "R_T_AP_a9723101_hull" (
+                                                                        active = false
+                                                                    )
+                                                                    {
+                                                                    }
+
+                                                                    def Cube "R_T_AP_a9723101_box" (
+                                                                        prepend apiSchemas = ["PhysicsCollisionAPI"]
+                                                                    )
+                                                                    {
+                                                                        uniform token purpose = "guide"
+                                                                        double size = 1
+                                                                        quatf xformOp:orient = (0.71750057, 4.265187e-17, 0.69655794, -4.393424e-17)
+                                                                        float3 xformOp:scale = (0.019650498, 0.020000001, 0.042065106)
+                                                                        double3 xformOp:translate = (-0.01591394380684126, -1.5205509174677147e-18, -0.00047148484809987515)
+                                                                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                                                                    }
+                                                                }
+
+                                                                over "T_TP_R_1c2b802d_hull" (
+                                                                    active = false
+                                                                )
+                                                                {
+                                                                }
+
+                                                                def Capsule "T_TP_R_1c2b802d_capsule" (
+                                                                    prepend apiSchemas = ["PhysicsCollisionAPI"]
+                                                                )
+                                                                {
+                                                                    uniform token axis = "Z"
+                                                                    double height = 0.014515374112227513
+                                                                    uniform token purpose = "guide"
+                                                                    double radius = 0.012277790517212952
+                                                                    quatf xformOp:orient = (-0.7070995, -0.0032077597, -0.0032077597, 0.7070995)
+                                                                    float3 xformOp:scale = (1, 1, 1)
+                                                                    double3 xformOp:translate = (-0.00375000017625003, -0.0012837504639830496, -0.000011647155420850481)
+                                                                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                                                                }
+                                                            }
+
+                                                            over "R_Carpals_8d1f1041_hull" (
+                                                                active = false
+                                                            )
+                                                            {
+                                                            }
+
+                                                            def Cube "R_Carpals_8d1f1041_box" (
+                                                                prepend apiSchemas = ["PhysicsCollisionAPI"]
+                                                            )
+                                                            {
+                                                                uniform token purpose = "guide"
+                                                                double size = 1
+                                                                quatf xformOp:orient = (-0.026821427, -0.6834453, 0.72250265, 0.10086171)
+                                                                float3 xformOp:scale = (0.034453347, 0.08634849, 0.09775353)
+                                                                double3 xformOp:translate = (-0.002544748580506179, 0.0018882179480647556, 0.03814145995471103)
+                                                                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                                                            }
+                                                        }
+
+                                                        over "TopTower_Model_4a80d30e_hull" (
+                                                            active = false
+                                                        )
+                                                        {
+                                                        }
+
+                                                        def Cube "TopTower_Model_4a80d30e_box" (
+                                                            prepend apiSchemas = ["PhysicsCollisionAPI"]
+                                                        )
+                                                        {
+                                                            uniform token purpose = "guide"
+                                                            double size = 1
+                                                            quatf xformOp:orient = (6.123234e-17, -0.70710677, -0, 0.70710677)
+                                                            float3 xformOp:scale = (0.0465, 0.09300582, 0.096)
+                                                            double3 xformOp:translate = (-0, -0, 0.023250001092750112)
+                                                            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                                                        }
+                                                    }
+
+                                                    over "ForeArmStructure_Model_e18f2368_hull" (
+                                                        active = false
+                                                    )
+                                                    {
+                                                    }
+
+                                                    def Cube "ForeArmStructure_Model_e18f2368_box" (
+                                                        prepend apiSchemas = ["PhysicsCollisionAPI"]
+                                                    )
+                                                    {
+                                                        uniform token purpose = "guide"
+                                                        double size = 1
+                                                        quatf xformOp:orient = (0.70710677, 0.70710677, -6.49467e-17, -6.49467e-17)
+                                                        float3 xformOp:scale = (0.093, 0.096, 0.110300004)
+                                                        double3 xformOp:translate = (-0.010000000469999992, -0.002850000515419745, 0)
+                                                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                                                    }
+                                                }
+                                            }
+
+                                            over "fr3_link7_collision" (
+                                                active = false
+                                            )
+                                            {
+                                            }
+
+                                            def Capsule "fr3_link7_capsule" (
+                                                prepend apiSchemas = ["PhysicsCollisionAPI"]
+                                            )
+                                            {
+                                                uniform token axis = "Z"
+                                                double height = 0.05406763872577837
+                                                uniform token purpose = "guide"
+                                                double radius = 0.0438778550000311
+                                                quatf xformOp:orient = (-0.27074897, -0.65311295, -0.27083302, 0.6532901)
+                                                float3 xformOp:scale = (1, 1, 1)
+                                                double3 xformOp:translate = (0.012018165290377771, 0.012051530292261161, 0.07941833257372782)
+                                                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                                            }
+                                        }
+
+                                        over "fr3_link6_collision" (
+                                            active = false
+                                        )
+                                        {
+                                        }
+
+                                        def Cube "fr3_link6_box" (
+                                            prepend apiSchemas = ["PhysicsCollisionAPI"]
+                                        )
+                                        {
+                                            uniform token purpose = "guide"
+                                            double size = 1
+                                            quatf xformOp:orient = (0.62524563, 0.0027852089, 0.78042006, -0.0021557182)
+                                            float3 xformOp:scale = (0.08819991, 0.13296272, 0.18249822)
+                                            double3 xformOp:translate = (0.042336795298556364, 0.01537061648683087, 0.010280464211181228)
+                                            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                                        }
+                                    }
+
+                                    over "fr3_link5_collision" (
+                                        active = false
+                                    )
+                                    {
+                                    }
+
+                                    def Capsule "fr3_link5_capsule" (
+                                        prepend apiSchemas = ["PhysicsCollisionAPI"]
+                                    )
+                                    {
+                                        uniform token axis = "Z"
+                                        double height = 0.20986221995856755
+                                        uniform token purpose = "guide"
+                                        double radius = 0.06479710321232886
+                                        quatf xformOp:orient = (0.012982871, 0.0176267, 0.9919081, -0.12505665)
+                                        float3 xformOp:scale = (1, 1, 1)
+                                        double3 xformOp:translate = (-0.0030385329679385423, 0.042621982044532894, -0.10890302090959546)
+                                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                                    }
+                                }
+
+                                over "fr3_link4_collision" (
+                                    active = false
+                                )
+                                {
+                                }
+
+                                def Cube "fr3_link4_box" (
+                                    prepend apiSchemas = ["PhysicsCollisionAPI"]
+                                )
+                                {
+                                    uniform token purpose = "guide"
+                                    double size = 1
+                                    quatf xformOp:orient = (0.83856887, -0.00007721151, 0.54479295, 0.0016884794)
+                                    float3 xformOp:scale = (0.12905312, 0.17956449, 0.20970234)
+                                    double3 xformOp:translate = (-0.04062598290630038, 0.03445464693415581, 0.02871742731803484)
+                                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                                }
+                            }
+
+                            over "fr3_link3_collision" (
+                                active = false
+                            )
+                            {
+                            }
+
+                            def Capsule "fr3_link3_capsule" (
+                                prepend apiSchemas = ["PhysicsCollisionAPI"]
+                            )
+                            {
+                                uniform token axis = "Z"
+                                double height = 0.11651931410256477
+                                uniform token purpose = "guide"
+                                double radius = 0.06585600374752137
+                                quatf xformOp:orient = (0.6088568, 0.13048317, 0.3334809, 0.70785457)
+                                float3 xformOp:scale = (1, 1, 1)
+                                double3 xformOp:translate = (0.033340658070553884, 0.02694044487064755, -0.04146623870115755)
+                                uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                            }
+                        }
+
+                        over "fr3_link2_collision" (
+                            active = false
+                        )
+                        {
+                        }
+
+                        def Capsule "fr3_link2_capsule" (
+                            prepend apiSchemas = ["PhysicsCollisionAPI"]
+                        )
+                        {
+                            uniform token axis = "Z"
+                            double height = 0.13524489814891627
+                            uniform token purpose = "guide"
+                            double radius = 0.07106488107378639
+                            quatf xformOp:orient = (0.00008819028, 0.0010527446, 0.8040219, -0.59459877)
+                            float3 xformOp:scale = (1, 1, 1)
+                            double3 xformOp:translate = (0.000029941540468435143, -0.07639884006964628, 0.034502264882796105)
+                            uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                        }
+                    }
+
+                    over "fr3_link1_collision" (
+                        active = false
+                    )
+                    {
+                    }
+
+                    def Capsule "fr3_link1_capsule" (
+                        prepend apiSchemas = ["PhysicsCollisionAPI"]
+                    )
+                    {
+                        uniform token axis = "Z"
+                        double height = 0.1334177848837307
+                        uniform token purpose = "guide"
+                        double radius = 0.07104684586488115
+                        quatf xformOp:orient = (-0.0006505458, -0.00060427515, -0.14864372, 0.9888904)
+                        float3 xformOp:scale = (1, 1, 1)
+                        double3 xformOp:translate = (-0.000013522250289438933, -0.03468475216997597, -0.0755190150876128)
+                        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                    }
+                }
+
+                over "fr3_link0_collision" (
+                    active = false
+                )
+                {
+                }
+
+                def Cube "fr3_link0_box" (
+                    prepend apiSchemas = ["PhysicsCollisionAPI"]
+                )
+                {
+                    uniform token purpose = "guide"
+                    double size = 1
+                    quatf xformOp:orient = (0.06860041, 0.70377517, 0.06870891, -0.70375675)
+                    float3 xformOp:scale = (0.14002949, 0.18610044, 0.22587119)
+                    double3 xformOp:translate = (-0.04076713468682275, -0.008107034846296936, 0.06999191930023906)
+                    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:orient", "xformOp:scale"]
+                }
+            }
+        }
+    }
+}
+

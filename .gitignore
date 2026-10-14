@@ -99,5 +99,7 @@ docs/superpowers/
 
 # FrankaOrca robot asset: sources and builds are tracked, the URDF converter's cache record is not; local builds
 # outside assets/franka_orca/ are not either
+!assets/franka_orca/**/*.usd
+!assets/franka_orca/**/*.usda
 assets/franka_orca/*/usd/config.yaml
 assets/franka_orca_*/

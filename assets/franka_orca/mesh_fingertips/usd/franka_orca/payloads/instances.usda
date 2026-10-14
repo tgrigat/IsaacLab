@@ -1,0 +1,3954 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "URDF USD Converter v0.3.2"
+    }
+    endTimeCode = 1000000
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    startTimeCode = 0
+    upAxis = "Z"
+)
+
+def Scope "Instances"
+{
+    def Xform "_01_Base_URDF_5" (
+        prepend references = @./geometries.usd@</Geometries/_01_Base_URDF_5>
+    )
+    {
+        over "_01_Base_URDF_5" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_01_Base_URDF_5/VisualMaterials/_01_Base_URDF_color_64_64_64>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_01_Base_URDF_color_64_64_64" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_64_64_64>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_01_Base_URDF_4" (
+        prepend references = @./geometries.usd@</Geometries/_01_Base_URDF_4>
+    )
+    {
+        over "_01_Base_URDF_4" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_01_Base_URDF_4/VisualMaterials/_01_Base_URDF_color_255_66_6>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_01_Base_URDF_color_255_66_6" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_66_6>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_01_Base_URDF_3" (
+        prepend references = @./geometries.usd@</Geometries/_01_Base_URDF_3>
+    )
+    {
+        over "_01_Base_URDF_3" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_01_Base_URDF_3/VisualMaterials/_01_Base_URDF_color_255_255_255>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_01_Base_URDF_color_255_255_255" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_01_Base_URDF_2" (
+        prepend references = @./geometries.usd@</Geometries/_01_Base_URDF_2>
+    )
+    {
+        over "_01_Base_URDF_2" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_01_Base_URDF_2/VisualMaterials/_01_Base_URDF_color_202_209_238>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_01_Base_URDF_color_202_209_238" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_01_Base_URDF_1" (
+        prepend references = @./geometries.usd@</Geometries/_01_Base_URDF_1>
+    )
+    {
+        over "_01_Base_URDF_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_01_Base_URDF_1/VisualMaterials/_01_Base_URDF_color_192_192_192>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_01_Base_URDF_color_192_192_192" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_01_Base_URDF_0" (
+        prepend references = @./geometries.usd@</Geometries/_01_Base_URDF_0>
+    )
+    {
+        over "_01_Base_URDF_0" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_01_Base_URDF_0/VisualMaterials/_01_Base_URDF_color_0_174_255>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_01_Base_URDF_color_0_174_255" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_0_174_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_01_Base_URDF" (
+        prepend references = @./geometries.usd@</Geometries/_01_Base_URDF>
+    )
+    {
+        over "_01_Base_URDF" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_01_Base_URDF/VisualMaterials/_01_Base_URDF_color_0_0_0>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_01_Base_URDF_color_0_0_0" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_0_0_0>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "fr3_link1_visual" (
+        prepend references = @./geometries.usd@</Geometries/fr3_link1_visual>
+    )
+    {
+        over "fr3_link1_visual" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/fr3_link1_visual/VisualMaterials/_02_03_SHOULDER_URDF_UU_color_202_209_238>
+            custom string urdf:name = "fr3_link1_visual"
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_02_03_SHOULDER_URDF_UU_color_202_209_238" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "fr3_link2_visual" (
+        prepend references = @./geometries.usd@</Geometries/fr3_link2_visual>
+    )
+    {
+        over "fr3_link2_visual" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/fr3_link2_visual/VisualMaterials/_02_03_SHOULDER_URDF_UU_color_202_209_238_1>
+            custom string urdf:name = "fr3_link2_visual"
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_02_03_SHOULDER_URDF_UU_color_202_209_238_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_04_05_ELBOW_URDF_0" (
+        prepend references = @./geometries.usd@</Geometries/_04_05_ELBOW_URDF_0>
+    )
+    {
+        over "_04_05_ELBOW_URDF_0" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_04_05_ELBOW_URDF_0/VisualMaterials/_04_05_ELBOW_URDF_color_64_64_64>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_04_05_ELBOW_URDF_color_64_64_64" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_64_64_64>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_04_05_ELBOW_URDF" (
+        prepend references = @./geometries.usd@</Geometries/_04_05_ELBOW_URDF>
+    )
+    {
+        over "_04_05_ELBOW_URDF" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_04_05_ELBOW_URDF/VisualMaterials/_04_05_ELBOW_URDF_color_202_209_238>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_04_05_ELBOW_URDF_color_202_209_238" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_04_05_ELBOW_URDF_0_1" (
+        prepend references = @./geometries.usd@</Geometries/_04_05_ELBOW_URDF_0_1>
+    )
+    {
+        over "_04_05_ELBOW_URDF_0_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_04_05_ELBOW_URDF_0_1/VisualMaterials/_04_05_ELBOW_URDF_color_64_64_64_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_04_05_ELBOW_URDF_color_64_64_64_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_64_64_64>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_04_05_ELBOW_URDF_1" (
+        prepend references = @./geometries.usd@</Geometries/_04_05_ELBOW_URDF_1>
+    )
+    {
+        over "_04_05_ELBOW_URDF_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_04_05_ELBOW_URDF_1/VisualMaterials/_04_05_ELBOW_URDF_color_202_209_238_1>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_04_05_ELBOW_URDF_color_202_209_238_1" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_06_LOWER_ARM_URDF_1" (
+        prepend references = @./geometries.usd@</Geometries/_06_LOWER_ARM_URDF_1>
+    )
+    {
+        over "_06_LOWER_ARM_URDF_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_06_LOWER_ARM_URDF_1/VisualMaterials/_06_LOWER_ARM_URDF_color_64_64_64>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_06_LOWER_ARM_URDF_color_64_64_64" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_64_64_64>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_06_LOWER_ARM_URDF_0" (
+        prepend references = @./geometries.usd@</Geometries/_06_LOWER_ARM_URDF_0>
+    )
+    {
+        over "_06_LOWER_ARM_URDF_0" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_06_LOWER_ARM_URDF_0/VisualMaterials/_06_LOWER_ARM_URDF_color_255_255_255>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_06_LOWER_ARM_URDF_color_255_255_255" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_06_LOWER_ARM_URDF" (
+        prepend references = @./geometries.usd@</Geometries/_06_LOWER_ARM_URDF>
+    )
+    {
+        over "_06_LOWER_ARM_URDF" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_06_LOWER_ARM_URDF/VisualMaterials/_06_LOWER_ARM_URDF_color_202_209_238>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_06_LOWER_ARM_URDF_color_202_209_238" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_07_WRIST_URDF_6" (
+        prepend references = @./geometries.usd@</Geometries/_07_WRIST_URDF_6>
+    )
+    {
+        over "_07_WRIST_URDF_6" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_07_WRIST_URDF_6/VisualMaterials/_07_WRIST_URDF_color_8_159_255>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_07_WRIST_URDF_color_8_159_255" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_07_WRIST_URDF_color_8_159_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_07_WRIST_URDF_5" (
+        prepend references = @./geometries.usd@</Geometries/_07_WRIST_URDF_5>
+    )
+    {
+        over "_07_WRIST_URDF_5" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_07_WRIST_URDF_5/VisualMaterials/_07_WRIST_URDF_color_64_64_64>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_07_WRIST_URDF_color_64_64_64" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_64_64_64>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_07_WRIST_URDF_4" (
+        prepend references = @./geometries.usd@</Geometries/_07_WRIST_URDF_4>
+    )
+    {
+        over "_07_WRIST_URDF_4" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_07_WRIST_URDF_4/VisualMaterials/_07_WRIST_URDF_color_255_255_255>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_07_WRIST_URDF_color_255_255_255" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_0_174_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_07_WRIST_URDF_3" (
+        prepend references = @./geometries.usd@</Geometries/_07_WRIST_URDF_3>
+    )
+    {
+        over "_07_WRIST_URDF_3" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_07_WRIST_URDF_3/VisualMaterials/_07_WRIST_URDF_color_255_0_0>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_07_WRIST_URDF_color_255_0_0" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_07_WRIST_URDF_color_255_0_0>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_07_WRIST_URDF_2" (
+        prepend references = @./geometries.usd@</Geometries/_07_WRIST_URDF_2>
+    )
+    {
+        over "_07_WRIST_URDF_2" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_07_WRIST_URDF_2/VisualMaterials/_07_WRIST_URDF_color_210_210_239>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_07_WRIST_URDF_color_210_210_239" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_07_WRIST_URDF_color_210_210_239>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_07_WRIST_URDF_1" (
+        prepend references = @./geometries.usd@</Geometries/_07_WRIST_URDF_1>
+    )
+    {
+        over "_07_WRIST_URDF_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_07_WRIST_URDF_1/VisualMaterials/_07_WRIST_URDF_color_202_209_238>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_07_WRIST_URDF_color_202_209_238" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_07_WRIST_URDF_0" (
+        prepend references = @./geometries.usd@</Geometries/_07_WRIST_URDF_0>
+    )
+    {
+        over "_07_WRIST_URDF_0" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_07_WRIST_URDF_0/VisualMaterials/_07_WRIST_URDF_color_192_192_192>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_07_WRIST_URDF_color_192_192_192" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_07_WRIST_URDF" (
+        prepend references = @./geometries.usd@</Geometries/_07_WRIST_URDF>
+    )
+    {
+        over "_07_WRIST_URDF" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_07_WRIST_URDF/VisualMaterials/_07_WRIST_URDF_color_128_255_128>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_07_WRIST_URDF_color_128_255_128" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_07_WRIST_URDF_color_128_255_128>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_08_FLANGE_URDF_2" (
+        prepend references = @./geometries.usd@</Geometries/_08_FLANGE_URDF_2>
+    )
+    {
+        over "_08_FLANGE_URDF_2" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_08_FLANGE_URDF_2/VisualMaterials/_08_FLANGE_URDF_color_64_64_64>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_08_FLANGE_URDF_color_64_64_64" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_64_64_64>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_08_FLANGE_URDF_1" (
+        prepend references = @./geometries.usd@</Geometries/_08_FLANGE_URDF_1>
+    )
+    {
+        over "_08_FLANGE_URDF_1" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_08_FLANGE_URDF_1/VisualMaterials/_08_FLANGE_URDF_color_202_209_238>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_08_FLANGE_URDF_color_202_209_238" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_08_FLANGE_URDF_0" (
+        prepend references = @./geometries.usd@</Geometries/_08_FLANGE_URDF_0>
+    )
+    {
+        over "_08_FLANGE_URDF_0" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_08_FLANGE_URDF_0/VisualMaterials/_08_FLANGE_URDF_color_192_192_192>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_08_FLANGE_URDF_color_192_192_192" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "_08_FLANGE_URDF" (
+        prepend references = @./geometries.usd@</Geometries/_08_FLANGE_URDF>
+    )
+    {
+        over "_08_FLANGE_URDF" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/_08_FLANGE_URDF/VisualMaterials/_08_FLANGE_URDF_color_0_0_0>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "_08_FLANGE_URDF_color_0_0_0" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_0_0_0>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__ForeArmStructureModel_jV0" (
+        prepend references = @./geometries.usd@</Geometries/tn__ForeArmStructureModel_jV0>
+    )
+    {
+        over "tn__ForeArmStructureModel_jV0" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__ForeArmStructureModel_jV0/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__ForeArmStructureModel_jV0_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__ForeArmStructureModel_jV0>
+    )
+    {
+        over "tn__ForeArmStructureModel_jV0" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__TopTowerModel_nJ" (
+        prepend references = @./geometries.usd@</Geometries/tn__TopTowerModel_nJ>
+    )
+    {
+        over "tn__TopTowerModel_nJ" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__TopTowerModel_nJ/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__TopTowerModel_nJ_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__TopTowerModel_nJ>
+    )
+    {
+        over "tn__TopTowerModel_nJ" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__RCarpals_YC" (
+        prepend references = @./geometries.usd@</Geometries/tn__RCarpals_YC>
+    )
+    {
+        over "tn__RCarpals_YC" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__RCarpals_YC/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__RCarpals_YC_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__RCarpals_YC>
+    )
+    {
+        over "tn__RCarpals_YC" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__PAP_v4" (
+        prepend references = @./geometries.usd@</Geometries/tn__PAP_v4>
+    )
+    {
+        over "tn__PAP_v4" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__PAP_v4/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__PAP_v4_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__PAP_v4>
+    )
+    {
+        over "tn__PAP_v4" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__PPP_v4" (
+        prepend references = @./geometries.usd@</Geometries/tn__PPP_v4>
+    )
+    {
+        over "tn__PPP_v4" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__PPP_v4/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__PPP_v4_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__PPP_v4>
+    )
+    {
+        over "tn__PPP_v4" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__PFingerTipAssembly_oQ" (
+        prepend references = @./geometries.usd@</Geometries/tn__PFingerTipAssembly_oQ>
+    )
+    {
+        over "tn__PFingerTipAssembly_oQ" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__PFingerTipAssembly_oQ/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "pinky_taxel_000" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_000>
+    )
+    {
+        over "pinky_taxel_000" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_001" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_001>
+    )
+    {
+        over "pinky_taxel_001" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_002" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_002>
+    )
+    {
+        over "pinky_taxel_002" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_003" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_003>
+    )
+    {
+        over "pinky_taxel_003" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_004" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_004>
+    )
+    {
+        over "pinky_taxel_004" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_005" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_005>
+    )
+    {
+        over "pinky_taxel_005" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_006" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_006>
+    )
+    {
+        over "pinky_taxel_006" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_007" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_007>
+    )
+    {
+        over "pinky_taxel_007" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_008" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_008>
+    )
+    {
+        over "pinky_taxel_008" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_009" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_009>
+    )
+    {
+        over "pinky_taxel_009" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_010" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_010>
+    )
+    {
+        over "pinky_taxel_010" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_011" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_011>
+    )
+    {
+        over "pinky_taxel_011" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_012" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_012>
+    )
+    {
+        over "pinky_taxel_012" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_013" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_013>
+    )
+    {
+        over "pinky_taxel_013" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_014" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_014>
+    )
+    {
+        over "pinky_taxel_014" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_015" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_015>
+    )
+    {
+        over "pinky_taxel_015" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_016" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_016>
+    )
+    {
+        over "pinky_taxel_016" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_017" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_017>
+    )
+    {
+        over "pinky_taxel_017" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_018" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_018>
+    )
+    {
+        over "pinky_taxel_018" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_019" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_019>
+    )
+    {
+        over "pinky_taxel_019" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_020" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_020>
+    )
+    {
+        over "pinky_taxel_020" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_021" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_021>
+    )
+    {
+        over "pinky_taxel_021" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_022" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_022>
+    )
+    {
+        over "pinky_taxel_022" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_023" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_023>
+    )
+    {
+        over "pinky_taxel_023" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_024" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_024>
+    )
+    {
+        over "pinky_taxel_024" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_025" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_025>
+    )
+    {
+        over "pinky_taxel_025" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_026" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_026>
+    )
+    {
+        over "pinky_taxel_026" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_027" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_027>
+    )
+    {
+        over "pinky_taxel_027" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_028" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_028>
+    )
+    {
+        over "pinky_taxel_028" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_029" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_029>
+    )
+    {
+        over "pinky_taxel_029" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_030" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_030>
+    )
+    {
+        over "pinky_taxel_030" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_031" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_031>
+    )
+    {
+        over "pinky_taxel_031" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_032" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_032>
+    )
+    {
+        over "pinky_taxel_032" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_033" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_033>
+    )
+    {
+        over "pinky_taxel_033" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_034" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_034>
+    )
+    {
+        over "pinky_taxel_034" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_035" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_035>
+    )
+    {
+        over "pinky_taxel_035" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_036" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_036>
+    )
+    {
+        over "pinky_taxel_036" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_037" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_037>
+    )
+    {
+        over "pinky_taxel_037" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_038" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_038>
+    )
+    {
+        over "pinky_taxel_038" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_039" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_039>
+    )
+    {
+        over "pinky_taxel_039" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_040" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_040>
+    )
+    {
+        over "pinky_taxel_040" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_041" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_041>
+    )
+    {
+        over "pinky_taxel_041" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_042" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_042>
+    )
+    {
+        over "pinky_taxel_042" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_043" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_043>
+    )
+    {
+        over "pinky_taxel_043" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_044" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_044>
+    )
+    {
+        over "pinky_taxel_044" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_045" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_045>
+    )
+    {
+        over "pinky_taxel_045" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_046" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_046>
+    )
+    {
+        over "pinky_taxel_046" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_047" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_047>
+    )
+    {
+        over "pinky_taxel_047" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_048" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_048>
+    )
+    {
+        over "pinky_taxel_048" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_049" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_049>
+    )
+    {
+        over "pinky_taxel_049" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_taxel_050" (
+        prepend references = @./geometries.usd@</Geometries/pinky_taxel_050>
+    )
+    {
+        over "pinky_taxel_050" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_pad" (
+        prepend references = @./geometries.usd@</Geometries/pinky_pad>
+    )
+    {
+        over "pinky_pad" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "pinky_unsensed" (
+        prepend references = @./geometries.usd@</Geometries/pinky_unsensed>
+    )
+    {
+        over "pinky_unsensed" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__MAP_v4" (
+        prepend references = @./geometries.usd@</Geometries/tn__MAP_v4>
+    )
+    {
+        over "tn__MAP_v4" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__MAP_v4/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__MAP_v4_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__MAP_v4>
+    )
+    {
+        over "tn__MAP_v4" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__MPP_v4" (
+        prepend references = @./geometries.usd@</Geometries/tn__MPP_v4>
+    )
+    {
+        over "tn__MPP_v4" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__MPP_v4/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__MPP_v4_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__MPP_v4>
+    )
+    {
+        over "tn__MPP_v4" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__MFingerTipAssembly_oQ" (
+        prepend references = @./geometries.usd@</Geometries/tn__MFingerTipAssembly_oQ>
+    )
+    {
+        over "tn__MFingerTipAssembly_oQ" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__MFingerTipAssembly_oQ/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "ring_taxel_000" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_000>
+    )
+    {
+        over "ring_taxel_000" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_001" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_001>
+    )
+    {
+        over "ring_taxel_001" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_002" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_002>
+    )
+    {
+        over "ring_taxel_002" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_003" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_003>
+    )
+    {
+        over "ring_taxel_003" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_004" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_004>
+    )
+    {
+        over "ring_taxel_004" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_005" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_005>
+    )
+    {
+        over "ring_taxel_005" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_006" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_006>
+    )
+    {
+        over "ring_taxel_006" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_007" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_007>
+    )
+    {
+        over "ring_taxel_007" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_008" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_008>
+    )
+    {
+        over "ring_taxel_008" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_009" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_009>
+    )
+    {
+        over "ring_taxel_009" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_010" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_010>
+    )
+    {
+        over "ring_taxel_010" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_011" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_011>
+    )
+    {
+        over "ring_taxel_011" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_012" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_012>
+    )
+    {
+        over "ring_taxel_012" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_013" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_013>
+    )
+    {
+        over "ring_taxel_013" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_014" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_014>
+    )
+    {
+        over "ring_taxel_014" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_015" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_015>
+    )
+    {
+        over "ring_taxel_015" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_016" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_016>
+    )
+    {
+        over "ring_taxel_016" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_017" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_017>
+    )
+    {
+        over "ring_taxel_017" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_018" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_018>
+    )
+    {
+        over "ring_taxel_018" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_019" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_019>
+    )
+    {
+        over "ring_taxel_019" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_020" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_020>
+    )
+    {
+        over "ring_taxel_020" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_021" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_021>
+    )
+    {
+        over "ring_taxel_021" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_022" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_022>
+    )
+    {
+        over "ring_taxel_022" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_023" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_023>
+    )
+    {
+        over "ring_taxel_023" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_024" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_024>
+    )
+    {
+        over "ring_taxel_024" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_025" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_025>
+    )
+    {
+        over "ring_taxel_025" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_026" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_026>
+    )
+    {
+        over "ring_taxel_026" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_027" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_027>
+    )
+    {
+        over "ring_taxel_027" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_028" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_028>
+    )
+    {
+        over "ring_taxel_028" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_029" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_029>
+    )
+    {
+        over "ring_taxel_029" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_030" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_030>
+    )
+    {
+        over "ring_taxel_030" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_031" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_031>
+    )
+    {
+        over "ring_taxel_031" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_032" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_032>
+    )
+    {
+        over "ring_taxel_032" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_033" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_033>
+    )
+    {
+        over "ring_taxel_033" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_034" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_034>
+    )
+    {
+        over "ring_taxel_034" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_035" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_035>
+    )
+    {
+        over "ring_taxel_035" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_036" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_036>
+    )
+    {
+        over "ring_taxel_036" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_037" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_037>
+    )
+    {
+        over "ring_taxel_037" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_038" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_038>
+    )
+    {
+        over "ring_taxel_038" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_039" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_039>
+    )
+    {
+        over "ring_taxel_039" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_040" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_040>
+    )
+    {
+        over "ring_taxel_040" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_041" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_041>
+    )
+    {
+        over "ring_taxel_041" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_042" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_042>
+    )
+    {
+        over "ring_taxel_042" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_043" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_043>
+    )
+    {
+        over "ring_taxel_043" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_044" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_044>
+    )
+    {
+        over "ring_taxel_044" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_045" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_045>
+    )
+    {
+        over "ring_taxel_045" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_046" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_046>
+    )
+    {
+        over "ring_taxel_046" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_047" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_047>
+    )
+    {
+        over "ring_taxel_047" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_048" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_048>
+    )
+    {
+        over "ring_taxel_048" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_049" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_049>
+    )
+    {
+        over "ring_taxel_049" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_050" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_050>
+    )
+    {
+        over "ring_taxel_050" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_051" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_051>
+    )
+    {
+        over "ring_taxel_051" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_052" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_052>
+    )
+    {
+        over "ring_taxel_052" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_053" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_053>
+    )
+    {
+        over "ring_taxel_053" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_054" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_054>
+    )
+    {
+        over "ring_taxel_054" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_055" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_055>
+    )
+    {
+        over "ring_taxel_055" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_056" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_056>
+    )
+    {
+        over "ring_taxel_056" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_057" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_057>
+    )
+    {
+        over "ring_taxel_057" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_058" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_058>
+    )
+    {
+        over "ring_taxel_058" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_059" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_059>
+    )
+    {
+        over "ring_taxel_059" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_060" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_060>
+    )
+    {
+        over "ring_taxel_060" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_061" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_061>
+    )
+    {
+        over "ring_taxel_061" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_062" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_062>
+    )
+    {
+        over "ring_taxel_062" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_063" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_063>
+    )
+    {
+        over "ring_taxel_063" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_064" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_064>
+    )
+    {
+        over "ring_taxel_064" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_065" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_065>
+    )
+    {
+        over "ring_taxel_065" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_066" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_066>
+    )
+    {
+        over "ring_taxel_066" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_067" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_067>
+    )
+    {
+        over "ring_taxel_067" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_068" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_068>
+    )
+    {
+        over "ring_taxel_068" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_069" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_069>
+    )
+    {
+        over "ring_taxel_069" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_070" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_070>
+    )
+    {
+        over "ring_taxel_070" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_071" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_071>
+    )
+    {
+        over "ring_taxel_071" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_072" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_072>
+    )
+    {
+        over "ring_taxel_072" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_073" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_073>
+    )
+    {
+        over "ring_taxel_073" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_074" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_074>
+    )
+    {
+        over "ring_taxel_074" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_075" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_075>
+    )
+    {
+        over "ring_taxel_075" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_076" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_076>
+    )
+    {
+        over "ring_taxel_076" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_077" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_077>
+    )
+    {
+        over "ring_taxel_077" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_078" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_078>
+    )
+    {
+        over "ring_taxel_078" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_079" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_079>
+    )
+    {
+        over "ring_taxel_079" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_080" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_080>
+    )
+    {
+        over "ring_taxel_080" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_081" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_081>
+    )
+    {
+        over "ring_taxel_081" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_082" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_082>
+    )
+    {
+        over "ring_taxel_082" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_083" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_083>
+    )
+    {
+        over "ring_taxel_083" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_084" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_084>
+    )
+    {
+        over "ring_taxel_084" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_085" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_085>
+    )
+    {
+        over "ring_taxel_085" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_taxel_086" (
+        prepend references = @./geometries.usd@</Geometries/ring_taxel_086>
+    )
+    {
+        over "ring_taxel_086" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_pad" (
+        prepend references = @./geometries.usd@</Geometries/ring_pad>
+    )
+    {
+        over "ring_pad" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "ring_unsensed" (
+        prepend references = @./geometries.usd@</Geometries/ring_unsensed>
+    )
+    {
+        over "ring_unsensed" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__IAPR_e64" (
+        prepend references = @./geometries.usd@</Geometries/tn__IAPR_e64>
+    )
+    {
+        over "tn__IAPR_e64" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__IAPR_e64/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__IAPR_e64_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__IAPR_e64>
+    )
+    {
+        over "tn__IAPR_e64" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__IPP_v4" (
+        prepend references = @./geometries.usd@</Geometries/tn__IPP_v4>
+    )
+    {
+        over "tn__IPP_v4" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__IPP_v4/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__IPP_v4_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__IPP_v4>
+    )
+    {
+        over "tn__IPP_v4" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__IFingerTipAssembly_oQ" (
+        prepend references = @./geometries.usd@</Geometries/tn__IFingerTipAssembly_oQ>
+    )
+    {
+        over "tn__IFingerTipAssembly_oQ" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__IFingerTipAssembly_oQ/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "index_taxel_014" (
+        prepend references = @./geometries.usd@</Geometries/index_taxel_014>
+    )
+    {
+        over "index_taxel_014" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "index_taxel_015" (
+        prepend references = @./geometries.usd@</Geometries/index_taxel_015>
+    )
+    {
+        over "index_taxel_015" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "index_taxel_025" (
+        prepend references = @./geometries.usd@</Geometries/index_taxel_025>
+    )
+    {
+        over "index_taxel_025" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "index_taxel_026" (
+        prepend references = @./geometries.usd@</Geometries/index_taxel_026>
+    )
+    {
+        over "index_taxel_026" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "index_taxel_031" (
+        prepend references = @./geometries.usd@</Geometries/index_taxel_031>
+    )
+    {
+        over "index_taxel_031" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "index_taxel_041" (
+        prepend references = @./geometries.usd@</Geometries/index_taxel_041>
+    )
+    {
+        over "index_taxel_041" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "index_taxel_043" (
+        prepend references = @./geometries.usd@</Geometries/index_taxel_043>
+    )
+    {
+        over "index_taxel_043" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "index_taxel_044" (
+        prepend references = @./geometries.usd@</Geometries/index_taxel_044>
+    )
+    {
+        over "index_taxel_044" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "index_taxel_064" (
+        prepend references = @./geometries.usd@</Geometries/index_taxel_064>
+    )
+    {
+        over "index_taxel_064" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "index_unsensed" (
+        prepend references = @./geometries.usd@</Geometries/index_unsensed>
+    )
+    {
+        over "index_unsensed" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__TTPR_e64" (
+        prepend references = @./geometries.usd@</Geometries/tn__TTPR_e64>
+    )
+    {
+        over "tn__TTPR_e64" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__TTPR_e64/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__TTPR_e64_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__TTPR_e64>
+    )
+    {
+        over "tn__TTPR_e64" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__RTAP_e63" (
+        prepend references = @./geometries.usd@</Geometries/tn__RTAP_e63>
+    )
+    {
+        over "tn__RTAP_e63" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__RTAP_e63/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__RTAP_e63_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__RTAP_e63>
+    )
+    {
+        over "tn__RTAP_e63" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__TPP_v4" (
+        prepend references = @./geometries.usd@</Geometries/tn__TPP_v4>
+    )
+    {
+        over "tn__TPP_v4" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__TPP_v4/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__TPP_v4_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__TPP_v4>
+    )
+    {
+        over "tn__TPP_v4" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__TDP_v4" (
+        prepend references = @./geometries.usd@</Geometries/tn__TDP_v4>
+    )
+    {
+        over "tn__TDP_v4" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__TDP_v4/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/_01_Base_URDF_color_255_255_255>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "thumb_taxel_000" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_000>
+    )
+    {
+        over "thumb_taxel_000" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_001" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_001>
+    )
+    {
+        over "thumb_taxel_001" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_002" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_002>
+    )
+    {
+        over "thumb_taxel_002" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_003" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_003>
+    )
+    {
+        over "thumb_taxel_003" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_004" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_004>
+    )
+    {
+        over "thumb_taxel_004" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_005" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_005>
+    )
+    {
+        over "thumb_taxel_005" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_006" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_006>
+    )
+    {
+        over "thumb_taxel_006" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_007" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_007>
+    )
+    {
+        over "thumb_taxel_007" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_008" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_008>
+    )
+    {
+        over "thumb_taxel_008" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_009" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_009>
+    )
+    {
+        over "thumb_taxel_009" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_010" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_010>
+    )
+    {
+        over "thumb_taxel_010" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_011" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_011>
+    )
+    {
+        over "thumb_taxel_011" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_012" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_012>
+    )
+    {
+        over "thumb_taxel_012" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_013" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_013>
+    )
+    {
+        over "thumb_taxel_013" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_014" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_014>
+    )
+    {
+        over "thumb_taxel_014" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_015" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_015>
+    )
+    {
+        over "thumb_taxel_015" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_016" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_016>
+    )
+    {
+        over "thumb_taxel_016" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_017" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_017>
+    )
+    {
+        over "thumb_taxel_017" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_018" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_018>
+    )
+    {
+        over "thumb_taxel_018" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_019" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_019>
+    )
+    {
+        over "thumb_taxel_019" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_020" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_020>
+    )
+    {
+        over "thumb_taxel_020" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_021" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_021>
+    )
+    {
+        over "thumb_taxel_021" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_022" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_022>
+    )
+    {
+        over "thumb_taxel_022" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_023" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_023>
+    )
+    {
+        over "thumb_taxel_023" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_024" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_024>
+    )
+    {
+        over "thumb_taxel_024" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_025" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_025>
+    )
+    {
+        over "thumb_taxel_025" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_026" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_026>
+    )
+    {
+        over "thumb_taxel_026" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_027" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_027>
+    )
+    {
+        over "thumb_taxel_027" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_028" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_028>
+    )
+    {
+        over "thumb_taxel_028" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_029" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_029>
+    )
+    {
+        over "thumb_taxel_029" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_030" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_030>
+    )
+    {
+        over "thumb_taxel_030" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_031" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_031>
+    )
+    {
+        over "thumb_taxel_031" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_032" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_032>
+    )
+    {
+        over "thumb_taxel_032" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_033" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_033>
+    )
+    {
+        over "thumb_taxel_033" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_034" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_034>
+    )
+    {
+        over "thumb_taxel_034" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_035" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_035>
+    )
+    {
+        over "thumb_taxel_035" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_036" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_036>
+    )
+    {
+        over "thumb_taxel_036" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_037" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_037>
+    )
+    {
+        over "thumb_taxel_037" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_038" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_038>
+    )
+    {
+        over "thumb_taxel_038" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_039" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_039>
+    )
+    {
+        over "thumb_taxel_039" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_040" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_040>
+    )
+    {
+        over "thumb_taxel_040" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_041" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_041>
+    )
+    {
+        over "thumb_taxel_041" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_042" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_042>
+    )
+    {
+        over "thumb_taxel_042" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_043" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_043>
+    )
+    {
+        over "thumb_taxel_043" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_044" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_044>
+    )
+    {
+        over "thumb_taxel_044" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_045" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_045>
+    )
+    {
+        over "thumb_taxel_045" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_046" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_046>
+    )
+    {
+        over "thumb_taxel_046" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_047" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_047>
+    )
+    {
+        over "thumb_taxel_047" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_048" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_048>
+    )
+    {
+        over "thumb_taxel_048" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_049" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_049>
+    )
+    {
+        over "thumb_taxel_049" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_taxel_050" (
+        prepend references = @./geometries.usd@</Geometries/thumb_taxel_050>
+    )
+    {
+        over "thumb_taxel_050" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_pad" (
+        prepend references = @./geometries.usd@</Geometries/thumb_pad>
+    )
+    {
+        over "thumb_pad" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "thumb_unsensed" (
+        prepend references = @./geometries.usd@</Geometries/thumb_unsensed>
+    )
+    {
+        over "thumb_unsensed" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "fr3_link7_collision" (
+        prepend references = @./geometries.usd@</Geometries/fr3_link7_collision>
+    )
+    {
+        over "fr3_link7_collision" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "fr3_link6_collision" (
+        prepend references = @./geometries.usd@</Geometries/fr3_link6_collision>
+    )
+    {
+        over "fr3_link6_collision" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "fr3_link5_collision" (
+        prepend references = @./geometries.usd@</Geometries/fr3_link5_collision>
+    )
+    {
+        over "fr3_link5_collision" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "fr3_link4_collision" (
+        prepend references = @./geometries.usd@</Geometries/fr3_link4_collision>
+    )
+    {
+        over "fr3_link4_collision" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "fr3_link3_collision" (
+        prepend references = @./geometries.usd@</Geometries/fr3_link3_collision>
+    )
+    {
+        over "fr3_link3_collision" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "fr3_link2_collision" (
+        prepend references = @./geometries.usd@</Geometries/fr3_link2_collision>
+    )
+    {
+        over "fr3_link2_collision" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "fr3_link1_collision" (
+        prepend references = @./geometries.usd@</Geometries/fr3_link1_collision>
+    )
+    {
+        over "fr3_link1_collision" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "fr3_link0_collision" (
+        prepend references = @./geometries.usd@</Geometries/fr3_link0_collision>
+    )
+    {
+        over "fr3_link0_collision" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+}
+

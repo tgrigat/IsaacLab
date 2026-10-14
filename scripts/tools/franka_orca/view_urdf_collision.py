@@ -15,7 +15,7 @@ Usage:
 
     uv run python scripts/tools/franka_orca/view_urdf_collision.py
     uv run python scripts/tools/franka_orca/view_urdf_collision.py --home
-    uv run python scripts/tools/franka_orca/view_urdf_collision.py --urdf assets/franka_orca/no_taxels/franka_orca.urdf
+    uv run python scripts/tools/franka_orca/view_urdf_collision.py --fingertips no_taxels
 """
 
 import argparse
@@ -29,12 +29,13 @@ os.environ.setdefault("PYGLFW_LIBRARY_VARIANT", "x11")
 import newton  # noqa: E402
 import newton.viewer  # noqa: E402
 
-from isaaclab_assets.robots.franka_orca import FRANKA_ORCA_ASSET_DIR, FRANKA_ORCA_CFG  # noqa: E402
+from isaaclab_assets.robots.franka_orca import FINGERTIP_METHODS, FRANKA_ORCA_CFG, franka_orca_usd  # noqa: E402
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--urdf", type=Path, default=FRANKA_ORCA_ASSET_DIR / "franka_orca.urdf")
+    parser.add_argument("--fingertips", choices=FINGERTIP_METHODS, default="mesh_taxels", help="Asset to show.")
+    parser.add_argument("--urdf", type=Path, help="URDF to show instead of the --fingertips asset's.")
     parser.add_argument("--joint-pos", type=float, default=0.0, help="Position of every joint [rad].")
     parser.add_argument(
         "--home", action="store_true", help="Pose the joints at FRANKA_ORCA_CFG's default joint positions."
@@ -43,7 +44,8 @@ def main():
     args = parser.parse_args()
 
     builder = newton.ModelBuilder()
-    builder.add_urdf(str(args.urdf), floating=False, force_show_colliders=True)
+    urdf = args.urdf or franka_orca_usd(args.fingertips).with_name("franka_orca.urdf")
+    builder.add_urdf(str(urdf), floating=False, force_show_colliders=True)
     # the URDF importer keeps the meshes as they are; the simulation collides with their capped convex hulls
     builder.approximate_meshes("convex_hull")
     builder.joint_q[:] = [args.joint_pos] * len(builder.joint_q)
@@ -62,7 +64,7 @@ def main():
     viewer.set_model(model)
     viewer.show_collision = True
     viewer.show_visual = not args.hide_visual
-    print(f"{args.urdf}: {model.body_count} bodies, {model.shape_count} shapes")
+    print(f"{urdf}: {model.body_count} bodies, {model.shape_count} shapes")
     time = 0.0
     while viewer.is_running():
         viewer.begin_frame(time)

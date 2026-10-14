@@ -3,19 +3,19 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-"""Configuration for the Franka FR3 arm + right ORCA hand, with halltaxel tactile fingertips.
+"""Configuration for the Franka FR3 arm + right ORCA hand, optionally with halltaxel tactile fingertips.
 
-The asset is a local build output of ``scripts/tools/franka_orca/build_asset.py`` (URDF -> USD with
-per-taxel fingertip colliders) and is not shipped with Isaac Lab.
+The asset is built by ``scripts/tools/franka_orca/build_asset.py`` from the sources vendored in
+``assets/franka_orca/sources/``, once per fingertip collision method (:data:`FINGERTIP_METHODS`), into
+``assets/franka_orca/<method>/``. Both are tracked in the repository.
 
 The following configurations are available:
 
-* :obj:`FRANKA_ORCA_CFG`: FR3 arm + right ORCA hand with implicit actuators.
+* :obj:`FRANKA_ORCA_CFG`: FR3 arm + right ORCA hand with implicit actuators, fingertips without taxels.
 """
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
 
 from isaaclab_newton.sim.schemas import NewtonArticulationCfg
@@ -25,19 +25,35 @@ import isaaclab.sim as sim_utils
 from isaaclab.actuators import ImplicitActuatorCfg
 from isaaclab.assets.articulation import ArticulationCfg
 
-FRANKA_ORCA_ASSET_DIR = Path(
-    os.environ.get(
-        "FRANKA_ORCA_ASSET_DIR", Path(__file__).resolve().parents[4] / "assets" / "franka_orca_mesh_fingertips"
-    )
-)
-"""Build output directory, ``<repo>/assets/franka_orca_mesh_fingertips`` unless ``$FRANKA_ORCA_ASSET_DIR`` is set.
-Named after the fingertip collision method, so builds of the other methods can sit next to it."""
+FRANKA_ORCA_ASSET_DIR = Path(__file__).resolve().parents[4] / "assets" / "franka_orca"
+"""Asset directory, ``<repo>/assets/franka_orca``: the build sources in ``sources/`` and one build per fingertip
+method in ``<method>/``."""
 
-FRANKA_ORCA_USD = FRANKA_ORCA_ASSET_DIR / "franka_orca.usda"
-"""Robot USD, including the baked taxel colliders and the collision filter pairs."""
+FINGERTIP_METHODS = ("primitives", "no_taxels", "convex_taxels", "mesh_taxels", "mesh_fingertips")
+"""How the fingertips collide, and whether they sense, from cheapest to most exact (see ``build_asset.py``):
 
-FRANKA_ORCA_TACTILE_DIR = FRANKA_ORCA_ASSET_DIR / "tactile"
-"""Per-finger tactile sidecars (``<finger>.npz``)."""
+* ``primitives``: no taxels, every link one capsule or box,
+* ``no_taxels``: no taxels, each fingertip one convex hull,
+* ``convex_taxels``: one convex solid per taxel, the rest of the fingertip one convex hull,
+* ``mesh_taxels``: one triangle mesh per taxel, the rest of the fingertip CoACD hulls,
+* ``mesh_fingertips``: one triangle mesh per taxel, the rest of the fingertip one triangle mesh (slow).
+"""
+
+TAXEL_METHODS = ("convex_taxels", "mesh_taxels", "mesh_fingertips")
+"""The fingertip methods with taxels."""
+
+
+def franka_orca_usd(fingertips: str) -> Path:
+    """Robot USD of a fingertip method, including the collision filter pairs and any baked taxel colliders."""
+    if fingertips not in FINGERTIP_METHODS:
+        raise ValueError(f"unknown fingertip method '{fingertips}', expected one of {FINGERTIP_METHODS}")
+    return FRANKA_ORCA_ASSET_DIR / fingertips / "franka_orca.usda"
+
+
+def franka_orca_tactile_dir(fingertips: str) -> Path:
+    """Directory of a fingertip method's tactile sidecars (``<finger>.npz``)."""
+    return franka_orca_usd(fingertips).parent / "tactile"
+
 
 FR3_ARM_SHOULDER_JOINTS = ["fr3_joint1", "fr3_joint2", "fr3_joint3", "fr3_joint4"]
 FR3_ARM_FOREARM_JOINTS = ["fr3_joint5", "fr3_joint6", "fr3_joint7"]
@@ -78,7 +94,7 @@ ORCA_FINGER_CHAINS = [
 
 FRANKA_ORCA_CFG = ArticulationCfg(
     spawn=sim_utils.UsdFileCfg(
-        usd_path=str(FRANKA_ORCA_USD),
+        usd_path=str(franka_orca_usd("no_taxels")),
         activate_contact_sensors=True,
         rigid_props=PhysxRigidBodyCfg(
             disable_gravity=True,

@@ -14,6 +14,7 @@ holds it.
 """
 
 import copy
+from typing import ClassVar
 
 from isaaclab_newton.sim.schemas import MujocoRigidBodyCfg
 
@@ -30,8 +31,6 @@ from .franka_orca_env_cfg import (
     HAND_BODIES,
     FrankaOrcaLiftEnvCfg,
     FrankaOrcaObjectCfg,
-    remove_taxels,
-    use_primitive_colliders,
 )
 
 PALM_UP_JOINT_POS = {
@@ -247,15 +246,6 @@ class FrankaOrcaInHandLiftEnvCfg(FrankaOrcaLiftEnvCfg):
                         },
                     ),
                 )
-
-
-@configclass
-class FrankaOrcaInHandLiftNoTaxelsEnvCfg(FrankaOrcaInHandLiftEnvCfg):
-    """In-hand cube carrying with plain fingertip hulls and no tactile sensing (see :func:`.remove_taxels`)."""
-
-    def __post_init__(self):
-        super().__post_init__()
-        remove_taxels(self)
 
 
 CUBE_CLOSE_TO_PALM_RANGE = {"x": [-0.02, 0.02], "y": [0.08, 0.105], "z": [0.03, 0.09]}
@@ -641,19 +631,70 @@ class FrankaOrcaInHandStagedLiftEnvCfg(FrankaOrcaInHandLiftEnvCfg):
 
 
 @configclass
-class FrankaOrcaInHandStagedLiftNoTaxelsEnvCfg(FrankaOrcaInHandStagedLiftEnvCfg):
-    """Staged in-hand cube carrying with plain fingertip hulls and no tactile sensing (see :func:`.remove_taxels`)."""
+class FrankaOrcaInHandLiftPrimitivesEnvCfg(FrankaOrcaInHandLiftEnvCfg):
+    """In-hand cube carrying with every link colliding as a capsule or box, without taxels."""
 
-    def __post_init__(self):
-        super().__post_init__()
-        remove_taxels(self)
+    fingertips: ClassVar[str] = "primitives"
+
+
+@configclass
+class FrankaOrcaInHandLiftNoTaxelsEnvCfg(FrankaOrcaInHandLiftEnvCfg):
+    """In-hand cube carrying with convex fingertip hulls, without taxels."""
+
+    fingertips: ClassVar[str] = "no_taxels"
+
+
+@configclass
+class FrankaOrcaInHandLiftConvexTaxelsEnvCfg(FrankaOrcaInHandLiftEnvCfg):
+    """In-hand cube carrying with convex taxels over a convex fingertip hull."""
+
+    fingertips: ClassVar[str] = "convex_taxels"
+
+
+@configclass
+class FrankaOrcaInHandLiftMeshTaxelsEnvCfg(FrankaOrcaInHandLiftEnvCfg):
+    """In-hand cube carrying with triangle-mesh taxels over CoACD fingertip hulls."""
+
+    fingertips: ClassVar[str] = "mesh_taxels"
+
+
+@configclass
+class FrankaOrcaInHandLiftMeshFingertipsEnvCfg(FrankaOrcaInHandLiftEnvCfg):
+    """In-hand cube carrying with triangle-mesh taxels over a triangle-mesh fingertip."""
+
+    fingertips: ClassVar[str] = "mesh_fingertips"
 
 
 @configclass
 class FrankaOrcaInHandStagedLiftPrimitivesEnvCfg(FrankaOrcaInHandStagedLiftEnvCfg):
-    """Staged in-hand cube carrying with every link colliding as a capsule or box and no tactile sensing (see
-    :func:`.use_primitive_colliders`), to learn the coarse motion before fine-tuning on the hulls."""
+    """Staged in-hand cube carrying with every link colliding as a capsule or box, without taxels."""
 
-    def __post_init__(self):
-        super().__post_init__()
-        use_primitive_colliders(self)
+    fingertips: ClassVar[str] = "primitives"
+
+
+@configclass
+class FrankaOrcaInHandStagedLiftNoTaxelsEnvCfg(FrankaOrcaInHandStagedLiftEnvCfg):
+    """Staged in-hand cube carrying with convex fingertip hulls, without taxels."""
+
+    fingertips: ClassVar[str] = "no_taxels"
+
+
+@configclass
+class FrankaOrcaInHandStagedLiftConvexTaxelsEnvCfg(FrankaOrcaInHandStagedLiftEnvCfg):
+    """Staged in-hand cube carrying with convex taxels over a convex fingertip hull."""
+
+    fingertips: ClassVar[str] = "convex_taxels"
+
+
+@configclass
+class FrankaOrcaInHandStagedLiftMeshTaxelsEnvCfg(FrankaOrcaInHandStagedLiftEnvCfg):
+    """Staged in-hand cube carrying with triangle-mesh taxels over CoACD fingertip hulls."""
+
+    fingertips: ClassVar[str] = "mesh_taxels"
+
+
+@configclass
+class FrankaOrcaInHandStagedLiftMeshFingertipsEnvCfg(FrankaOrcaInHandStagedLiftEnvCfg):
+    """Staged in-hand cube carrying with triangle-mesh taxels over a triangle-mesh fingertip."""
+
+    fingertips: ClassVar[str] = "mesh_fingertips"

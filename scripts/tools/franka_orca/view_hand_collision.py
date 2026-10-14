@@ -25,8 +25,7 @@ Usage:
 .. code-block:: bash
 
     uv run python scripts/tools/franka_orca/view_hand_collision.py
-    uv run python scripts/tools/franka_orca/view_hand_collision.py --home --pads
-    uv run python scripts/tools/franka_orca/view_hand_collision.py --usd assets/franka_orca/no_taxels/franka_orca.usda
+    uv run python scripts/tools/franka_orca/view_hand_collision.py --fingertips convex_taxels --home --pads
 """
 
 import argparse
@@ -44,7 +43,7 @@ import newton.viewer  # noqa: E402
 import numpy as np  # noqa: E402
 import warp as wp  # noqa: E402
 
-from isaaclab_assets.robots.franka_orca import FRANKA_ORCA_CFG, FRANKA_ORCA_USD  # noqa: E402
+from isaaclab_assets.robots.franka_orca import FINGERTIP_METHODS, FRANKA_ORCA_CFG, franka_orca_usd  # noqa: E402
 
 KIND_COLORS = {
     "taxel": [(1.0, 0.55, 0.1), (0.85, 0.35, 0.0)],
@@ -68,7 +67,8 @@ def collider_kind(name: str) -> str:
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--usd", type=Path, default=FRANKA_ORCA_USD)
+    parser.add_argument("--fingertips", choices=FINGERTIP_METHODS, default="mesh_taxels", help="Asset to show.")
+    parser.add_argument("--usd", type=Path, help="Robot USD to show instead of the --fingertips asset.")
     parser.add_argument("--joint-pos", type=float, default=0.0, help="Position of every joint [rad].")
     parser.add_argument(
         "--home", action="store_true", help="Pose the joints at FRANKA_ORCA_CFG's default joint positions."
@@ -76,9 +76,10 @@ def main():
     parser.add_argument("--pads", action="store_true", help="Also show the pad proxies.")
     args = parser.parse_args()
 
+    usd = args.usd or franka_orca_usd(args.fingertips)
     builder = newton.ModelBuilder()
     builder.add_usd(
-        str(args.usd),
+        str(usd),
         floating=False,
         hide_collision_shapes=True,
         schema_resolvers=[newton.usd.SchemaResolverNewton(), newton.usd.SchemaResolverPhysx()],
@@ -117,7 +118,7 @@ def main():
     state = model.state()
     newton.eval_fk(model, model.joint_q, model.joint_qd, state)
 
-    print(f"{args.usd}: hand colliders as imported")
+    print(f"{usd}: hand colliders as imported")
     for kind, counts in hull_vertices.items():
         print(f"  {kind:>9}: {len(counts):4d} hulls, {min(counts)}-{max(counts)} vertices, {sum(counts)} in total")
 

@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-"""Lift FrankaOrca reorient, lift and in-hand lift environments."""
+"""Lift FrankaOrca lift and in-hand lift environments."""
 
 import gymnasium as gym
 
@@ -13,95 +13,31 @@ from . import agents
 # Register Gym environments.
 ##
 
-gym.register(
-    id="Isaac-Reorient-FrankaOrca",
-    entry_point="isaaclab.envs:ManagerBasedRLEnv",
-    disable_env_checker=True,
-    kwargs={
-        "env_cfg_entry_point": f"{__name__}.franka_orca_env_cfg:FrankaOrcaReorientEnvCfg",
-        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:FrankaOrcaPPORunnerCfg",
-        "default_agent": "rsl_rl",
-    },
-)
+FINGERTIP_VARIANTS = ["Primitives", "NoTaxels", "ConvexTaxels", "MeshTaxels", "MeshFingertips"]
+"""Task suffix and config class infix of each fingertip collision method (``FINGERTIP_METHODS``), from cheapest to
+most exact: every link a capsule or box; convex fingertip hulls; convex taxels over a convex fingertip hull;
+triangle-mesh taxels over CoACD fingertip hulls; triangle-mesh taxels over a triangle-mesh fingertip. The first two
+have no taxels, which keeps MJWarp's contacts from overflowing in dense grasps."""
 
-gym.register(
-    id="Isaac-Lift-FrankaOrca",
-    entry_point="isaaclab.envs:ManagerBasedRLEnv",
-    disable_env_checker=True,
-    kwargs={
-        "env_cfg_entry_point": f"{__name__}.franka_orca_env_cfg:FrankaOrcaLiftEnvCfg",
-        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:FrankaOrcaPPORunnerCfg",
-        "default_agent": "rsl_rl",
-    },
-)
+TASKS = {
+    "Isaac-Lift-FrankaOrca": "franka_orca_env_cfg:FrankaOrcaLift",
+    "Isaac-Lift-FrankaOrca-InHand": "franka_orca_in_hand_env_cfg:FrankaOrcaInHandLift",
+    "Isaac-Lift-FrankaOrca-InHand-Staged": "franka_orca_in_hand_env_cfg:FrankaOrcaInHandStagedLift",
+}
+"""Task id prefix and config class prefix of each task."""
 
-gym.register(
-    id="Isaac-Lift-FrankaOrca-InHand",
-    entry_point="isaaclab.envs:ManagerBasedRLEnv",
-    disable_env_checker=True,
-    kwargs={
-        "env_cfg_entry_point": f"{__name__}.franka_orca_in_hand_env_cfg:FrankaOrcaInHandLiftEnvCfg",
-        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:FrankaOrcaPPORunnerCfg",
-        "default_agent": "rsl_rl",
-    },
-)
-
-gym.register(
-    id="Isaac-Lift-FrankaOrca-InHand-Staged",
-    entry_point="isaaclab.envs:ManagerBasedRLEnv",
-    disable_env_checker=True,
-    kwargs={
-        "env_cfg_entry_point": f"{__name__}.franka_orca_in_hand_env_cfg:FrankaOrcaInHandStagedLiftEnvCfg",
-        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:FrankaOrcaPPORunnerCfg",
-        "default_agent": "rsl_rl",
-    },
-)
-
-# ablations with plain fingertip hulls and no tactile sensing, which keep MJWarp's contacts from overflowing
-gym.register(
-    id="Isaac-Lift-FrankaOrca-NoTaxels",
-    entry_point="isaaclab.envs:ManagerBasedRLEnv",
-    disable_env_checker=True,
-    kwargs={
-        "env_cfg_entry_point": f"{__name__}.franka_orca_env_cfg:FrankaOrcaLiftNoTaxelsEnvCfg",
-        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:FrankaOrcaPPORunnerCfg",
-        "default_agent": "rsl_rl",
-    },
-)
-
-gym.register(
-    id="Isaac-Lift-FrankaOrca-InHand-NoTaxels",
-    entry_point="isaaclab.envs:ManagerBasedRLEnv",
-    disable_env_checker=True,
-    kwargs={
-        "env_cfg_entry_point": f"{__name__}.franka_orca_in_hand_env_cfg:FrankaOrcaInHandLiftNoTaxelsEnvCfg",
-        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:FrankaOrcaPPORunnerCfg",
-        "default_agent": "rsl_rl",
-    },
-)
-
-gym.register(
-    id="Isaac-Lift-FrankaOrca-InHand-Staged-NoTaxels",
-    entry_point="isaaclab.envs:ManagerBasedRLEnv",
-    disable_env_checker=True,
-    kwargs={
-        "env_cfg_entry_point": f"{__name__}.franka_orca_in_hand_env_cfg:FrankaOrcaInHandStagedLiftNoTaxelsEnvCfg",
-        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:FrankaOrcaPPORunnerCfg",
-        "default_agent": "rsl_rl",
-    },
-)
-
-# every link a capsule or box, to learn the coarse motion before fine-tuning on the NoTaxels hulls
-gym.register(
-    id="Isaac-Lift-FrankaOrca-InHand-Staged-Primitives",
-    entry_point="isaaclab.envs:ManagerBasedRLEnv",
-    disable_env_checker=True,
-    kwargs={
-        "env_cfg_entry_point": f"{__name__}.franka_orca_in_hand_env_cfg:FrankaOrcaInHandStagedLiftPrimitivesEnvCfg",
-        "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:FrankaOrcaPPORunnerCfg",
-        "default_agent": "rsl_rl",
-    },
-)
+for task, cfg in TASKS.items():
+    for variant in FINGERTIP_VARIANTS:
+        gym.register(
+            id=f"{task}-{variant}",
+            entry_point="isaaclab.envs:ManagerBasedRLEnv",
+            disable_env_checker=True,
+            kwargs={
+                "env_cfg_entry_point": f"{__name__}.{cfg}{variant}EnvCfg",
+                "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:FrankaOrcaPPORunnerCfg",
+                "default_agent": "rsl_rl",
+            },
+        )
 
 # scripted tests of the fingertip IK (scripts/environments/state_machine/lift_cube_franka_orca_sm.py), no agent
 gym.register(

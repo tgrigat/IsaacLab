@@ -1,0 +1,389 @@
+#usda 1.0
+(
+    defaultPrim = "franka_orca"
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    subLayers = [
+        @usd/franka_orca/franka_orca.usda@
+    ]
+    upAxis = "Z"
+)
+
+over "franka_orca"
+{
+    over "Geometry"
+    {
+        over "base"
+        {
+            over "fr3_link0" (
+                prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+            )
+            {
+                prepend rel physics:filteredPairs = </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2>
+
+                over "fr3_link1" (
+                    prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                )
+                {
+                    prepend rel physics:filteredPairs = </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3>
+
+                    over "fr3_link2" (
+                        prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                    )
+                    {
+                        prepend rel physics:filteredPairs = </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4>
+
+                        over "fr3_link3" (
+                            prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                        )
+                        {
+                            prepend rel physics:filteredPairs = </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5>
+
+                            over "fr3_link4"
+                            {
+                                over "fr3_link5" (
+                                    prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                )
+                                {
+                                    prepend rel physics:filteredPairs = </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7>
+
+                                    over "fr3_link6"
+                                    {
+                                        over "fr3_link7"
+                                        {
+                                            over "fr3_link8"
+                                            {
+                                                over "ForeArmStructure_Model_e18f2368" (
+                                                    prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                )
+                                                {
+                                                    prepend rel physics:filteredPairs = [
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481/I_FingerTipAssembly_ec49c16c>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                    ]
+
+                                                    over "TopTower_Model_4a80d30e" (
+                                                        prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                    )
+                                                    {
+                                                        prepend rel physics:filteredPairs = [
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481/I_FingerTipAssembly_ec49c16c>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                        ]
+
+                                                        over "R_Carpals_8d1f1041" (
+                                                            prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                        )
+                                                        {
+                                                            prepend rel physics:filteredPairs = [
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481/I_FingerTipAssembly_ec49c16c>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                            ]
+
+                                                            over "I_AP_R_d95d02d1" (
+                                                                prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                            )
+                                                            {
+                                                                prepend rel physics:filteredPairs = [
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481/I_FingerTipAssembly_ec49c16c>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                ]
+
+                                                                over "I_PP_bacbd481" (
+                                                                    prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                                )
+                                                                {
+                                                                    prepend rel physics:filteredPairs = [
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481/I_FingerTipAssembly_ec49c16c>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                    ]
+
+                                                                    over "I_FingerTipAssembly_ec49c16c" (
+                                                                        prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                                    )
+                                                                    {
+                                                                        prepend rel physics:filteredPairs = [
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            over "M_AP_e04a96f2" (
+                                                                prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                            )
+                                                            {
+                                                                prepend rel physics:filteredPairs = [
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                ]
+
+                                                                over "M_PP_08efa608" (
+                                                                    prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                                )
+                                                                {
+                                                                    prepend rel physics:filteredPairs = [
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                    ]
+
+                                                                    over "M_FingerTipAssembly_34afb748" (
+                                                                        prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                                    )
+                                                                    {
+                                                                        prepend rel physics:filteredPairs = [
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            over "M_AP_6ec59111" (
+                                                                prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                            )
+                                                            {
+                                                                prepend rel physics:filteredPairs = [
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                ]
+
+                                                                over "M_PP_8660a1eb" (
+                                                                    prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                                )
+                                                                {
+                                                                    prepend rel physics:filteredPairs = [
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                    ]
+
+                                                                    over "M_FingerTipAssembly_424a8e75" (
+                                                                        prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                                    )
+                                                                    {
+                                                                        prepend rel physics:filteredPairs = [
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            over "P_AP_f5e42b61" (
+                                                                prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                            )
+                                                            {
+                                                                prepend rel physics:filteredPairs = [
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                ]
+
+                                                                over "P_PP_1d411b9b" (
+                                                                    prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                                )
+                                                                {
+                                                                    prepend rel physics:filteredPairs = [
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                    ]
+
+                                                                    over "P_FingerTipAssembly_cd219176" (
+                                                                        prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                                    )
+                                                                    {
+                                                                        prepend rel physics:filteredPairs = [
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                            </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            over "T_TP_R_1c2b802d" (
+                                                                prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                            )
+                                                            {
+                                                                prepend rel physics:filteredPairs = [
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                    </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                ]
+
+                                                                over "R_T_AP_a9723101" (
+                                                                    prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                                )
+                                                                {
+                                                                    prepend rel physics:filteredPairs = [
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                                                        </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                                                    ]
+
+                                                                    over "T_PP_68395e98" (
+                                                                        prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                                                                    )
+                                                                    {
+                                                                        prepend rel physics:filteredPairs = </franka_orca/Geometry/base/fr3_link0/fr3_link1/fr3_link2/fr3_link3/fr3_link4/fr3_link5/fr3_link6/fr3_link7/fr3_link8/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

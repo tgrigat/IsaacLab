@@ -7,8 +7,8 @@
 
 Three checks, each printing one line and failing loudly:
 
-* :func:`check_taxels`: every taxel in a finger's sidecar is exactly one collision shape on that
-  finger's fingertip body.
+* :func:`check_taxels`: for a fingertip method with taxels, every taxel in each finger's sidecar is exactly one
+  collision shape on that finger's fingertip body.
 * :func:`check_against_reference`: at the same joint positions, every body sits where it sits in a
   reference USD, such as a previous build, so mount and link frames are unchanged.
 * :func:`check_self_collision`: no two robot bodies touch at the home pose, and no pair touches in every
@@ -18,7 +18,8 @@ Usage:
 
 .. code-block:: bash
 
-    uv run python scripts/tools/franka_orca/check_asset.py --reference /path/to/previous/franka_orca.usda
+    uv run python scripts/tools/franka_orca/check_asset.py --fingertips mesh_taxels
+    uv run python scripts/tools/franka_orca/check_asset.py --fingertips no_taxels --reference /path/to/franka_orca.usda
 """
 
 from __future__ import annotations
@@ -31,7 +32,13 @@ import newton
 import numpy as np
 import warp as wp
 
-from isaaclab_assets.robots.franka_orca import FRANKA_ORCA_CFG, FRANKA_ORCA_TACTILE_DIR, FRANKA_ORCA_USD
+from isaaclab_assets.robots.franka_orca import (
+    FINGERTIP_METHODS,
+    FRANKA_ORCA_CFG,
+    TAXEL_METHODS,
+    franka_orca_tactile_dir,
+    franka_orca_usd,
+)
 
 MAX_POSITION_ERROR = 1e-4  # m
 """Largest body position difference to the reference asset."""
@@ -53,9 +60,10 @@ def leaf(label: str) -> str:
     return label.rsplit("/", 1)[-1]
 
 
-def check_taxels(model: newton.Model, finger: str) -> None:
+def check_taxels(model: newton.Model, sidecar_path: Path) -> None:
     """Check that the sidecar's taxels are collision shapes on the sidecar's fingertip body."""
-    sidecar = np.load(FRANKA_ORCA_TACTILE_DIR / f"{finger}.npz")
+    sidecar = np.load(sidecar_path)
+    finger = sidecar_path.stem
     body_names = [leaf(label) for label in model.body_label]
     fingertip = body_names.index(str(sidecar["body"]))
     shape_body = model.shape_body.numpy()
@@ -142,14 +150,15 @@ def check_self_collision(model: newton.Model, num_poses: int, seed: int = 0) -> 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--fingers", nargs="+", default=["thumb"])
+    parser.add_argument("--fingertips", choices=FINGERTIP_METHODS, default="mesh_taxels", help="Asset to check.")
     parser.add_argument("--reference", type=Path, help="USD to compare body poses against.")
     parser.add_argument("--num-poses", type=int, default=40)
     args = parser.parse_args()
 
-    model = load_model(FRANKA_ORCA_USD)
-    for finger in args.fingers:
-        check_taxels(model, finger)
+    model = load_model(franka_orca_usd(args.fingertips))
+    if args.fingertips in TAXEL_METHODS:
+        for sidecar_path in sorted(franka_orca_tactile_dir(args.fingertips).glob("*.npz")):
+            check_taxels(model, sidecar_path)
     if args.reference:
         check_against_reference(model, args.reference)
     check_self_collision(model, args.num_poses)

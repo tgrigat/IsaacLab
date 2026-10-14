@@ -10,6 +10,8 @@ term per finger, over that finger's joints only). The terms take absolute target
 suits scripted tests such as ``scripts/environments/state_machine/lift_cube_franka_orca_sm.py``.
 """
 
+from typing import ClassVar
+
 from isaaclab_newton.sim.schemas import MujocoCollisionCfg, MujocoRigidBodyCfg
 
 from isaaclab.controllers import DifferentialIKControllerCfg
@@ -21,7 +23,7 @@ from isaaclab_assets.robots.franka_orca import ORCA_FINGER_CHAINS
 
 from ... import mdp
 from .actions import VisualizedDifferentialInverseKinematicsActionCfg
-from .franka_orca_env_cfg import PALM_BODY, FrankaOrcaLiftEnvCfg, FrankaOrcaObjectCfg, remove_taxels
+from .franka_orca_env_cfg import PALM_BODY, FrankaOrcaLiftEnvCfg, FrankaOrcaObjectCfg
 
 HAND_WRIST_JOINT = "R_Carpals_8d1f1041_to_TopTower_Model_4a80d30e"
 """Wrist joint of the ORCA hand, between the arm flange and the palm."""
@@ -108,6 +110,8 @@ class FrankaOrcaFingertipIKLiftEnvCfg(FrankaOrcaLiftEnvCfg):
     plain hulls without taxels or tactile sensors.
     """
 
+    fingertips: ClassVar[str] = "no_taxels"
+
     actions: FrankaOrcaFingertipIKActionCfg = FrankaOrcaFingertipIKActionCfg()
 
     def __post_init__(self):
@@ -128,8 +132,6 @@ class FrankaOrcaFingertipIKLiftEnvCfg(FrankaOrcaLiftEnvCfg):
 
         # Newton reads only MuJoCo's gravcomp, not the asset's (PhysX) disable_gravity; at full gravity the arm sags
         # ~16 cm below its joint targets (joint 6 saturates), which differential IK has no integral term to take out
-        # plain fingertip hulls, without taxels to sense
-        remove_taxels(self)
         robot_spawn = self.scene.robot.spawn
         robot_spawn.rigid_props = [robot_spawn.rigid_props, MujocoRigidBodyCfg(gravcomp=1.0)]
         # a pad on a cube face is one flat convex pair; with a single contact point per pair that point jumps across

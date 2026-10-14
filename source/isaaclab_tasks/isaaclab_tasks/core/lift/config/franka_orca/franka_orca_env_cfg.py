@@ -6,8 +6,11 @@
 """Configuration for the Franka + ORCA-hand lift and reorient environments.
 
 Mirrors :mod:`..kuka_allegro.kuka_allegro_env_cfg`: the shared lift MDP with this robot's body and joint
-names filled in.
+names filled in. Each task comes in one variant per fingertip collision method (``FINGERTIP_METHODS``), which sets
+the robot asset and, for the methods with taxels, the tactile sensors and their observations (:func:`use_fingertips`).
 """
+
+from typing import ClassVar
 
 from isaaclab_newton.sensors import TactileSensorCfg
 
@@ -21,11 +24,12 @@ from isaaclab.sensors import ContactSensorCfg
 from isaaclab.utils import configclass, replace
 
 from isaaclab_assets.robots.franka_orca import (
-    FRANKA_ORCA_ASSET_DIR,
     FRANKA_ORCA_CFG,
-    FRANKA_ORCA_TACTILE_DIR,
     ORCA_FINGER_CHAINS,
     ORCA_HAND_JOINTS,
+    TAXEL_METHODS,
+    franka_orca_tactile_dir,
+    franka_orca_usd,
 )
 
 from ... import lift_env_cfg as lift
@@ -50,8 +54,8 @@ TACTILE_FINGERS = {
     "ring": FINGERTIPS[2],
     "pinky": FINGERTIPS[3],
 }
-"""Fingers with baked taxels (``build_asset.py --fingers``) and their fingertip bodies; each gets a tactile sensor
-and an observation of its taxels' normal and shear forces."""
+"""Fingers with baked taxels and their fingertip bodies; with a fingertip method with taxels, each gets a tactile
+sensor and an observation of its taxels' normal and shear forces."""
 
 PAD_COLLISION_GROUP = 2
 """Newton collision group shared by the fingertips' pad proxies, so fingertips meet pad to pad (and, in the default
@@ -61,18 +65,6 @@ TACTILE_OBSERVATIONS = True
 """Whether the policy observes the taxels. Off for the ablation without tactile sensing: the tactile sensors stay in
 the scene, as they set the taxel and pad-proxy collision groups, but nothing reads them. The fingertip contact
 forces (``proprio.contact``) stay observed, as in Kuka-Allegro."""
-
-NO_TAXELS_USD = FRANKA_ORCA_ASSET_DIR / "no_taxels" / "franka_orca.usda"
-"""Robot USD without the baked taxels, with plain convex hulls on the fingertips. Built by
-``build_asset.py --fingers --out-dir assets/franka_orca_mesh_fingertips/no_taxels``. Every taxel touching something is
-its own contact, which overflows MJWarp's contact buffer in a grasp, and the dropped contacts let the fingers and the
-cube sink into the cube and the table."""
-
-PRIMITIVES_USD = FRANKA_ORCA_ASSET_DIR / "primitives" / "franka_orca.usda"
-"""Robot USD without the baked taxels, with every link colliding as one capsule or box fitted to its meshes: the
-finger capsules within 4 mm of the hulls, the arm's within 22 mm. Built by ``build_asset.py --fingers --primitives
---out-dir assets/franka_orca_mesh_fingertips/primitives``. For learning the coarse motion cheaply, to fine-tune on the
-hulls of :data:`NO_TAXELS_USD` after: the observations and actions are the same."""
 
 THUMB_SENSOR = f"{THUMB_TIP}_object_s"
 """Contact sensor of the thumb."""
@@ -180,19 +172,6 @@ class FrankaOrcaSceneCfg(lift.SceneCfg):
                     filter_prim_paths_expr=["{ENV_REGEX_NS}/Object"],
                 ),
             )
-        # one tactile sensor per sensed fingertip (Newton backend only); the pad proxies share a collision group,
-        # so fingertips collide pad to pad (and unsensed to unsensed), and the asset filters both against the taxels
-        # (build_asset.py), so the taxels sense only the object, the table and the arm
-        for finger, body in TACTILE_FINGERS.items():
-            setattr(
-                self,
-                f"{finger}_tactile",
-                TactileSensorCfg(
-                    prim_path="{ENV_REGEX_NS}/Robot/.*/" + body,
-                    sidecar_path=str(FRANKA_ORCA_TACTILE_DIR / f"{finger}.npz"),
-                    pad_collision_group=PAD_COLLISION_GROUP,
-                ),
-            )
 
 
 ##
@@ -202,7 +181,8 @@ class FrankaOrcaSceneCfg(lift.SceneCfg):
 
 @configclass
 class FrankaOrcaObservationsCfg(lift.ObservationsCfg):
-    """Lift observations with the ORCA fingertip contact forces, the taxels and the hand bodies filled in."""
+    """Lift observations with the ORCA fingertip contact forces and the hand bodies filled in; the taxels are added by
+    :func:`use_fingertips`."""
 
     def __post_init__(self):
         super().__post_init__()
@@ -211,16 +191,6 @@ class FrankaOrcaObservationsCfg(lift.ObservationsCfg):
             params={"contact_sensor_names": [f"{link}_object_s" for link in FINGERTIPS]},
             clip=(-20.0, 20.0),  # contact force in finger tips is under 20N normally
         )
-        for finger in TACTILE_FINGERS if TACTILE_OBSERVATIONS else []:
-            setattr(
-                self.proprio,
-                f"tactile_{finger}",
-                ObsTerm(
-                    func=observations.taxel_forces_s,
-                    params={"sensor_name": f"{finger}_tactile"},
-                    clip=(-10.0, 10.0),  # [N] per taxel
-                ),
-            )
         self.proprio.hand_tips_state_b.params["body_asset_cfg"].body_names = HAND_BODIES
 
 
@@ -318,6 +288,10 @@ class FrankaOrcaCurriculumCfg(lift.CurriculumCfg):
 class FrankaOrcaMixinCfg:
     """Franka + ORCA specific scene, observation, action and reward terms, mixed into the task configurations."""
 
+    fingertips: ClassVar[str] = "mesh_taxels"
+    """Fingertip collision method (``FINGERTIP_METHODS``), applied by :func:`use_fingertips`. A class variable, set
+    by each task variant, as the method decides which sensors and observations the scene has."""
+
     scene: FrankaOrcaSceneCfg = FrankaOrcaSceneCfg(num_envs=4096, env_spacing=3, replicate_physics=True)
     rewards: FrankaOrcaRewardCfg = FrankaOrcaRewardCfg()
     observations: FrankaOrcaObservationsCfg = FrankaOrcaObservationsCfg()
@@ -379,31 +353,51 @@ class FrankaOrcaMixinCfg:
         if diversity_feature is not None:
             diversity_feature.body_names = HAND_BODIES
 
+        use_fingertips(self, self.fingertips)
 
-def remove_taxels(env_cfg: FrankaOrcaMixinCfg):
-    """Swap the robot for :data:`NO_TAXELS_USD` and drop the tactile sensors and their observations.
 
-    The fingertip contact sensors (``proprio.contact`` and the contact rewards) stay, as they sense whole bodies.
+def use_fingertips(env_cfg: FrankaOrcaMixinCfg, fingertips: str):
+    """Spawn the robot asset of a fingertip method and, if it has taxels, add the tactile sensors and their
+    observations.
+
+    Without taxels (``primitives``, ``no_taxels``), the fingertips sense only through the fingertip contact sensors,
+    which sense whole bodies (``proprio.contact`` and the contact rewards). ``primitives`` collides every link as one
+    capsule or box, for learning the coarse motion cheaply before fine-tuning on the hulls of ``no_taxels``: the
+    observations and actions are the same.
+
+    With taxels, every taxel touching something is its own contact, which can overflow MJWarp's contact buffer in a
+    grasp (see :data:`NJMAX`). One tactile sensor per sensed fingertip (Newton backend only); the pad proxies share a
+    collision group, so fingertips collide pad to pad (and unsensed to unsensed), and the asset filters both against
+    the taxels (``build_asset.py``), so the taxels sense only the object, the table and the arm.
+
+    Args:
+        env_cfg: The environment configuration to modify.
+        fingertips: Fingertip collision method, one of ``FINGERTIP_METHODS``.
     """
-    env_cfg.scene.robot = replace(
-        env_cfg.scene.robot, spawn=replace(env_cfg.scene.robot.spawn, usd_path=str(NO_TAXELS_USD))
-    )
-    for finger in TACTILE_FINGERS:
-        setattr(env_cfg.scene, f"{finger}_tactile", None)
-        setattr(env_cfg.observations.proprio, f"tactile_{finger}", None)
-
-
-def use_primitive_colliders(env_cfg: FrankaOrcaMixinCfg):
-    """Remove the taxels (:func:`remove_taxels`) and swap the robot for :data:`PRIMITIVES_USD`."""
-    remove_taxels(env_cfg)
-    env_cfg.scene.robot = replace(
-        env_cfg.scene.robot, spawn=replace(env_cfg.scene.robot.spawn, usd_path=str(PRIMITIVES_USD))
-    )
-
-
-@configclass
-class FrankaOrcaReorientEnvCfg(FrankaOrcaMixinCfg, lift.ReorientEnvCfg):
-    """Franka + ORCA-hand object reorientation environment."""
+    robot = env_cfg.scene.robot
+    env_cfg.scene.robot = replace(robot, spawn=replace(robot.spawn, usd_path=str(franka_orca_usd(fingertips))))
+    if fingertips not in TAXEL_METHODS:
+        return
+    for finger, body in TACTILE_FINGERS.items():
+        setattr(
+            env_cfg.scene,
+            f"{finger}_tactile",
+            TactileSensorCfg(
+                prim_path="{ENV_REGEX_NS}/Robot/.*/" + body,
+                sidecar_path=str(franka_orca_tactile_dir(fingertips) / f"{finger}.npz"),
+                pad_collision_group=PAD_COLLISION_GROUP,
+            ),
+        )
+        if TACTILE_OBSERVATIONS:
+            setattr(
+                env_cfg.observations.proprio,
+                f"tactile_{finger}",
+                ObsTerm(
+                    func=observations.taxel_forces_s,
+                    params={"sensor_name": f"{finger}_tactile"},
+                    clip=(-10.0, 10.0),  # [N] per taxel
+                ),
+            )
 
 
 @configclass
@@ -412,9 +406,35 @@ class FrankaOrcaLiftEnvCfg(FrankaOrcaMixinCfg, lift.LiftEnvCfg):
 
 
 @configclass
-class FrankaOrcaLiftNoTaxelsEnvCfg(FrankaOrcaLiftEnvCfg):
-    """Franka + ORCA-hand object lifting with plain fingertip hulls, without tactile sensing (:func:`remove_taxels`)."""
+class FrankaOrcaLiftPrimitivesEnvCfg(FrankaOrcaLiftEnvCfg):
+    """Franka + ORCA-hand object lifting with every link colliding as a capsule or box, without taxels."""
 
-    def __post_init__(self):
-        super().__post_init__()
-        remove_taxels(self)
+    fingertips: ClassVar[str] = "primitives"
+
+
+@configclass
+class FrankaOrcaLiftNoTaxelsEnvCfg(FrankaOrcaLiftEnvCfg):
+    """Franka + ORCA-hand object lifting with convex fingertip hulls, without taxels."""
+
+    fingertips: ClassVar[str] = "no_taxels"
+
+
+@configclass
+class FrankaOrcaLiftConvexTaxelsEnvCfg(FrankaOrcaLiftEnvCfg):
+    """Franka + ORCA-hand object lifting with convex taxels over a convex fingertip hull."""
+
+    fingertips: ClassVar[str] = "convex_taxels"
+
+
+@configclass
+class FrankaOrcaLiftMeshTaxelsEnvCfg(FrankaOrcaLiftEnvCfg):
+    """Franka + ORCA-hand object lifting with triangle-mesh taxels over CoACD fingertip hulls."""
+
+    fingertips: ClassVar[str] = "mesh_taxels"
+
+
+@configclass
+class FrankaOrcaLiftMeshFingertipsEnvCfg(FrankaOrcaLiftEnvCfg):
+    """Franka + ORCA-hand object lifting with triangle-mesh taxels over a triangle-mesh fingertip."""
+
+    fingertips: ClassVar[str] = "mesh_fingertips"
