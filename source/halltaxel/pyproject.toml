@@ -1,0 +1,51 @@
+[project]
+name = "halltaxel"
+version = "0.1.0"
+description = "Generic, backend-agnostic simulation of tactile taxel sensors (originally modeled on Hall-effect sensing elements) on top of Newton/Warp."
+authors = [
+    {name = "Timm Grigat", email = "thgrigat@gmail.com"},
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "newton>=1.3",
+    "warp-lang>=1.14",
+    "numpy>=2",
+    "pyyaml>=6",
+    "trimesh>=4.6",
+    "rtree>=1.0",  # spatial index trimesh needs for mesh.nearest.on_surface
+    "scipy>=1.11",  # cKDTree nearest-seed lookup for segment_surface()
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "pytest-cov",
+    "ruff",
+    "mypy",
+    "imgui-bundle>=1.92.900",
+    "pyopengl>=3.1.10",
+    "viser>=1.1.1",
+]
+docs = [
+    "mkdocs-material",
+    "mkdocstrings-python",
+]
+
+[build-system]
+requires = ["hatchling>=1.27.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/halltaxel"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[[tool.mypy.overrides]]
+# scipy.spatial ships no inline stubs in the installed version;
+# used directly (not lazily) by segmentation.segment_surface().
+module = "scipy.spatial.*"
+ignore_missing_imports = true

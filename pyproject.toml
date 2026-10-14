@@ -33,6 +33,8 @@ dependencies = [
     "isaaclab-tasks",
     "isaaclab-tasks-experimental",
     "isaaclab-visualizers",
+    # tactile taxel simulation, vendored from its own repository; builds the FrankaOrca asset
+    "halltaxel",
     # ----- generic -----
     "numpy>=2",
     "torch==2.12.0",
@@ -239,6 +241,8 @@ extend-exclude = [
     ".vscode",
     "_*",
     ".git",
+    # vendored, kept as upstream formats it
+    "source/halltaxel",
 ]
 
 [tool.ruff.lint]
@@ -446,6 +450,7 @@ isaaclab = { path = "source/isaaclab", editable = true }
 "isaaclab-tasks-experimental" = { path = "source/isaaclab_tasks_experimental", editable = true }
 "isaaclab-teleop" = { path = "source/isaaclab_teleop", editable = true }
 "isaaclab-visualizers" = { path = "source/isaaclab_visualizers", editable = true }
+halltaxel = { path = "source/halltaxel", editable = true }
 torch = { index = "pytorch-cu130" }
 torchaudio = { index = "pytorch-cu130" }
 torchvision = { index = "pytorch-cu130" }
