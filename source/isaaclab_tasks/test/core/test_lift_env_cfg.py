@@ -276,6 +276,7 @@ def test_conditional_reset_modes_keep_their_share(monkeypatch: pytest.MonkeyPatc
         articulations={},
         rigid_objects={},
         clone_plan=SimpleNamespace(topology=SimpleNamespace(world_prototype_layout=layout)),
+        _ALL_INDICES=torch.arange(num_envs),
     )
     env = SimpleNamespace(scene=scene, device="cpu", num_envs=num_envs, extras={})
     term = mdp.events.conditional_reset(SimpleNamespace(params={}), env)
