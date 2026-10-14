@@ -104,6 +104,15 @@ NJMAX = 1000
 lift default of 300 overflows in dense grasps, where every taxel on the object is its own contact. With the fingers
 colliding with each other only pad to pad, random actions peak at about 560 rows."""
 
+SOLVER_CAPACITY = {"convex_taxels": (400, NJMAX), "mesh_taxels": (3000, 2000), "mesh_fingertips": (4000, 12000)}
+"""MJWarp contacts and constraint rows per environment (``nconmax``, ``njmax``) of the fingertip methods with taxels;
+the others keep the lift default of 200 contacts and :data:`NJMAX` rows. MJWarp drops the contacts and rows over its
+limits, the taxel contacts among them, and warns. Every taxel touching something is its own contact, and the
+fingertips' unsensed colliders touch each other in many points too. Closing the fingers on the in-hand cube peaks at
+about 190 contacts per environment with convex taxels, 1800 with mesh taxels and 2100 with mesh fingertips, mostly
+between the unsensed colliders of neighbouring fingertips, and at about 1000 constraint rows with mesh taxels and 8900
+with mesh fingertips."""
+
 CAMERA_ENV = 0
 """Environment the visualizer (and so the recorded video) shows, from :data:`CAMERA_EYE` towards :data:`CAMERA_LOOKAT`,
 both relative to its origin [m]; the robot base sits at the origin and reaches towards the table at -x."""
@@ -365,8 +374,8 @@ def use_fingertips(env_cfg: FrankaOrcaMixinCfg, fingertips: str):
     capsule or box, for learning the coarse motion cheaply before fine-tuning on the hulls of ``no_taxels``: the
     observations and actions are the same.
 
-    With taxels, every taxel touching something is its own contact, which can overflow MJWarp's contact buffer in a
-    grasp (see :data:`NJMAX`). One tactile sensor per sensed fingertip (Newton backend only); the pad proxies share a
+    With taxels, every taxel touching something is its own contact, so MJWarp gets more contacts per environment
+    (:data:`SOLVER_CAPACITY`). One tactile sensor per sensed fingertip (Newton backend only); the pad proxies share a
     collision group, so fingertips collide pad to pad (and unsensed to unsensed), and the asset filters both against
     the taxels (``build_asset.py``), so the taxels sense only the object, the table and the arm.
 
@@ -378,6 +387,9 @@ def use_fingertips(env_cfg: FrankaOrcaMixinCfg, fingertips: str):
     env_cfg.scene.robot = replace(robot, spawn=replace(robot.spawn, usd_path=str(franka_orca_usd(fingertips))))
     if fingertips not in TAXEL_METHODS:
         return
+    # the presets are separate copies, so both Newton entries are set
+    for physics in (env_cfg.sim.physics.newton_mjwarp, env_cfg.sim.physics.default):
+        physics.solver_cfg.nconmax, physics.solver_cfg.njmax = SOLVER_CAPACITY[fingertips]
     for finger, body in TACTILE_FINGERS.items():
         setattr(
             env_cfg.scene,
