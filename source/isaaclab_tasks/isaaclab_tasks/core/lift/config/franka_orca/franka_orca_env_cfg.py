@@ -66,6 +66,10 @@ TACTILE_OBSERVATIONS = True
 the scene, as they set the taxel and pad-proxy collision groups, but nothing reads them. The fingertip contact
 forces (``proprio.contact``) stay observed, as in Kuka-Allegro."""
 
+BINARY_CONTACT_THRESHOLD = 0.01
+"""Net normal contact force [N] above which a fingertip counts as in contact for the binary contact observations
+(:func:`use_binary_contacts`); the same threshold as the contact rewards."""
+
 THUMB_SENSOR = f"{THUMB_TIP}_object_s"
 """Contact sensor of the thumb."""
 
@@ -410,6 +414,24 @@ def use_fingertips(env_cfg: FrankaOrcaMixinCfg, fingertips: str):
                     clip=(-10.0, 10.0),  # [N] per taxel
                 ),
             )
+
+
+def use_binary_contacts(env_cfg: FrankaOrcaMixinCfg):
+    """Replace the fingertip contact forces (``proprio.contact``) with one binary contact flag per fingertip.
+
+    A flag is 1 while its fingertip touches anything (object, table, arm or another finger), from the net force of
+    the fingertip contact sensor, and 0 otherwise. The rewards still read the object contact forces.
+
+    Args:
+        env_cfg: The environment configuration to modify.
+    """
+    env_cfg.observations.proprio.contact = ObsTerm(
+        func=observations.fingers_in_contact,
+        params={
+            "contact_sensor_names": [f"{link}_object_s" for link in FINGERTIPS],
+            "threshold": BINARY_CONTACT_THRESHOLD,
+        },
+    )
 
 
 @configclass

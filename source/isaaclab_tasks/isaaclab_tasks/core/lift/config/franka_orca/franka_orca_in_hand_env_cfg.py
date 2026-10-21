@@ -31,6 +31,7 @@ from .franka_orca_env_cfg import (
     HAND_BODIES,
     FrankaOrcaLiftEnvCfg,
     FrankaOrcaObjectCfg,
+    use_binary_contacts,
 )
 
 PALM_UP_JOINT_POS = {
@@ -677,6 +678,16 @@ class FrankaOrcaInHandStagedLiftNoTaxelsEnvCfg(FrankaOrcaInHandStagedLiftEnvCfg)
     """Staged in-hand cube carrying with convex fingertip hulls, without taxels."""
 
     fingertips: ClassVar[str] = "no_taxels"
+
+
+@configclass
+class FrankaOrcaInHandStagedLiftNoTaxelsBinaryContactsEnvCfg(FrankaOrcaInHandStagedLiftNoTaxelsEnvCfg):
+    """Staged in-hand cube carrying with convex fingertip hulls, observing one binary contact flag per fingertip
+    instead of the fingertip contact forces (:func:`~.franka_orca_env_cfg.use_binary_contacts`)."""
+
+    def __post_init__(self):
+        super().__post_init__()
+        use_binary_contacts(self)
 
 
 @configclass
