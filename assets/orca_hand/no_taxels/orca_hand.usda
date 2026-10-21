@@ -1,0 +1,330 @@
+#usda 1.0
+(
+    defaultPrim = "orca_hand"
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    subLayers = [
+        @usd/orca_hand/orca_hand.usda@
+    ]
+    upAxis = "Z"
+)
+
+over "orca_hand"
+{
+    over "Geometry"
+    {
+        over "ForeArmStructure_Model_e18f2368" (
+            prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+        )
+        {
+            prepend rel physics:filteredPairs = [
+                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e>,
+                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041>,
+                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1>,
+                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481>,
+                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481/I_FingerTipAssembly_ec49c16c>,
+                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2>,
+                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608>,
+                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+            ]
+
+            over "TopTower_Model_4a80d30e" (
+                prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+            )
+            {
+                prepend rel physics:filteredPairs = [
+                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041>,
+                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1>,
+                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481>,
+                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481/I_FingerTipAssembly_ec49c16c>,
+                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2>,
+                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608>,
+                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                ]
+
+                over "R_Carpals_8d1f1041" (
+                    prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                )
+                {
+                    prepend rel physics:filteredPairs = [
+                        </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1>,
+                        </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481>,
+                        </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481/I_FingerTipAssembly_ec49c16c>,
+                        </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2>,
+                        </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608>,
+                        </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                        </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                        </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                        </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                        </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                        </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                        </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                        </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                        </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                        </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                        </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                    ]
+
+                    over "I_AP_R_d95d02d1" (
+                        prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                    )
+                    {
+                        prepend rel physics:filteredPairs = [
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481/I_FingerTipAssembly_ec49c16c>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                        ]
+
+                        over "I_PP_bacbd481" (
+                            prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                        )
+                        {
+                            prepend rel physics:filteredPairs = [
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/I_AP_R_d95d02d1/I_PP_bacbd481/I_FingerTipAssembly_ec49c16c>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                            ]
+
+                            over "I_FingerTipAssembly_ec49c16c" (
+                                prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                            )
+                            {
+                                prepend rel physics:filteredPairs = [
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                ]
+                            }
+                        }
+                    }
+
+                    over "M_AP_e04a96f2" (
+                        prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                    )
+                    {
+                        prepend rel physics:filteredPairs = [
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                        ]
+
+                        over "M_PP_08efa608" (
+                            prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                        )
+                        {
+                            prepend rel physics:filteredPairs = [
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_e04a96f2/M_PP_08efa608/M_FingerTipAssembly_34afb748>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                            ]
+
+                            over "M_FingerTipAssembly_34afb748" (
+                                prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                            )
+                            {
+                                prepend rel physics:filteredPairs = [
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                ]
+                            }
+                        }
+                    }
+
+                    over "M_AP_6ec59111" (
+                        prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                    )
+                    {
+                        prepend rel physics:filteredPairs = [
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                        ]
+
+                        over "M_PP_8660a1eb" (
+                            prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                        )
+                        {
+                            prepend rel physics:filteredPairs = [
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/M_AP_6ec59111/M_PP_8660a1eb/M_FingerTipAssembly_424a8e75>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                            ]
+
+                            over "M_FingerTipAssembly_424a8e75" (
+                                prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                            )
+                            {
+                                prepend rel physics:filteredPairs = [
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                ]
+                            }
+                        }
+                    }
+
+                    over "P_AP_f5e42b61" (
+                        prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                    )
+                    {
+                        prepend rel physics:filteredPairs = [
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                        ]
+
+                        over "P_PP_1d411b9b" (
+                            prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                        )
+                        {
+                            prepend rel physics:filteredPairs = [
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/P_AP_f5e42b61/P_PP_1d411b9b/P_FingerTipAssembly_cd219176>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                            ]
+
+                            over "P_FingerTipAssembly_cd219176" (
+                                prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                            )
+                            {
+                                prepend rel physics:filteredPairs = [
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                    </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                                ]
+                            }
+                        }
+                    }
+
+                    over "T_TP_R_1c2b802d" (
+                        prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                    )
+                    {
+                        prepend rel physics:filteredPairs = [
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                            </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                        ]
+
+                        over "R_T_AP_a9723101" (
+                            prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                        )
+                        {
+                            prepend rel physics:filteredPairs = [
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98>,
+                                </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>,
+                            ]
+
+                            over "T_PP_68395e98" (
+                                prepend apiSchemas = ["PhysicsFilteredPairsAPI"]
+                            )
+                            {
+                                prepend rel physics:filteredPairs = </orca_hand/Geometry/ForeArmStructure_Model_e18f2368/TopTower_Model_4a80d30e/R_Carpals_8d1f1041/T_TP_R_1c2b802d/R_T_AP_a9723101/T_PP_68395e98/T_DP_b7429e50>
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

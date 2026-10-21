@@ -3,8 +3,9 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-# the FrankaOrca robot asset is vendored and generated data, tracked as it is in plain git, not LFS (.gitattributes)
-exclude: "^assets/franka_orca/"
+# the FrankaOrca and ORCA-hand robot assets are vendored and generated data, tracked as they are in plain git, not LFS
+# (.gitattributes)
+exclude: "^assets/(franka_orca|orca_hand)/"
 
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit

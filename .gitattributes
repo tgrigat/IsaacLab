@@ -20,6 +20,7 @@ docs/source/_static/actuators/*.png binary linguist-generated
 *.bat text eol=crlf
 *.sh text eol=lf
 
-# The FrankaOrca robot asset (sources and builds) is tracked in plain git, so a clone of this fork needs no LFS
-# storage. See assets/franka_orca/README.md.
+# The FrankaOrca and ORCA-hand robot assets (sources and builds) are tracked in plain git, so a clone of this fork
+# needs no LFS storage. See assets/franka_orca/README.md.
 assets/franka_orca/** !filter !diff !merge
+assets/orca_hand/** !filter !diff !merge

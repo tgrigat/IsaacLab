@@ -1,0 +1,277 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "URDF USD Converter v0.3.2"
+    }
+    defaultPrim = "orca_hand"
+    endTimeCode = 1000000
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    startTimeCode = 0
+    subLayers = [
+        @./physics.usda@
+    ]
+    upAxis = "Z"
+)
+
+over "orca_hand"
+{
+    over "Physics"
+    {
+        over "R_Carpals_8d1f1041_to_TopTower_Model_4a80d30e" (
+            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+            prepend apiSchemas = ["MjcJointAPI"]
+        )
+        {
+        }
+
+        over "P_AP_f5e42b61_to_R_Carpals_8d1f1041" (
+            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+            prepend apiSchemas = ["MjcJointAPI"]
+        )
+        {
+        }
+
+        over "P_PP_1d411b9b_to_P_AP_f5e42b61" (
+            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+            prepend apiSchemas = ["MjcJointAPI"]
+        )
+        {
+        }
+
+        over "P_FingerTipAssembly_cd219176_to_P_PP_1d411b9b" (
+            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+            prepend apiSchemas = ["MjcJointAPI"]
+        )
+        {
+        }
+
+        over "M_AP_6ec59111_to_R_Carpals_8d1f1041" (
+            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+            prepend apiSchemas = ["MjcJointAPI"]
+        )
+        {
+        }
+
+        over "M_PP_8660a1eb_to_M_AP_6ec59111" (
+            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+            prepend apiSchemas = ["MjcJointAPI"]
+        )
+        {
+        }
+
+        over "M_FingerTipAssembly_424a8e75_to_M_PP_8660a1eb" (
+            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+            prepend apiSchemas = ["MjcJointAPI"]
+        )
+        {
+        }
+
+        over "M_AP_e04a96f2_to_R_Carpals_8d1f1041" (
+            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+            prepend apiSchemas = ["MjcJointAPI"]
+        )
+        {
+        }
+
+        over "M_PP_08efa608_to_M_AP_e04a96f2" (
+            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+            prepend apiSchemas = ["MjcJointAPI"]
+        )
+        {
+        }
+
+        over "M_FingerTipAssembly_34afb748_to_M_PP_08efa608" (
+            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+            prepend apiSchemas = ["MjcJointAPI"]
+        )
+        {
+        }
+
+        over "I_AP_R_d95d02d1_to_R_Carpals_8d1f1041" (
+            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+            prepend apiSchemas = ["MjcJointAPI"]
+        )
+        {
+        }
+
+        over "I_PP_bacbd481_to_I_AP_R_d95d02d1" (
+            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+            prepend apiSchemas = ["MjcJointAPI"]
+        )
+        {
+        }
+
+        over "I_FingerTipAssembly_ec49c16c_to_I_PP_bacbd481" (
+            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+            prepend apiSchemas = ["MjcJointAPI"]
+        )
+        {
+        }
+
+        over "T_TP_R_1c2b802d_to_R_Carpals_8d1f1041" (
+            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+            prepend apiSchemas = ["MjcJointAPI"]
+        )
+        {
+        }
+
+        over "R_T_AP_a9723101_to_T_TP_R_1c2b802d" (
+            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+            prepend apiSchemas = ["MjcJointAPI"]
+        )
+        {
+        }
+
+        over "T_PP_68395e98_to_R_T_AP_a9723101" (
+            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+            prepend apiSchemas = ["MjcJointAPI"]
+        )
+        {
+        }
+
+        over "T_DP_b7429e50_to_T_PP_68395e98" (
+            delete apiSchemas = ["PhysicsDriveAPI:angular", "PhysicsJointStateAPI:angular"]
+            prepend apiSchemas = ["MjcJointAPI"]
+        )
+        {
+        }
+
+        def MjcActuator "R_Carpals_8d1f1041_to_TopTower_Model_4a80d30e_actuator"
+        {
+            uniform double mjc:forceRange:max = 100
+            uniform double mjc:forceRange:min = -100
+            custom rel mjc:target
+            append rel mjc:target = </orca_hand/Physics/R_Carpals_8d1f1041_to_TopTower_Model_4a80d30e>
+        }
+
+        def MjcActuator "P_AP_f5e42b61_to_R_Carpals_8d1f1041_actuator"
+        {
+            uniform double mjc:forceRange:max = 100
+            uniform double mjc:forceRange:min = -100
+            custom rel mjc:target
+            append rel mjc:target = </orca_hand/Physics/P_AP_f5e42b61_to_R_Carpals_8d1f1041>
+        }
+
+        def MjcActuator "P_PP_1d411b9b_to_P_AP_f5e42b61_actuator"
+        {
+            uniform double mjc:forceRange:max = 100
+            uniform double mjc:forceRange:min = -100
+            custom rel mjc:target
+            append rel mjc:target = </orca_hand/Physics/P_PP_1d411b9b_to_P_AP_f5e42b61>
+        }
+
+        def MjcActuator "P_FingerTipAssembly_cd219176_to_P_PP_1d411b9b_actuator"
+        {
+            uniform double mjc:forceRange:max = 100
+            uniform double mjc:forceRange:min = -100
+            custom rel mjc:target
+            append rel mjc:target = </orca_hand/Physics/P_FingerTipAssembly_cd219176_to_P_PP_1d411b9b>
+        }
+
+        def MjcActuator "M_AP_6ec59111_to_R_Carpals_8d1f1041_actuator"
+        {
+            uniform double mjc:forceRange:max = 100
+            uniform double mjc:forceRange:min = -100
+            custom rel mjc:target
+            append rel mjc:target = </orca_hand/Physics/M_AP_6ec59111_to_R_Carpals_8d1f1041>
+        }
+
+        def MjcActuator "M_PP_8660a1eb_to_M_AP_6ec59111_actuator"
+        {
+            uniform double mjc:forceRange:max = 100
+            uniform double mjc:forceRange:min = -100
+            custom rel mjc:target
+            append rel mjc:target = </orca_hand/Physics/M_PP_8660a1eb_to_M_AP_6ec59111>
+        }
+
+        def MjcActuator "M_FingerTipAssembly_424a8e75_to_M_PP_8660a1eb_actuator"
+        {
+            uniform double mjc:forceRange:max = 100
+            uniform double mjc:forceRange:min = -100
+            custom rel mjc:target
+            append rel mjc:target = </orca_hand/Physics/M_FingerTipAssembly_424a8e75_to_M_PP_8660a1eb>
+        }
+
+        def MjcActuator "M_AP_e04a96f2_to_R_Carpals_8d1f1041_actuator"
+        {
+            uniform double mjc:forceRange:max = 100
+            uniform double mjc:forceRange:min = -100
+            custom rel mjc:target
+            append rel mjc:target = </orca_hand/Physics/M_AP_e04a96f2_to_R_Carpals_8d1f1041>
+        }
+
+        def MjcActuator "M_PP_08efa608_to_M_AP_e04a96f2_actuator"
+        {
+            uniform double mjc:forceRange:max = 100
+            uniform double mjc:forceRange:min = -100
+            custom rel mjc:target
+            append rel mjc:target = </orca_hand/Physics/M_PP_08efa608_to_M_AP_e04a96f2>
+        }
+
+        def MjcActuator "M_FingerTipAssembly_34afb748_to_M_PP_08efa608_actuator"
+        {
+            uniform double mjc:forceRange:max = 100
+            uniform double mjc:forceRange:min = -100
+            custom rel mjc:target
+            append rel mjc:target = </orca_hand/Physics/M_FingerTipAssembly_34afb748_to_M_PP_08efa608>
+        }
+
+        def MjcActuator "I_AP_R_d95d02d1_to_R_Carpals_8d1f1041_actuator"
+        {
+            uniform double mjc:forceRange:max = 100
+            uniform double mjc:forceRange:min = -100
+            custom rel mjc:target
+            append rel mjc:target = </orca_hand/Physics/I_AP_R_d95d02d1_to_R_Carpals_8d1f1041>
+        }
+
+        def MjcActuator "I_PP_bacbd481_to_I_AP_R_d95d02d1_actuator"
+        {
+            uniform double mjc:forceRange:max = 100
+            uniform double mjc:forceRange:min = -100
+            custom rel mjc:target
+            append rel mjc:target = </orca_hand/Physics/I_PP_bacbd481_to_I_AP_R_d95d02d1>
+        }
+
+        def MjcActuator "I_FingerTipAssembly_ec49c16c_to_I_PP_bacbd481_actuator"
+        {
+            uniform double mjc:forceRange:max = 100
+            uniform double mjc:forceRange:min = -100
+            custom rel mjc:target
+            append rel mjc:target = </orca_hand/Physics/I_FingerTipAssembly_ec49c16c_to_I_PP_bacbd481>
+        }
+
+        def MjcActuator "T_TP_R_1c2b802d_to_R_Carpals_8d1f1041_actuator"
+        {
+            uniform double mjc:forceRange:max = 100
+            uniform double mjc:forceRange:min = -100
+            custom rel mjc:target
+            append rel mjc:target = </orca_hand/Physics/T_TP_R_1c2b802d_to_R_Carpals_8d1f1041>
+        }
+
+        def MjcActuator "R_T_AP_a9723101_to_T_TP_R_1c2b802d_actuator"
+        {
+            uniform double mjc:forceRange:max = 100
+            uniform double mjc:forceRange:min = -100
+            custom rel mjc:target
+            append rel mjc:target = </orca_hand/Physics/R_T_AP_a9723101_to_T_TP_R_1c2b802d>
+        }
+
+        def MjcActuator "T_PP_68395e98_to_R_T_AP_a9723101_actuator"
+        {
+            uniform double mjc:forceRange:max = 100
+            uniform double mjc:forceRange:min = -100
+            custom rel mjc:target
+            append rel mjc:target = </orca_hand/Physics/T_PP_68395e98_to_R_T_AP_a9723101>
+        }
+
+        def MjcActuator "T_DP_b7429e50_to_T_PP_68395e98_actuator"
+        {
+            uniform double mjc:forceRange:max = 100
+            uniform double mjc:forceRange:min = -100
+            custom rel mjc:target
+            append rel mjc:target = </orca_hand/Physics/T_DP_b7429e50_to_T_PP_68395e98>
+        }
+    }
+}
+

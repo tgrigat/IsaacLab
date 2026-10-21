@@ -1,0 +1,591 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "URDF USD Converter v0.3.2"
+    }
+    endTimeCode = 1000000
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    startTimeCode = 0
+    upAxis = "Z"
+)
+
+def Scope "Instances"
+{
+    def Xform "tn__ForeArmStructureModel_jV0" (
+        prepend references = @./geometries.usd@</Geometries/tn__ForeArmStructureModel_jV0>
+    )
+    {
+        over "tn__ForeArmStructureModel_jV0" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__ForeArmStructureModel_jV0/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/white>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__ForeArmStructureModel_jV0_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__ForeArmStructureModel_jV0>
+    )
+    {
+        over "tn__ForeArmStructureModel_jV0" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__TopTowerModel_nJ" (
+        prepend references = @./geometries.usd@</Geometries/tn__TopTowerModel_nJ>
+    )
+    {
+        over "tn__TopTowerModel_nJ" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__TopTowerModel_nJ/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/white>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__TopTowerModel_nJ_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__TopTowerModel_nJ>
+    )
+    {
+        over "tn__TopTowerModel_nJ" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__RCarpals_YC" (
+        prepend references = @./geometries.usd@</Geometries/tn__RCarpals_YC>
+    )
+    {
+        over "tn__RCarpals_YC" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__RCarpals_YC/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/white>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__RCarpals_YC_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__RCarpals_YC>
+    )
+    {
+        over "tn__RCarpals_YC" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__PAP_v4" (
+        prepend references = @./geometries.usd@</Geometries/tn__PAP_v4>
+    )
+    {
+        over "tn__PAP_v4" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__PAP_v4/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/white>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__PAP_v4_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__PAP_v4>
+    )
+    {
+        over "tn__PAP_v4" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__PPP_v4" (
+        prepend references = @./geometries.usd@</Geometries/tn__PPP_v4>
+    )
+    {
+        over "tn__PPP_v4" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__PPP_v4/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/white>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__PPP_v4_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__PPP_v4>
+    )
+    {
+        over "tn__PPP_v4" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__PFingerTipAssembly_oQ" (
+        prepend references = @./geometries.usd@</Geometries/tn__PFingerTipAssembly_oQ>
+    )
+    {
+        over "tn__PFingerTipAssembly_oQ" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__PFingerTipAssembly_oQ/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/white>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__PFingerTipAssembly_oQ_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__PFingerTipAssembly_oQ>
+    )
+    {
+        over "tn__PFingerTipAssembly_oQ" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__MAP_v4" (
+        prepend references = @./geometries.usd@</Geometries/tn__MAP_v4>
+    )
+    {
+        over "tn__MAP_v4" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__MAP_v4/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/white>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__MAP_v4_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__MAP_v4>
+    )
+    {
+        over "tn__MAP_v4" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__MPP_v4" (
+        prepend references = @./geometries.usd@</Geometries/tn__MPP_v4>
+    )
+    {
+        over "tn__MPP_v4" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__MPP_v4/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/white>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__MPP_v4_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__MPP_v4>
+    )
+    {
+        over "tn__MPP_v4" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__MFingerTipAssembly_oQ" (
+        prepend references = @./geometries.usd@</Geometries/tn__MFingerTipAssembly_oQ>
+    )
+    {
+        over "tn__MFingerTipAssembly_oQ" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__MFingerTipAssembly_oQ/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/white>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__MFingerTipAssembly_oQ_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__MFingerTipAssembly_oQ>
+    )
+    {
+        over "tn__MFingerTipAssembly_oQ" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__IAPR_e64" (
+        prepend references = @./geometries.usd@</Geometries/tn__IAPR_e64>
+    )
+    {
+        over "tn__IAPR_e64" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__IAPR_e64/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/white>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__IAPR_e64_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__IAPR_e64>
+    )
+    {
+        over "tn__IAPR_e64" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__IPP_v4" (
+        prepend references = @./geometries.usd@</Geometries/tn__IPP_v4>
+    )
+    {
+        over "tn__IPP_v4" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__IPP_v4/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/white>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__IPP_v4_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__IPP_v4>
+    )
+    {
+        over "tn__IPP_v4" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__IFingerTipAssembly_oQ" (
+        prepend references = @./geometries.usd@</Geometries/tn__IFingerTipAssembly_oQ>
+    )
+    {
+        over "tn__IFingerTipAssembly_oQ" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__IFingerTipAssembly_oQ/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/white>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__IFingerTipAssembly_oQ_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__IFingerTipAssembly_oQ>
+    )
+    {
+        over "tn__IFingerTipAssembly_oQ" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__TTPR_e64" (
+        prepend references = @./geometries.usd@</Geometries/tn__TTPR_e64>
+    )
+    {
+        over "tn__TTPR_e64" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__TTPR_e64/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/white>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__TTPR_e64_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__TTPR_e64>
+    )
+    {
+        over "tn__TTPR_e64" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__RTAP_e63" (
+        prepend references = @./geometries.usd@</Geometries/tn__RTAP_e63>
+    )
+    {
+        over "tn__RTAP_e63" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__RTAP_e63/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/white>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__RTAP_e63_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__RTAP_e63>
+    )
+    {
+        over "tn__RTAP_e63" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__TPP_v4" (
+        prepend references = @./geometries.usd@</Geometries/tn__TPP_v4>
+    )
+    {
+        over "tn__TPP_v4" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__TPP_v4/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/white>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__TPP_v4_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__TPP_v4>
+    )
+    {
+        over "tn__TPP_v4" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+
+    def Xform "tn__TDP_v4" (
+        prepend references = @./geometries.usd@</Geometries/tn__TDP_v4>
+    )
+    {
+        over "tn__TDP_v4" (
+            apiSchemas = ["MaterialBindingAPI"]
+        )
+        {
+            custom rel material:binding
+            prepend rel material:binding = </Instances/tn__TDP_v4/VisualMaterials/white>
+        }
+
+        def Scope "VisualMaterials"
+        {
+            def Material "white" (
+                instanceable = true
+                prepend references = @./materials.usda@</Materials/white>
+            )
+            {
+            }
+        }
+    }
+
+    def Xform "tn__TDP_v4_1" (
+        prepend references = @./geometries.usd@</Geometries/tn__TDP_v4>
+    )
+    {
+        over "tn__TDP_v4" (
+            apiSchemas = ["PhysicsCollisionAPI", "NewtonCollisionAPI", "PhysicsMeshCollisionAPI", "NewtonMeshCollisionAPI"]
+        )
+        {
+            token physics:approximation = "convexHull"
+            token purpose = "guide"
+        }
+    }
+}
+

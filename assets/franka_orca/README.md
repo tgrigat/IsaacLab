@@ -22,6 +22,9 @@ The Franka FR3 arm with the right ORCA hand, as `FRANKA_ORCA_CFG`
   `convex_taxels`, `mesh_taxels` and `mesh_fingertips`. Each holds the composed `franka_orca.urdf` with its baked
   fingertip `meshes/`, the converted `usd/`, the top layer `franka_orca.usda` the robot config loads and, with
   taxels, the tactile sidecars `tactile/<finger>.npz`.
+- `../orca_hand/<method>/`: the right ORCA hand alone, its forearm the fixed root, as `ORCA_HAND_CFG` spawns it, built
+  from the same sources (`build_asset.py --robot orca_hand`) for the `no_taxels` and `convex_taxels` methods, the ones
+  the plate-balancing tasks use. Each holds `orca_hand.urdf`, `usd/`, `orca_hand.usda` and, with taxels, `tactile/`.
 
 The halltaxel data comes from halltaxel at commit `d849d20` (2026-10-10), the same revision as the vendored package
 in `source/halltaxel`.
@@ -35,6 +38,7 @@ not.
 ```bash
 uv run python scripts/tools/franka_orca/build_asset.py                          # every method
 uv run python scripts/tools/franka_orca/build_asset.py --fingertips mesh_taxels # one method
+uv run python scripts/tools/franka_orca/build_asset.py --robot orca_hand --fingertips no_taxels convex_taxels
 uv run python scripts/tools/franka_orca/check_asset.py --fingertips mesh_taxels
 ```
 

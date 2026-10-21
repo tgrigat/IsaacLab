@@ -3,18 +3,22 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause
 
-"""Build the Franka (FR3) + ORCA-hand robot asset, with one of several fingertip collision methods.
+"""Build the Franka (FR3) + ORCA-hand robot asset, or the ORCA hand alone, with one of several fingertip collision
+methods.
 
 Everything is built from the sources vendored under ``assets/franka_orca/sources/`` (see its README) into
-``assets/franka_orca/<method>/``, both tracked in git, so the environments need no build. Two steps:
+``assets/<robot>/<method>/``, both tracked in git, so the environments need no build. The robot (``--robot``) is
+``franka_orca``, the hand on the FR3 flange, or ``orca_hand``, the hand alone with its forearm as the fixed root.
+Two steps:
 
-1. :func:`compose_urdf`: FR3 URDF + ORCA right-hand URDF -> ``franka_orca.urdf``. The hand links collide
+1. :func:`compose_urdf`: FR3 URDF + ORCA right-hand URDF -> ``franka_orca.urdf`` (or the hand URDF alone ->
+   ``orca_hand.urdf``). The hand links collide
    through their visual meshes, which the simulator imports as convex hulls, and each sensed fingertip is cut by
    halltaxel into one collision per taxel (``<finger>_taxel_NNN``), a pad proxy (``<finger>_pad``) and the unsensed
    rest (``<finger>_unsensed*``), as the fingertip method says. A sidecar ``tactile/<finger>.npz`` records the taxel
    order and the sensor frame.
-2. :func:`urdf_to_usd`: ``franka_orca.urdf`` -> USD with Isaac Lab's URDF converter, plus a top layer
-   ``franka_orca.usda`` holding the collision filter pairs (bodies, and the fingertip colliders, which meet only
+2. :func:`urdf_to_usd`: ``<robot>.urdf`` -> USD with Isaac Lab's URDF converter, plus a top layer
+   ``<robot>.usda`` holding the collision filter pairs (bodies, and the fingertip colliders, which meet only
    pad to pad and unsensed to unsensed) and the colliders kept as triangle meshes. This is the file the robot config
    loads.
 
@@ -42,6 +46,7 @@ Usage:
 
     uv run python scripts/tools/franka_orca/build_asset.py                         # every method
     uv run python scripts/tools/franka_orca/build_asset.py --fingertips mesh_taxels
+    uv run python scripts/tools/franka_orca/build_asset.py --robot orca_hand --fingertips no_taxels convex_taxels
     uv run python scripts/tools/franka_orca/build_asset.py --fingertips mesh_taxels --fingers thumb \
         --out-dir /tmp/franka_orca_thumb
 """
@@ -63,7 +68,12 @@ import trimesh
 import warp as wp
 from halltaxel import TactileSurfaceSpec, segment_surface, select_region
 
-from isaaclab_assets.robots.franka_orca import FINGERTIP_METHODS, FRANKA_ORCA_ASSET_DIR, ORCA_FINGER_CHAINS
+from isaaclab_assets.robots.franka_orca import (
+    FINGERTIP_METHODS,
+    FRANKA_ORCA_ASSET_DIR,
+    ORCA_FINGER_CHAINS,
+    ROBOT_ASSET_DIRS,
+)
 
 ##
 # Inputs
@@ -126,7 +136,7 @@ capsules would be up to 10 cm thick, and the blocks at the flange and the palm. 
 segment or a finger phalanx, is long and round enough for a capsule."""
 
 
-def collision_excludes(fingers: list[str]) -> list[tuple[str, str]]:
+def collision_excludes(fingers: list[str], arm: bool = True) -> list[tuple[str, str]]:
     """Body pairs that never collide.
 
     Every pair of hand bodies is excluded except two sensed fingertips, which meet only through their pad proxies
@@ -136,11 +146,14 @@ def collision_excludes(fingers: list[str]) -> list[tuple[str, str]]:
 
     Args:
         fingers: Sensed fingers, keys of :data:`FINGERTIP_LINKS`.
+        arm: Whether the robot has the FR3 arm, whose links get their excludes too.
     """
     sensed_tips = {FINGERTIP_LINKS[finger] for finger in fingers}
     hand = WRIST_LINKS + [link for chain in ORCA_FINGER_CHAINS for link in chain]
-    pairs = list(ARM_EXCLUDES)
-    pairs += itertools.product(WRIST_LINKS, ["fr3_link5", "fr3_link6", "fr3_link7"])
+    pairs = []
+    if arm:
+        pairs += ARM_EXCLUDES
+        pairs += itertools.product(WRIST_LINKS, ["fr3_link5", "fr3_link6", "fr3_link7"])
     pairs += [(a, b) for a, b in itertools.combinations(hand, 2) if not (a in sensed_tips and b in sensed_tips)]
     return pairs
 
@@ -353,8 +366,8 @@ def bake_finger(
 ##
 
 
-def compose_urdf(fingers: list[str], method: str, out_dir: Path) -> Path:
-    """Mount the hand on the FR3 flange, add the hand colliders and bake the taxels, as one URDF.
+def compose_urdf(fingers: list[str], method: str, out_dir: Path, robot_name: str = "franka_orca") -> Path:
+    """Mount the hand on the FR3 flange (or take it alone), add the hand colliders and bake the taxels, as one URDF.
 
     Mesh paths in the URDF are relative to it, so the build can move with the repository.
 
@@ -362,18 +375,23 @@ def compose_urdf(fingers: list[str], method: str, out_dir: Path) -> Path:
         fingers: Fingers to bake, keys of :data:`FINGERTIP_LINKS`.
         method: Fingertip method of the sensed fingers, see :data:`FINGERTIP_METHODS`.
         out_dir: Output directory; meshes go to ``meshes/``, sidecars to ``tactile/``.
+        robot_name: ``franka_orca`` for the hand on the FR3, ``orca_hand`` for the hand alone, rooted at its forearm.
 
     Returns:
-        Path of ``franka_orca.urdf``.
+        Path of ``<robot_name>.urdf``.
     """
     mesh_dir = out_dir / "meshes"
     sidecar_dir = out_dir / "tactile"
     mesh_dir.mkdir(parents=True, exist_ok=True)
     sidecar_dir.mkdir(parents=True, exist_ok=True)
 
-    robot = ET.parse(FR3_URDF).getroot()
-    robot.set("name", "franka_orca")
-    resolve_mesh_paths(robot, {"franka_emika_panda": FR3_PACKAGE}, FR3_URDF.parent, out_dir)
+    arm = robot_name == "franka_orca"
+    if arm:
+        robot = ET.parse(FR3_URDF).getroot()
+        resolve_mesh_paths(robot, {"franka_emika_panda": FR3_PACKAGE}, FR3_URDF.parent, out_dir)
+    else:
+        robot = ET.Element("robot")
+    robot.set("name", robot_name)
 
     hand = ET.parse(HAND_URDF).getroot()
     resolve_mesh_paths(hand, {"orcahand_description": HAND_URDF.parents[3]}, HAND_URDF.parent, out_dir)
@@ -410,12 +428,13 @@ def compose_urdf(fingers: list[str], method: str, out_dir: Path) -> Path:
             add_visual_collision(link, f"{name}_hull")
 
     robot.extend(hand.findall("material") + hand.findall("link") + hand.findall("joint"))
-    mount = ET.SubElement(robot, "joint", name="orcahand_mount", type="fixed")
-    ET.SubElement(mount, "parent", link="fr3_link8")
-    ET.SubElement(mount, "child", link="ForeArmStructure_Model_e18f2368")
-    ET.SubElement(mount, "origin", xyz=HAND_MOUNT_XYZ, rpy=HAND_MOUNT_RPY)
+    if arm:
+        mount = ET.SubElement(robot, "joint", name="orcahand_mount", type="fixed")
+        ET.SubElement(mount, "parent", link="fr3_link8")
+        ET.SubElement(mount, "child", link="ForeArmStructure_Model_e18f2368")
+        ET.SubElement(mount, "origin", xyz=HAND_MOUNT_XYZ, rpy=HAND_MOUNT_RPY)
 
-    urdf = out_dir / "franka_orca.urdf"
+    urdf = out_dir / f"{robot_name}.urdf"
     ET.indent(robot)
     ET.ElementTree(robot).write(urdf, xml_declaration=True, encoding="utf-8")
     print(f"wrote {urdf}")
@@ -433,7 +452,7 @@ def urdf_to_usd(urdf: Path, fingers: list[str], method: str, out_dir: Path) -> P
         out_dir: Output directory.
 
     Returns:
-        Path of ``franka_orca.usda``, the layer the robot config spawns.
+        Path of ``<robot>.usda``, named after the URDF, the layer the robot config spawns.
     """
     from pxr import Sdf, Usd, UsdPhysics
 
@@ -452,7 +471,8 @@ def urdf_to_usd(urdf: Path, fingers: list[str], method: str, out_dir: Path) -> P
         )
     )
 
-    top = out_dir / "franka_orca.usda"
+    robot_name = urdf.stem
+    top = out_dir / f"{robot_name}.usda"
     layer = Sdf.Layer.CreateNew(str(top))
     layer.subLayerPaths.append(os.path.relpath(converter.usd_path, out_dir))
     # stage metadata is not inherited from sublayers; without it USD falls back to Y-up
@@ -460,9 +480,9 @@ def urdf_to_usd(urdf: Path, fingers: list[str], method: str, out_dir: Path) -> P
     for key in ("upAxis", "metersPerUnit", "kilogramsPerUnit"):
         layer.pseudoRoot.SetInfo(key, converted.pseudoRoot.GetInfo(key))
     stage = Usd.Stage.Open(layer)
-    stage.SetDefaultPrim(stage.GetPrimAtPath("/franka_orca"))
+    stage.SetDefaultPrim(stage.GetPrimAtPath(f"/{robot_name}"))
     bodies = {prim.GetName(): prim.GetPath() for prim in stage.Traverse() if prim.HasAPI(UsdPhysics.RigidBodyAPI)}
-    body_pairs = collision_excludes(fingers)
+    body_pairs = collision_excludes(fingers, arm=robot_name == "franka_orca")
     colliders = {
         finger: fingertip_colliders(stage.GetPrimAtPath(bodies[FINGERTIP_LINKS[finger]])) for finger in fingers
     }
@@ -686,14 +706,14 @@ def add_visual_collision(link: ET.Element, name: str) -> None:
     collision.extend(copy.deepcopy(child) for child in visual if child.tag in ("origin", "geometry"))
 
 
-def build(method: str, fingers: list[str], out_dir: Path) -> None:
-    """Build the asset with one fingertip method into a fresh ``out_dir``."""
+def build(method: str, fingers: list[str], out_dir: Path, robot_name: str = "franka_orca") -> None:
+    """Build a robot's asset with one fingertip method into a fresh ``out_dir``."""
     if method in ("no_taxels", "primitives"):
         fingers = []
     if out_dir.exists():
         shutil.rmtree(out_dir)
     out_dir.mkdir(parents=True)
-    urdf = compose_urdf(fingers, method, out_dir)
+    urdf = compose_urdf(fingers, method, out_dir, robot_name)
     urdf_to_usd(urdf, fingers, method, out_dir)
 
 
@@ -702,6 +722,7 @@ def main():
     parser.add_argument(
         "--fingertips", nargs="+", choices=FINGERTIP_METHODS, default=list(FINGERTIP_METHODS), help="Methods to build."
     )
+    parser.add_argument("--robot", choices=ROBOT_ASSET_DIRS, default="franka_orca", help="Robot to build.")
     parser.add_argument("--fingers", nargs="+", choices=FINGERTIP_LINKS, default=list(FINGERTIP_LINKS))
     parser.add_argument("--out-dir", type=Path, help="Output directory, with a single method.")
     args = parser.parse_args()
@@ -709,9 +730,9 @@ def main():
         parser.error("--out-dir takes a single --fingertips method")
 
     for method in args.fingertips:
-        out_dir = (args.out_dir or FRANKA_ORCA_ASSET_DIR / method).resolve()
-        print(f"== {method} -> {out_dir}")
-        build(method, args.fingers, out_dir)
+        out_dir = (args.out_dir or ROBOT_ASSET_DIRS[args.robot] / method).resolve()
+        print(f"== {args.robot} {method} -> {out_dir}")
+        build(method, args.fingers, out_dir, args.robot)
 
 
 if __name__ == "__main__":

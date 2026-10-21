@@ -1,0 +1,241 @@
+#usda 1.0
+(
+    customLayerData = {
+        string creator = "URDF USD Converter v0.3.2"
+    }
+    defaultPrim = "orca_hand"
+    endTimeCode = 1000000
+    kilogramsPerUnit = 1
+    metersPerUnit = 1
+    startTimeCode = 0
+    upAxis = "Z"
+)
+
+over "orca_hand" (
+    prepend apiSchemas = ["IsaacRobotAPI"]
+)
+{
+    custom rel isaac:physics:robotJoints
+    custom rel isaac:physics:robotLinks
+
+    over "Physics"
+    {
+        over "root_joint" (
+            prepend apiSchemas = ["IsaacJointAPI"]
+        )
+        {
+        }
+
+        over "TopTower_Model_4a80d30e_to_ForeArmStructure_Model_e18f2368" (
+            prepend apiSchemas = ["IsaacJointAPI"]
+        )
+        {
+        }
+
+        over "R_Carpals_8d1f1041_to_TopTower_Model_4a80d30e" (
+            prepend apiSchemas = ["IsaacJointAPI"]
+        )
+        {
+        }
+
+        over "P_AP_f5e42b61_to_R_Carpals_8d1f1041" (
+            prepend apiSchemas = ["IsaacJointAPI"]
+        )
+        {
+        }
+
+        over "M_AP_6ec59111_to_R_Carpals_8d1f1041" (
+            prepend apiSchemas = ["IsaacJointAPI"]
+        )
+        {
+        }
+
+        over "M_AP_e04a96f2_to_R_Carpals_8d1f1041" (
+            prepend apiSchemas = ["IsaacJointAPI"]
+        )
+        {
+        }
+
+        over "I_AP_R_d95d02d1_to_R_Carpals_8d1f1041" (
+            prepend apiSchemas = ["IsaacJointAPI"]
+        )
+        {
+        }
+
+        over "T_TP_R_1c2b802d_to_R_Carpals_8d1f1041" (
+            prepend apiSchemas = ["IsaacJointAPI"]
+        )
+        {
+        }
+
+        over "P_PP_1d411b9b_to_P_AP_f5e42b61" (
+            prepend apiSchemas = ["IsaacJointAPI"]
+        )
+        {
+        }
+
+        over "P_FingerTipAssembly_cd219176_to_P_PP_1d411b9b" (
+            prepend apiSchemas = ["IsaacJointAPI"]
+        )
+        {
+        }
+
+        over "M_PP_8660a1eb_to_M_AP_6ec59111" (
+            prepend apiSchemas = ["IsaacJointAPI"]
+        )
+        {
+        }
+
+        over "M_FingerTipAssembly_424a8e75_to_M_PP_8660a1eb" (
+            prepend apiSchemas = ["IsaacJointAPI"]
+        )
+        {
+        }
+
+        over "M_PP_08efa608_to_M_AP_e04a96f2" (
+            prepend apiSchemas = ["IsaacJointAPI"]
+        )
+        {
+        }
+
+        over "M_FingerTipAssembly_34afb748_to_M_PP_08efa608" (
+            prepend apiSchemas = ["IsaacJointAPI"]
+        )
+        {
+        }
+
+        over "I_PP_bacbd481_to_I_AP_R_d95d02d1" (
+            prepend apiSchemas = ["IsaacJointAPI"]
+        )
+        {
+        }
+
+        over "I_FingerTipAssembly_ec49c16c_to_I_PP_bacbd481" (
+            prepend apiSchemas = ["IsaacJointAPI"]
+        )
+        {
+        }
+
+        over "R_T_AP_a9723101_to_T_TP_R_1c2b802d" (
+            prepend apiSchemas = ["IsaacJointAPI"]
+        )
+        {
+        }
+
+        over "T_PP_68395e98_to_R_T_AP_a9723101" (
+            prepend apiSchemas = ["IsaacJointAPI"]
+        )
+        {
+        }
+
+        over "T_DP_b7429e50_to_T_PP_68395e98" (
+            prepend apiSchemas = ["IsaacJointAPI"]
+        )
+        {
+        }
+    }
+
+    over "Geometry"
+    {
+        over "ForeArmStructure_Model_e18f2368" (
+            prepend apiSchemas = ["IsaacLinkAPI"]
+        )
+        {
+            over "TopTower_Model_4a80d30e" (
+                prepend apiSchemas = ["IsaacLinkAPI"]
+            )
+            {
+                over "R_Carpals_8d1f1041" (
+                    prepend apiSchemas = ["IsaacLinkAPI"]
+                )
+                {
+                    over "P_AP_f5e42b61" (
+                        prepend apiSchemas = ["IsaacLinkAPI"]
+                    )
+                    {
+                        over "P_PP_1d411b9b" (
+                            prepend apiSchemas = ["IsaacLinkAPI"]
+                        )
+                        {
+                            over "P_FingerTipAssembly_cd219176" (
+                                prepend apiSchemas = ["IsaacLinkAPI"]
+                            )
+                            {
+                            }
+                        }
+                    }
+
+                    over "M_AP_6ec59111" (
+                        prepend apiSchemas = ["IsaacLinkAPI"]
+                    )
+                    {
+                        over "M_PP_8660a1eb" (
+                            prepend apiSchemas = ["IsaacLinkAPI"]
+                        )
+                        {
+                            over "M_FingerTipAssembly_424a8e75" (
+                                prepend apiSchemas = ["IsaacLinkAPI"]
+                            )
+                            {
+                            }
+                        }
+                    }
+
+                    over "M_AP_e04a96f2" (
+                        prepend apiSchemas = ["IsaacLinkAPI"]
+                    )
+                    {
+                        over "M_PP_08efa608" (
+                            prepend apiSchemas = ["IsaacLinkAPI"]
+                        )
+                        {
+                            over "M_FingerTipAssembly_34afb748" (
+                                prepend apiSchemas = ["IsaacLinkAPI"]
+                            )
+                            {
+                            }
+                        }
+                    }
+
+                    over "I_AP_R_d95d02d1" (
+                        prepend apiSchemas = ["IsaacLinkAPI"]
+                    )
+                    {
+                        over "I_PP_bacbd481" (
+                            prepend apiSchemas = ["IsaacLinkAPI"]
+                        )
+                        {
+                            over "I_FingerTipAssembly_ec49c16c" (
+                                prepend apiSchemas = ["IsaacLinkAPI"]
+                            )
+                            {
+                            }
+                        }
+                    }
+
+                    over "T_TP_R_1c2b802d" (
+                        prepend apiSchemas = ["IsaacLinkAPI"]
+                    )
+                    {
+                        over "R_T_AP_a9723101" (
+                            prepend apiSchemas = ["IsaacLinkAPI"]
+                        )
+                        {
+                            over "T_PP_68395e98" (
+                                prepend apiSchemas = ["IsaacLinkAPI"]
+                            )
+                            {
+                                over "T_DP_b7429e50" (
+                                    prepend apiSchemas = ["IsaacLinkAPI"]
+                                )
+                                {
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

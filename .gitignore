@@ -97,10 +97,18 @@ benchmark_*.json
 # Superpowers (Claude Code plugin artifacts)
 docs/superpowers/
 
-# FrankaOrca robot asset: sources and builds are tracked, the URDF converter's cache records are not; local builds
-# outside assets/franka_orca/ are not either
+# FrankaOrca and ORCA-hand robot assets: sources and builds are tracked, the URDF converter's cache records are not;
+# local builds outside assets/franka_orca/ and assets/orca_hand/ are not either
 !assets/franka_orca/**/*.usd
 !assets/franka_orca/**/*.usda
+!assets/orca_hand/**/*.usd
+!assets/orca_hand/**/*.usda
 assets/franka_orca/*/usd/config.yaml
 assets/franka_orca/*/usd/.asset_hash
+assets/orca_hand/*/usd/config.yaml
+assets/orca_hand/*/usd/.asset_hash
 assets/franka_orca_*/
+
+*.webm
+2dof_reinforced_mount_continuous
+docs/source/_static/css
