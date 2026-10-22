@@ -30,9 +30,9 @@ for variant in FINGERTIP_VARIANTS:
         },
     )
 
-STUDENT_VARIANTS = ["Force", "Position", "PositionDirection", "Binary"]
+STUDENT_VARIANTS = ["Force", "Position", "PositionDirection", "ForcePosition", "Binary"]
 """Tactile signal of each student the NoTaxels policy is distilled to: each pad's contact force vector, its contact
-point, its contact point and force direction, or whether it is in contact."""
+point, its contact point and force direction, its contact force vector and point, or whether it is in contact."""
 
 for variant in STUDENT_VARIANTS:
     gym.register(

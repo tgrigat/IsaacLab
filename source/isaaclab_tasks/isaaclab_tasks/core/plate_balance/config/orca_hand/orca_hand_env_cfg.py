@@ -378,3 +378,10 @@ class OrcaHandPlateBalanceStudentPositionDirectionEnvCfg(OrcaHandPlateBalanceStu
     """Distillation to a student sensing each pad's contact point and the direction of its contact force."""
 
     tactile: ClassVar[tuple[str, ...]] = ("position", "direction")
+
+
+@configclass
+class OrcaHandPlateBalanceStudentForcePositionEnvCfg(OrcaHandPlateBalanceStudentEnvCfg):
+    """Distillation to a student sensing each pad's contact force vector and contact point."""
+
+    tactile: ClassVar[tuple[str, ...]] = ("force", "position")
