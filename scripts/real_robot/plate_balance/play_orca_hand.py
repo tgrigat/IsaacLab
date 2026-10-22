@@ -5,14 +5,16 @@
 
 """Run a trained ORCA-hand plate-balancing policy on the real hand, through ``orca_core``.
 
-The policy is a tactile student of ``Isaac-PlateBalance-OrcaHand-NoTaxels-Student*``: it observes the finger joints,
-the ball's target on the plate, its last action and a tactile signal from each fingertip pad, and neither the ball nor
-the plate. The NoTaxels teacher observes the ball and the plate, which the real hand cannot sense, so it is not
-supported.
+The policy is either a tactile student of ``Isaac-PlateBalance-OrcaHand-NoTaxels-Student*`` or a centre-of-pressure
+policy of ``Isaac-PlateBalance-OrcaHand-CoP*``, trained directly for the real hand as in Pan et al. (2026), "Beyond
+Binary". Both observe the finger joints, the ball's target on the plate, their last action and a tactile signal from
+each fingertip pad, and neither the ball nor the plate. The NoTaxels teacher observes the ball and the plate, which the
+real hand cannot sense, so it is not supported.
 
 Everything the policy was trained with comes from the run directory: the exported TorchScript policy
-(``exported/policy.pt``, written by ``scripts/reinforcement_learning/rsl_rl/play.py``) and ``params/env.yaml`` (the
-plate pose, the action joints and scale, the control rate, the student's observation terms and the target ranges).
+(``exported/policy.pt``, written by ``scripts/reinforcement_learning/play.py``) and ``params/env.yaml`` (the plate
+pose, the action joints, type and scale, the control rate, the policy's observation terms and the target ranges). The
+observation noise and delays of the centre-of-pressure policies are training-only and not applied here.
 
 Sim to hardware conventions:
 
@@ -22,7 +24,10 @@ Sim to hardware conventions:
 * Tactile: ``orca_core`` streams each pad's taxel forces, rotated into the fingertip (distal link) frame, the same
   frame as the simulated fingertip body. A press reads as a force out of the pad, while the simulation observes the
   plate's force on the fingertip, into the pad, so the forces are negated (``--tactile-sign``). The contact point is
-  the force-weighted mean of the taxel positions.
+  the force-weighted mean of the taxel positions. The centre of pressure's normal force is the total force into the
+  pad along the pad's normal at the pad point nearest the contact point, from the same pad mesh as in the simulation.
+  With ``--taxel-calibration`` (from ``calibrate_taxels.py``), each taxel's force is first rotated by its calibrated
+  rotation.
 
 Physical setup, as in the simulation (``orca_hand_env_cfg.py``): the forearm fixed with the palm facing up, tilted
 about 30 deg towards the wrist, the forearm's long axis 10 deg below level, so all five pads face straight up in the
@@ -60,6 +65,7 @@ from pathlib import Path
 
 import numpy as np
 import torch
+import trimesh
 import yaml
 from orca_core import OrcaHandTouch, load_hand
 
@@ -89,16 +95,29 @@ URDF_TO_ORCA = {
 }
 """``orca_core`` joint id of each URDF joint, and the sign from the URDF angle to the ``orca_core`` angle."""
 
-TACTILE_SIZES = {"force": 3, "position": 3, "direction": 3, "binary": 1}
-"""Observation size per fingertip of each tactile signal (``TACTILE_SIGNALS`` in ``orca_hand_env_cfg.py``)."""
+TACTILE_SIZES = {"force": 3, "position": 3, "direction": 3, "binary": 1, "cop": 4}
+"""Observation size per fingertip of each tactile signal (``TACTILE_SIGNALS`` and ``CONTACT_SIGNALS`` in
+``orca_hand_env_cfg.py``)."""
 
 TACTILE_FUNCS = {
     "pad_contact_forces_b": "force",
     "pad_contact_points_b": "position",
     "pad_contact_directions_b": "direction",
     "pad_contact_binary": "binary",
+    "pad_contact_cop_b": "cop",
 }
-"""Tactile signal of each student observation function."""
+"""Tactile signal of each tactile observation function."""
+
+PROPRIO_FUNCS = {
+    "joint_pos_rel": "joint_pos",
+    "joint_vel_rel": "joint_vel",
+    "generated_commands": "target",
+    "last_action": "actions",
+}
+"""Non-tactile observation of each observation function."""
+
+PROPRIO_SIZES = {"joint_pos": 16, "joint_vel": 16, "target": 2, "actions": 16}
+"""Observation size of each non-tactile observation."""
 
 
 ##
@@ -135,18 +154,30 @@ class PolicySpec:
     """Joint target offset [rad] per unit action."""
     default_joint_pos: dict[str, float]
     """URDF joint positions [rad] of the plate pose, the action offset and the joint observations' zero."""
+    obs_terms: list[str]
+    """Observations, keys of :data:`PROPRIO_SIZES` or ``"tactile"``, in observation order."""
     tactile: list[str]
-    """Tactile signals, keys of :data:`TACTILE_SIZES`, in observation order."""
+    """Tactile signals, keys of :data:`TACTILE_SIZES`, in observation order; together where ``obs_terms`` has
+    ``"tactile"``."""
     contact_threshold: float
     """Force [N] above which the binary signal senses a contact."""
     target_ranges: tuple[tuple[float, float], tuple[float, float]]
     """Target ``x`` and ``y`` ranges [m] in the plate frame."""
     resampling_time_range: tuple[float, float]
     """Time [s] between targets."""
+    action_type: str = "absolute"
+    """``"absolute"``: targets offset from the plate pose; ``"ema"``: targets moved by smoothed increments."""
+    ema_alpha: float = 1.0
+    """Weight of the new increment of ``"ema"`` actions."""
+    action_clip: float = float("inf")
+    """Magnitude the raw ``"ema"`` actions are clipped to before scaling."""
+    pad_regions: list[str] | None = None
+    """Pad region mesh of each finger, in :data:`FINGERS` order, for the centre of pressure's pad normal."""
 
     @property
     def obs_dim(self) -> int:
-        return 3 * len(self.action_joints) + 2 + len(FINGERS) * sum(TACTILE_SIZES[s] for s in self.tactile)
+        sizes = {**PROPRIO_SIZES, "tactile": len(FINGERS) * sum(TACTILE_SIZES[s] for s in self.tactile)}
+        return sum(sizes[term] for term in self.obs_terms)
 
 
 def load_spec(run: Path) -> PolicySpec:
@@ -161,29 +192,45 @@ def load_spec(run: Path) -> PolicySpec:
     task = json.loads((run_dir / "run.json").read_text())["task"]
     env = yaml.load((run_dir / "params" / "env.yaml").read_text(), Loader=_EnvYamlLoader)
 
-    student = env["observations"].get("student")
-    if student is None:
+    # tactile students observe the student group, centre-of-pressure policies the actor group, as they run here
+    group_name = next((g for g in ("student", "actor") if env["observations"].get(g) is not None), None)
+    if group_name is None:
         raise ValueError(
-            f"{task} is not a tactile student: its policy observes the ball and the plate, which the real hand cannot"
-            " sense. Use a run of Isaac-PlateBalance-OrcaHand-NoTaxels-Student*."
+            f"{task} is neither a tactile student nor a centre-of-pressure policy: its policy observes the ball and"
+            " the plate, which the real hand cannot sense. Use a run of Isaac-PlateBalance-OrcaHand-NoTaxels-Student*"
+            " or Isaac-PlateBalance-OrcaHand-CoP*."
         )
-    terms = {name: term for name, term in student.items() if isinstance(term, dict) and "func" in term}
-    if list(terms)[:4] != ["joint_pos", "joint_vel", "target", "actions"]:
-        raise ValueError(f"unexpected student observation terms {list(terms)}")
+    group = env["observations"][group_name]
+    if group.get("history_length"):
+        raise ValueError(f"{task} observes a history, which this script does not stack")
+    terms = {name: term for name, term in group.items() if isinstance(term, dict) and "func" in term}
+    obs_terms, tactile, contact_threshold, pad_regions = [], [], 0.05, None
     for name, term in terms.items():
-        if term.get("scale") is not None or term.get("noise") is not None:
-            raise ValueError(f"student observation {name} has a scale or noise, which this script does not apply")
-    tactile, contact_threshold = [], 0.05
-    for name, term in list(terms.items())[4:]:
         func = term["func"].rsplit(":", 1)[-1]
-        if func not in TACTILE_FUNCS:
-            raise ValueError(f"unsupported student observation {name} ({func})")
-        tactile.append(TACTILE_FUNCS[func])
-        if func == "pad_contact_binary":
-            contact_threshold = float(term["params"]["force_threshold"])
+        if term.get("scale") is not None or term.get("modifiers"):
+            raise ValueError(f"observation {name} has a scale or modifiers, which this script does not apply")
+        if term.get("noise") is not None and group_name == "student":
+            raise ValueError(f"student observation {name} has noise, which this script does not apply")
+        if func in PROPRIO_FUNCS:
+            obs_terms.append(PROPRIO_FUNCS[func])
+        elif func in TACTILE_FUNCS:
+            if "tactile" not in obs_terms:
+                obs_terms.append("tactile")
+            elif obs_terms[-1] != "tactile":
+                raise ValueError("the tactile observations must be consecutive")
+            tactile.append(TACTILE_FUNCS[func])
+            if func == "pad_contact_binary":
+                contact_threshold = float(term["params"]["force_threshold"])
+            if func == "pad_contact_cop_b":
+                pad_regions = list(term["params"]["pad_regions"])
+        else:
+            raise ValueError(f"unsupported observation {name} ({func})")
 
     actions = env["actions"]["fingers"]
-    if not actions["use_default_offset"] or actions.get("clip") is not None:
+    action_type, ema_alpha, action_clip = "absolute", 1.0, float("inf")
+    if "EMARelativeJointPositionAction" in str(actions.get("class_type", "")):
+        action_type, ema_alpha, action_clip = "ema", float(actions["alpha"]), float(actions["clip_value"])
+    elif not actions["use_default_offset"] or actions.get("clip") is not None:
         raise ValueError("expected joint position actions offset from the default joint positions, without clipping")
     command = env["commands"]["ball_target"]
     return PolicySpec(
@@ -193,10 +240,15 @@ def load_spec(run: Path) -> PolicySpec:
         action_joints=list(actions["joint_names"]),
         action_scale=float(actions["scale"]),
         default_joint_pos={k: float(v) for k, v in env["scene"]["robot"]["init_state"]["joint_pos"].items()},
+        obs_terms=obs_terms,
         tactile=tactile,
         contact_threshold=contact_threshold,
         target_ranges=(tuple(command["ranges"]["pos_x"]), tuple(command["ranges"]["pos_y"])),
         resampling_time_range=tuple(command["resampling_time_range"]),
+        action_type=action_type,
+        ema_alpha=ema_alpha,
+        action_clip=action_clip,
+        pad_regions=pad_regions,
     )
 
 
@@ -242,12 +294,50 @@ def orca_to_urdf(joint_pos: dict[str, float | None], joints: list[str]) -> np.nd
 ##
 
 
-def read_tactile(hand, spec: PolicySpec, tactile_sign: float) -> tuple[np.ndarray, dict[str, np.ndarray] | None]:
+PAD_POINT_SPACING = 0.5e-3
+"""Distance [m] between neighbouring pad points, as ``PAD_POINT_SPACING`` in the task's ``mdp/observations.py``."""
+
+
+def pad_surfaces(spec: PolicySpec) -> dict[str, tuple[np.ndarray, np.ndarray]] | None:
+    """Points [m] covering each finger's pad region mesh and its outward unit normals there, as ``pad_surface`` in
+    the task's ``mdp/observations.py``; ``None`` if the policy does not observe the centre of pressure."""
+    if spec.pad_regions is None:
+        return None
+    surfaces = {}
+    for finger, path in zip(FINGERS, spec.pad_regions):
+        mesh = trimesh.load(path, force="mesh")
+        mesh.merge_vertices()
+        vertices, faces = trimesh.remesh.subdivide_to_size(
+            mesh.vertices, mesh.faces, max_edge=PAD_POINT_SPACING, max_iter=20
+        )
+        mesh = trimesh.Trimesh(vertices, faces)
+        _, keep = np.unique(np.floor(mesh.vertices / PAD_POINT_SPACING), axis=0, return_index=True)
+        surfaces[finger] = (np.asarray(mesh.vertices[keep]), np.asarray(mesh.vertex_normals[keep]))
+    return surfaces
+
+
+def load_taxel_calibration(path: Path | None) -> dict[str, np.ndarray]:
+    """Per-taxel rotations of each finger, shape (num_taxels, 3, 3), from ``calibrate_taxels.py``; none without a
+    calibration file."""
+    if path is None:
+        return {}
+    data = np.load(path)
+    return {finger: data[f"{finger}_R"] for finger in FINGERS if f"{finger}_R" in data}
+
+
+def read_tactile(
+    hand,
+    spec: PolicySpec,
+    tactile_sign: float,
+    pads: dict[str, tuple[np.ndarray, np.ndarray]] | None = None,
+    calibration: dict[str, np.ndarray] | None = None,
+) -> tuple[np.ndarray, dict[str, np.ndarray] | None]:
     """The tactile observation, each finger's signals in :data:`FINGERS` order, and each finger's force [N] in its
     fingertip frame (``None`` without a tactile frame).
 
-    As in the simulation, the force is the plate's force on the fingertip, and the contact point and force direction
-    are zero without a contact.
+    As in the simulation, the force is the plate's force on the fingertip, and the contact point, force direction and
+    centre of pressure are zero without a contact. With ``calibration``, each taxel's force is rotated by its
+    calibrated rotation first.
     """
     data = hand.get_taxel_data(frame="fingertip") if isinstance(hand, OrcaHandTouch) else None
     forces, signals = {}, []
@@ -257,6 +347,9 @@ def read_tactile(hand, spec: PolicySpec, tactile_sign: float) -> tuple[np.ndarra
             force, point = np.zeros(3), np.zeros(3)
         else:
             taxel_forces = tactile_sign * taxels.forces
+            rotations = (calibration or {}).get(finger)
+            if rotations is not None and len(rotations) == len(taxel_forces):
+                taxel_forces = np.einsum("tij,tj->ti", rotations, taxel_forces)
             force = taxel_forces.sum(axis=0)
             weights = np.linalg.norm(taxel_forces, axis=1)
             point = weights @ taxels.positions / weights.sum() if weights.sum() > 0.0 else np.zeros(3)
@@ -272,6 +365,13 @@ def read_tactile(hand, spec: PolicySpec, tactile_sign: float) -> tuple[np.ndarra
                 signals.append(force / norm if in_contact else np.zeros(3))
             elif signal == "binary":
                 signals.append(np.array([float(in_contact)]))
+            elif signal == "cop":
+                if in_contact:
+                    pad_points, pad_normals = pads[finger]
+                    normal = pad_normals[np.argmin(np.linalg.norm(pad_points - point, axis=1))]
+                    signals.append(np.array([max(-force @ normal, 0.0), *point]))
+                else:
+                    signals.append(np.zeros(4))
     # the observation is grouped by signal, then by finger
     per_finger = len(spec.tactile)
     grouped = [signals[f * per_finger + s] for s in range(per_finger) for f in range(len(FINGERS))]
@@ -303,9 +403,18 @@ def parse_args() -> argparse.Namespace:
         help="Clip the commanded actions to this magnitude (a safety limit; the policy observes its unclipped action).",
     )
     parser.add_argument(
+        "--max-target-offset",
+        type=float,
+        default=0.5,
+        help="Keep the joint targets of 'ema' actions within this offset [rad] of the plate pose (a safety limit).",
+    )
+    parser.add_argument(
         "--contact-threshold", type=float, default=None, help="Contact force [N]; defaults to the training value."
     )
     parser.add_argument("--tactile-sign", type=float, default=-1.0, help="Sign from sensor forces to plate forces.")
+    parser.add_argument(
+        "--taxel-calibration", type=Path, default=None, help="Per-taxel rotations from calibrate_taxels.py (.npz)."
+    )
     parser.add_argument("--vel-filter", type=float, default=0.5, help="Low-pass weight of new joint velocity samples.")
     parser.add_argument("--move-time", type=float, default=3.0, help="Time [s] to move to the plate pose.")
     parser.add_argument("--print-every", type=float, default=0.5, help="Status print period [s].")
@@ -326,12 +435,16 @@ def main():
     if args.contact_threshold is not None:
         spec.contact_threshold = args.contact_threshold
     policy = load_policy(spec)
+    pads = pad_surfaces(spec)
+    calibration = load_taxel_calibration(args.taxel_calibration)
     print(
-        f"[INFO] {spec.task}: {spec.policy_path}, tactile {spec.tactile or 'none'},"
+        f"[INFO] {spec.task}: {spec.policy_path}, tactile {spec.tactile or 'none'}, {spec.action_type} actions,"
         f" {1.0 / spec.step_dt:.0f} Hz, {spec.obs_dim} observations"
+        + (f", taxel calibration of {sorted(calibration)}" if calibration else "")
     )
 
     default_q = np.array([spec.default_joint_pos[j] for j in spec.action_joints])
+    joint_limits = (default_q - args.max_target_offset, default_q + args.max_target_offset)
     plate_pose = urdf_to_orca({WRIST_JOINT: 0.0, **spec.default_joint_pos})
 
     hand = load_hand(config_path=args.config, mock=args.mock)
@@ -365,6 +478,9 @@ def main():
         next_resample = 0.0
         last_action = np.zeros(len(spec.action_joints))
         joint_vel = np.zeros(len(spec.action_joints))
+        # the smoothed increment and the joint targets of "ema" actions, from the plate pose
+        increment = np.zeros(len(spec.action_joints))
+        joint_target = default_q.copy()
         prev_q, prev_t = None, None
         num_clipped, num_overruns = 0, 0
         start = time.perf_counter()
@@ -384,16 +500,23 @@ def main():
                 sample = (q - prev_q) / (now - prev_t)
                 joint_vel = args.vel_filter * sample + (1.0 - args.vel_filter) * joint_vel
             prev_q, prev_t = q, now
-            tactile, forces = read_tactile(hand, spec, args.tactile_sign)
+            tactile, forces = read_tactile(hand, spec, args.tactile_sign, pads, calibration)
 
-            obs = np.concatenate([q - default_q, joint_vel, target, last_action, tactile]).astype(np.float32)
+            values = {"joint_pos": q - default_q, "joint_vel": joint_vel, "target": target, "actions": last_action}
+            values["tactile"] = tactile
+            obs = np.concatenate([values[term] for term in spec.obs_terms]).astype(np.float32)
             with torch.inference_mode():
                 action = policy(torch.from_numpy(obs).unsqueeze(0))[0].numpy().astype(float)
             last_action = action
 
             clipped = np.clip(action, -args.max_action, args.max_action)
             num_clipped += int(np.any(clipped != action))
-            joint_target = default_q + spec.action_scale * clipped
+            if spec.action_type == "ema":
+                step = spec.action_scale * np.clip(clipped, -spec.action_clip, spec.action_clip)
+                increment = spec.ema_alpha * step + (1.0 - spec.ema_alpha) * increment
+                joint_target = np.clip(joint_target + increment, *joint_limits)
+            else:
+                joint_target = default_q + spec.action_scale * clipped
             if not args.no_actuate:
                 hand.set_joint_positions(
                     urdf_to_orca({WRIST_JOINT: 0.0, **dict(zip(spec.action_joints, joint_target))})

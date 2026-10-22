@@ -30,6 +30,7 @@ def reset_tilted_mount(
     mount_std: tuple[float, float, float],
     plate_yaw_std: float,
     ball_pos_range: dict[str, tuple[float, float]],
+    plate_pos_range: dict[str, tuple[float, float]] | None = None,
     max_sigma: float = 2.5,
     robot_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
     plate_cfg: SceneEntityCfg = SceneEntityCfg("plate"),
@@ -42,8 +43,9 @@ def reset_tilted_mount(
     about the plate's default centre, so the plate stays at its default position and only the hand's orientation to
     gravity changes. The plate is turned on the fingertips about its normal by a Gaussian yaw [rad] of standard
     deviation ``plate_yaw_std``. The ball is placed at its default offset from the plate, shifted uniformly within
-    ``ball_pos_range`` (keys ``x`` and ``y``) [m] in the plate frame. Samples are clipped at ``max_sigma`` standard
-    deviations. All three start at rest.
+    ``ball_pos_range`` (keys ``x`` and ``y``) [m] in the plate frame. With ``plate_pos_range`` (keys ``x`` and ``y``)
+    [m], the plate and the ball on it are shifted uniformly within it in the plate frame, so the plate rests off
+    centre on the fingertips. Samples are clipped at ``max_sigma`` standard deviations. All three start at rest.
     """
     robot: Articulation = env.scene[robot_cfg.name]
     plate: RigidObject = env.scene[plate_cfg.name]
@@ -72,10 +74,15 @@ def reset_tilted_mount(
     for axis, key in enumerate(("x", "y")):
         low, high = ball_pos_range.get(key, (0.0, 0.0))
         ball_offset[:, axis] += torch.empty(n, device=device).uniform_(low, high)
-    ball_pos = pivot + quat_apply(plate_quat, ball_offset)
+    plate_shift = torch.zeros(n, 3, device=device)
+    for axis, key in enumerate(("x", "y")):
+        low, high = (plate_pos_range or {}).get(key, (0.0, 0.0))
+        plate_shift[:, axis] = torch.empty(n, device=device).uniform_(low, high)
+    plate_pos = pivot + quat_apply(plate_quat, plate_shift)
+    ball_pos = plate_pos + quat_apply(plate_quat, ball_offset)
 
     robot.write_root_pose_to_sim_index(root_pose=torch.cat([robot_pos + origins, robot_quat], dim=-1), env_ids=env_ids)
-    plate.write_root_pose_to_sim_index(root_pose=torch.cat([pivot + origins, plate_quat], dim=-1), env_ids=env_ids)
+    plate.write_root_pose_to_sim_index(root_pose=torch.cat([plate_pos + origins, plate_quat], dim=-1), env_ids=env_ids)
     ball.write_root_pose_to_sim_index(
         root_pose=torch.cat([ball_pos + origins, ball.data.default_root_pose.torch[env_ids, 3:7]], dim=-1),
         env_ids=env_ids,

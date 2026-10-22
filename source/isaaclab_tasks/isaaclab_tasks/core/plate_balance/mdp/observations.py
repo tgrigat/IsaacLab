@@ -285,3 +285,68 @@ def pad_contact_binary(
         env, contact_sensor_names, pad_regions, pad_tolerance, fingertips_cfg, plate_cfg
     )
     return (on_pad & (torch.linalg.norm(force_w, dim=-1) > force_threshold)).float()
+
+
+def pad_normal_at(point_b: torch.Tensor, pad_region: str) -> torch.Tensor:
+    """Outward unit normal of a pad at the pad point nearest each contact point, shape (num_points, 3).
+
+    Args:
+        point_b: Contact points in the pad region's frame [m], shape (num_points, 3); NaN points give the normal of
+            an arbitrary pad point.
+        pad_region: Path of the pad region mesh, see :func:`pad_surface`.
+    """
+    points, normals = pad_surface(pad_region, str(point_b.device))
+    nearest = torch.cdist(torch.nan_to_num(point_b), points).argmin(dim=-1)
+    return normals[nearest]
+
+
+def pad_contact_cop_b(
+    env: ManagerBasedRLEnv,
+    contact_sensor_names: list[str],
+    pad_regions: list[str],
+    pad_tolerance: float,
+    fingertips_cfg: SceneEntityCfg,
+    plate_cfg: SceneEntityCfg = SceneEntityCfg("plate"),
+) -> torch.Tensor:
+    """Centre of pressure: each listed fingertip's normal contact force [N] on its pad and its contact point [m], in
+    its own frame, all zero without a contact on the pad (see :func:`pad_contacts`), shape
+    (num_envs, 4 * num_sensors), ``(f_n, x, y, z)`` per fingertip.
+
+    The normal force is the plate's force on the fingertip into the pad, along the pad's outward normal at the pad
+    point nearest the contact point (:func:`pad_normal_at`), so it is positive while pressing. Only the normal
+    component is observed, as in Pan et al. (2026), "Beyond Binary": the simulated friction forces are unreliable on
+    the convex fingertip hulls, and a tactile pad measures pressure better than shear.
+    """
+    force_w, point_b, on_pad, quat_w = pad_contacts(
+        env, contact_sensor_names, pad_regions, pad_tolerance, fingertips_cfg, plate_cfg
+    )
+    force_b = quat_apply_inverse(quat_w, force_w)
+    normal_force = torch.stack(
+        [-(force_b[:, i] * pad_normal_at(point_b[:, i], pad_regions[i])).sum(dim=-1) for i in range(len(pad_regions))],
+        dim=1,
+    )
+    cop = torch.cat([normal_force.clamp(min=0.0).unsqueeze(-1), point_b], dim=-1)
+    return torch.where(on_pad.unsqueeze(-1), cop, 0.0).view(env.num_envs, -1)
+
+
+def plate_vel_root(
+    env: ManagerBasedRLEnv,
+    plate_cfg: SceneEntityCfg = SceneEntityCfg("plate"),
+    asset_cfg: SceneEntityCfg = SceneEntityCfg("robot"),
+) -> torch.Tensor:
+    """Linear [m/s] and angular [rad/s] velocity of the plate in the robot root frame, shape (num_envs, 6)."""
+    robot: Articulation = env.scene[asset_cfg.name]
+    plate: RigidObject = env.scene[plate_cfg.name]
+    quat = robot.data.root_quat_w.torch
+    lin = quat_apply_inverse(quat, plate.data.root_lin_vel_w.torch - robot.data.root_lin_vel_w.torch)
+    return torch.cat([lin, quat_apply_inverse(quat, plate.data.root_ang_vel_w.torch)], dim=-1)
+
+
+def ball_target_offset(
+    env: ManagerBasedRLEnv,
+    command_name: str,
+    ball_cfg: SceneEntityCfg = SceneEntityCfg("ball"),
+    plate_cfg: SceneEntityCfg = SceneEntityCfg("plate"),
+) -> torch.Tensor:
+    """Offset [m] of the ball from its target on the plate, in the plate frame, shape (num_envs, 2)."""
+    return ball_pos_plate(env, ball_cfg, plate_cfg)[:, :2] - env.command_manager.get_command(command_name)

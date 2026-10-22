@@ -27,11 +27,14 @@ from isaaclab_newton.sensors import TactileSensorCfg
 
 from isaaclab.actuators import ImplicitActuatorCfg
 from isaaclab.assets import ArticulationCfg, RigidObjectCfg
+from isaaclab.managers import EventTermCfg as EventTerm
 from isaaclab.managers import ObservationGroupCfg as ObsGroup
 from isaaclab.managers import ObservationTermCfg as ObsTerm
+from isaaclab.managers import RewardTermCfg as RewTerm
 from isaaclab.managers import SceneEntityCfg
 from isaaclab.sensors import ContactSensorCfg
 from isaaclab.utils import configclass, replace
+from isaaclab.utils.noise import UniformNoiseCfg as Unoise
 
 from isaaclab_assets.robots.franka_orca import (
     ORCA_HAND_CFG,
@@ -385,3 +388,197 @@ class OrcaHandPlateBalanceStudentForcePositionEnvCfg(OrcaHandPlateBalanceStudent
     """Distillation to a student sensing each pad's contact force vector and contact point."""
 
     tactile: ClassVar[tuple[str, ...]] = ("force", "position")
+
+
+##
+# Centre-of-pressure contact, after Pan et al. (2026), "Beyond Binary"
+##
+
+COP_ACTION_SCALE = 0.02
+"""Largest joint target increment [rad] per step and unit action of the centre-of-pressure policies, 1.2 rad/s at
+60 Hz: the paper's 0.05 rad per step, at its slower control rate, gives about the same speed."""
+
+COP_JOINT_DELAY = 3
+"""Delay, in 60 Hz steps, of the joint position observation: 0.05 s, as measured for the paper's hand."""
+
+COP_CONTACT_DELAY = (3, 6)
+"""Range of the delay, in 60 Hz steps, of the contact observation: 0.05-0.1 s, sampled per episode."""
+
+
+@configclass
+class CoPActorObsCfg(ObsGroup):
+    """What a centre-of-pressure policy observes, as the real hand senses it: the finger joint positions, the last
+    action, the target and a contact signal from each fingertip pad, set by :attr:`OrcaHandPlateBalanceCoPEnvCfg
+    .contact`; neither the ball nor the plate. The joint positions and contacts are noisy and delayed."""
+
+    joint_pos = ObsTerm(
+        func=mdp.joint_pos_rel,
+        params={"asset_cfg": MISSING},
+        noise=Unoise(n_min=-0.1, n_max=0.1),
+        delay_min_lag=COP_JOINT_DELAY,
+        delay_max_lag=COP_JOINT_DELAY,
+    )
+    actions = ObsTerm(func=mdp.last_action)
+    target = ObsTerm(func=mdp.generated_commands, params={"command_name": "ball_target"})
+
+    def __post_init__(self):
+        self.enable_corruption = True
+        self.concatenate_terms = True
+
+
+@configclass
+class CoPCriticObsCfg(ObsGroup):
+    """What the critic observes: the actor's signals without noise or delay, the finger joint velocities, and the
+    ball and the plate (Table 4 of the paper)."""
+
+    joint_pos = ObsTerm(func=mdp.joint_pos_rel, params={"asset_cfg": MISSING})
+    joint_vel = ObsTerm(func=mdp.joint_vel_rel, params={"asset_cfg": MISSING})
+    actions = ObsTerm(func=mdp.last_action)
+    target = ObsTerm(func=mdp.generated_commands, params={"command_name": "ball_target"})
+    plate_pose = ObsTerm(func=mdp.plate_pose_root)
+    plate_vel = ObsTerm(func=mdp.plate_vel_root, clip=(-5.0, 5.0))
+    ball_pos = ObsTerm(func=mdp.ball_pos_plate)
+    ball_vel = ObsTerm(func=mdp.ball_vel_plate, clip=(-5.0, 5.0))
+    ball_target_offset = ObsTerm(func=mdp.ball_target_offset, params={"command_name": "ball_target"})
+
+    def __post_init__(self):
+        self.enable_corruption = False
+        self.concatenate_terms = True
+
+
+@configclass
+class CoPObservationsCfg:
+    """Observation groups of the centre-of-pressure policies: an asymmetric actor and critic."""
+
+    actor: CoPActorObsCfg = CoPActorObsCfg()
+    critic: CoPCriticObsCfg = CoPCriticObsCfg()
+
+
+CONTACT_SIGNALS = {
+    "cop": ObsTerm(
+        func=mdp.pad_contact_cop_b,
+        noise=mdp.CoPNoiseCfg(),
+        clip=(-10.0, 10.0),
+        delay_min_lag=COP_CONTACT_DELAY[0],
+        delay_max_lag=COP_CONTACT_DELAY[1],
+    ),
+    "binary": ObsTerm(
+        func=mdp.pad_contact_binary,
+        params={"force_threshold": TACTILE_CONTACT_THRESHOLD},
+        delay_min_lag=COP_CONTACT_DELAY[0],
+        delay_max_lag=COP_CONTACT_DELAY[1],
+    ),
+}
+"""Contact signal of each centre-of-pressure variant, per fingertip, only from contacts on the pad: the normal force
+[N] and contact point [m] in the fingertip frame (4), or contact above :data:`TACTILE_CONTACT_THRESHOLD` (1)."""
+
+
+@configclass
+class CoPRewardsCfg:
+    """Rewards of the paper's ball balancing (Table 8); the ball falling off ends the episode."""
+
+    ball_target = RewTerm(
+        func=mdp.ball_target_exp_dist, weight=1.0, params={"scale": 0.05, "command_name": "ball_target"}
+    )
+    # paid per fingertip on the plate, on its pad
+    plate_contact = RewTerm(
+        func=mdp.fingers_in_contact,
+        weight=0.2,
+        params={"contact_sensor_names": PLATE_SENSORS, "force_threshold": TACTILE_CONTACT_THRESHOLD},
+    )
+    ball_plate_vel = RewTerm(func=mdp.ball_plate_vel_tanh, weight=-1.0, params={"scale": 0.3})
+    plate_pos_deviation = RewTerm(func=mdp.plate_pos_deviation_tanh, weight=-1.0, params={"scale": 0.15})
+    plate_yaw = RewTerm(func=mdp.plate_yaw_tanh, weight=-1.0, params={"scale": 0.5})
+    action_diff = RewTerm(func=mdp.action_diff_tanh, weight=-1.0, params={"scale": 16.0})
+    termination = RewTerm(func=mdp.is_terminated, weight=-200.0)
+
+
+@configclass
+class CoPActionsCfg:
+    """Finger joint targets moved by smoothed increments from the plate pose; the wrist holds still."""
+
+    fingers = mdp.EMARelativeJointPositionActionCfg(
+        asset_name="robot", joint_names=FINGER_JOINTS, scale=COP_ACTION_SCALE, alpha=0.5, preserve_order=True
+    )
+
+
+@configclass
+class OrcaHandPlateBalanceCoPEnvCfg(OrcaHandPlateBalanceNoTaxelsEnvCfg):
+    """ORCA-hand ball-on-plate balancing, trained directly for the real hand as in Pan et al. (2026), "Beyond Binary:
+    Sim-to-Real Dexterous Manipulation with Physics-Grounded Contact Representation".
+
+    A recurrent actor observes only what the hand senses (:class:`CoPActorObsCfg`): its finger joints and, from each
+    fingertip's pad, a contact signal, by default the centre of pressure (normal force and contact point, see
+    :func:`~.mdp.pad_contact_cop_b`), noisy and delayed; a critic also observes the ball and the plate. There is no
+    teacher to distil from. The actions move the joint targets by smoothed increments
+    (:class:`~.mdp.EMARelativeJointPositionAction`), and the rewards are the paper's.
+
+    Departures from the paper, for the ORCA hand: the hand's joint gains and friction are its system-identified ones,
+    not the Allegro's, randomized by the paper's ranges; the ball is the tennis ball of the base task, randomized to
+    40-120 g rather than 50-250 g, the most the fingers' 0.5 Nm can tilt; the finger joints start at most 0.01 rad,
+    not 0.05 rad, off the plate pose, which a plate resting on all five fingertips tolerates; and the contact point
+    shifts by at most 1 mm in the noise, the paper's 0.1 cm. Newton backend only, as the pad-gated contacts are.
+    """
+
+    contact: ClassVar[str] = "cop"
+    """Contact signal of the actor, a key of :data:`CONTACT_SIGNALS`, or ``"none"`` for proprioception alone."""
+
+    actions: CoPActionsCfg = CoPActionsCfg()
+
+    def __post_init__(self):
+        super().__post_init__()
+        fingers = SceneEntityCfg("robot", joint_names=FINGER_JOINTS, preserve_order=True)
+        observations = CoPObservationsCfg()
+        observations.actor.joint_pos.params["asset_cfg"] = fingers
+        observations.critic.joint_pos.params["asset_cfg"] = fingers
+        observations.critic.joint_vel.params["asset_cfg"] = fingers
+        if self.contact != "none":
+            contact = replace(CONTACT_SIGNALS[self.contact])
+            contact.params = {**contact.params, "contact_sensor_names": PLATE_SENSORS, **pad_params()}
+            observations.actor.contact = contact
+            # the critic gets the clean signal
+            observations.critic.contact = replace(
+                contact, noise=None, delay_min_lag=0, delay_max_lag=0, params=dict(contact.params)
+            )
+        self.observations = observations
+
+        self.rewards = CoPRewardsCfg()
+        self.rewards.plate_contact.params.update(pad_params())
+
+        self.events.reset_robot_joints.params["position_range"] = [-0.01, 0.01]
+        self.events.reset_mount.params["ball_pos_range"] = {"x": (-0.05, 0.05), "y": (-0.04, 0.04)}
+        self.events.reset_mount.params["plate_pos_range"] = {"x": (-0.005, 0.005), "y": (-0.005, 0.005)}
+        self.events.plate_mass = EventTerm(
+            func=mdp.randomize_rigid_body_mass,
+            mode="startup",
+            params={"asset_cfg": SceneEntityCfg("plate"), "mass_distribution_params": [0.8, 1.2], "operation": "scale"},
+        )
+        self.events.ball_mass = EventTerm(
+            func=mdp.randomize_rigid_body_mass,
+            mode="startup",
+            params={"asset_cfg": SceneEntityCfg("ball"), "mass_distribution_params": [0.04, 0.12], "operation": "abs"},
+        )
+        self.events.finger_gains = EventTerm(
+            func=mdp.randomize_actuator_gains,
+            mode="reset",
+            params={
+                "asset_cfg": fingers,
+                "stiffness_distribution_params": (0.8, 1.2),
+                "damping_distribution_params": (0.7, 1.3),
+                "operation": "scale",
+            },
+        )
+
+
+@configclass
+class OrcaHandPlateBalanceCoPBinaryEnvCfg(OrcaHandPlateBalanceCoPEnvCfg):
+    """The centre-of-pressure policy's ablation sensing only whether each pad is in contact."""
+
+    contact: ClassVar[str] = "binary"
+
+
+@configclass
+class OrcaHandPlateBalanceCoPBaseEnvCfg(OrcaHandPlateBalanceCoPEnvCfg):
+    """The centre-of-pressure policy's ablation sensing no contact, proprioception alone."""
+
+    contact: ClassVar[str] = "none"

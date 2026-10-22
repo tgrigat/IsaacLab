@@ -47,3 +47,19 @@ for variant in STUDENT_VARIANTS:
             "default_agent": "rsl_rl",
         },
     )
+
+COP_VARIANTS = ["", "Binary", "Base"]
+"""Contact signal of each policy trained directly for the real hand, after Pan et al. (2026), "Beyond Binary": each
+pad's centre of pressure, whether it is in contact, or none."""
+
+for variant in COP_VARIANTS:
+    gym.register(
+        id=f"Isaac-PlateBalance-OrcaHand-CoP{'-' + variant if variant else ''}",
+        entry_point="isaaclab.envs:ManagerBasedRLEnv",
+        disable_env_checker=True,
+        kwargs={
+            "env_cfg_entry_point": f"{__name__}.orca_hand_env_cfg:OrcaHandPlateBalanceCoP{variant}EnvCfg",
+            "rsl_rl_cfg_entry_point": f"{agents.__name__}.rsl_rl_ppo_cfg:OrcaHandPlateBalanceCoPPPORunnerCfg",
+            "default_agent": "rsl_rl",
+        },
+    )
