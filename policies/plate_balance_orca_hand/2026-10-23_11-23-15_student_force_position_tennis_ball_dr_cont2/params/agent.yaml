@@ -1,0 +1,57 @@
+seed: 42
+device: cuda:0
+num_steps_per_env: 48
+init_at_random_ep_len: true
+max_iterations: 2600
+obs_groups:
+  student:
+  - student
+  teacher:
+  - policy
+  - proprio
+clip_actions: null
+check_for_nan: true
+save_interval: 100
+experiment_name: plate_balance_orca_hand_distillation
+run_name: student_force_position_tennis_ball_dr_cont2
+logger: wandb
+neptune_project: isaaclab
+wandb_project: plate_balance_orca_hand
+resume: false
+load_run: .*
+load_checkpoint: logs/rsl_rl/plate_balance_orca_hand_distillation/2026-10-22_20-18-01_student_force_position_tennis_ball_dr_cont/model_3400.pt
+class_name: DistillationRunner
+student:
+  class_name: RNNModel
+  hidden_dims:
+  - 256
+  - 128
+  activation: elu
+  obs_normalization: true
+  distribution_cfg:
+    class_name: GaussianDistribution
+    init_std: 0.1
+    std_type: scalar
+  rnn_type: lstm
+  rnn_hidden_dim: 256
+  rnn_num_layers: 1
+teacher:
+  class_name: MLPModel
+  hidden_dims:
+  - 512
+  - 256
+  - 128
+  activation: elu
+  obs_normalization: true
+  distribution_cfg:
+    class_name: GaussianDistribution
+    init_std: 0.5
+    std_type: scalar
+algorithm:
+  class_name: Distillation
+  num_learning_epochs: 2
+  learning_rate: 0.001
+  gradient_length: 16
+  max_grad_norm: 1.0
+  optimizer: adam
+  loss_type: mse
